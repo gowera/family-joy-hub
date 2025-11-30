@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import hero1 from "@/assets/hero-1.jpg";
@@ -71,11 +72,11 @@ const HeroSlider = () => {
                   {slide.subtitle}
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90">
-                    Get Involved
+                  <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+                    <Link to="/contact">Get Involved</Link>
                   </Button>
-                  <Button size="lg" variant="outline" className="bg-white/10 text-white border-white hover:bg-white/20">
-                    Learn More
+                  <Button size="lg" variant="outline" className="bg-white/10 text-white border-white hover:bg-white/20" asChild>
+                    <Link to="/about">Learn More</Link>
                   </Button>
                 </div>
               </div>

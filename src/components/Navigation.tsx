@@ -24,7 +24,19 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link to="/" className="flex items-center space-x-2 group">
-            <Heart className="w-8 h-8 text-primary group-hover:scale-110 transition-transform" />
+            <div className="relative w-8 h-8 group-hover:scale-110 transition-transform">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent rounded-full blur-sm opacity-75"></div>
+              <Heart className="w-8 h-8 relative fill-gradient-to-br from-primary via-secondary to-accent" style={{ fill: 'url(#heart-gradient)' }} />
+              <svg width="0" height="0">
+                <defs>
+                  <linearGradient id="heart-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="hsl(var(--primary))" />
+                    <stop offset="50%" stopColor="hsl(var(--secondary))" />
+                    <stop offset="100%" stopColor="hsl(var(--accent))" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div>
               <h1 className="font-heading font-bold text-xl text-foreground leading-tight">
                 Happiness Comes First
