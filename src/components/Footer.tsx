@@ -70,13 +70,13 @@ const Footer = () => {
           <div>
             <h4 className="font-heading font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-3">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all flex items-center justify-center">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full hover:text-primary-foreground transition-all flex items-center justify-center bg-[#22378d]">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all flex items-center justify-center">
-                <Instagram className="w-5 h-5" />
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full hover:text-primary-foreground transition-all flex items-center justify-center bg-[#d32802]">
+                <Instagram className="w-5 h-5 bg-secondary" />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all flex items-center justify-center">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full transition-all flex items-center justify-center bg-[#2b7bf2] text-white">
                 <Twitter className="w-5 h-5" />
               </a>
             </div>
