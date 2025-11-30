@@ -9,38 +9,41 @@ import activity1 from "@/assets/activity-1.jpeg";
 import activity2 from "@/assets/activity-2.jpeg";
 import activity3 from "@/assets/activity-3.jpeg";
 import inclusionIllustration from "@/assets/inclusion-illustration.jpg";
-
 const Home = () => {
-  const stats = [
-    { icon: Users, value: "500+", label: "Families Supported" },
-    { icon: Activity, value: "100+", label: "Weekly Sessions" },
-    { icon: Heart, value: "95%", label: "Satisfaction Rate" },
-    { icon: TrendingUp, value: "85%", label: "Return Attendance" },
-  ];
-
-  const programs = [
-    {
-      icon: Activity,
-      title: "Fitness & Movement",
-      description: "Family fitness sessions with dance, cardio, and Pilates designed for all ages and abilities.",
-      image: activity1,
-    },
-    {
-      icon: Music,
-      title: "Cultural Celebration",
-      description: "Music, dance, and celebration days honoring diverse cultures and traditions.",
-      image: activity2,
-    },
-    {
-      icon: Palette,
-      title: "Creative Activities",
-      description: "Arts, crafts, and sensory play stations for children with additional needs.",
-      image: activity3,
-    },
-  ];
-
-  return (
-    <div className="min-h-screen">
+  const stats = [{
+    icon: Users,
+    value: "500+",
+    label: "Families Supported"
+  }, {
+    icon: Activity,
+    value: "100+",
+    label: "Weekly Sessions"
+  }, {
+    icon: Heart,
+    value: "95%",
+    label: "Satisfaction Rate"
+  }, {
+    icon: TrendingUp,
+    value: "85%",
+    label: "Return Attendance"
+  }];
+  const programs = [{
+    icon: Activity,
+    title: "Fitness & Movement",
+    description: "Family fitness sessions with dance, cardio, and Pilates designed for all ages and abilities.",
+    image: activity1
+  }, {
+    icon: Music,
+    title: "Cultural Celebration",
+    description: "Music, dance, and celebration days honoring diverse cultures and traditions.",
+    image: activity2
+  }, {
+    icon: Palette,
+    title: "Creative Activities",
+    description: "Arts, crafts, and sensory play stations for children with additional needs.",
+    image: activity3
+  }];
+  return <div className="min-h-screen">
       <Navigation />
       <HeroSlider />
 
@@ -68,19 +71,15 @@ const Home = () => {
       <section className="py-16 bg-hero-gradient">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className="text-center animate-scale-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
+            {stats.map((stat, index) => <div key={index} className="text-center animate-scale-in" style={{
+            animationDelay: `${index * 100}ms`
+          }}>
                 <stat.icon className="w-12 h-12 mx-auto mb-4 text-white" />
                 <div className="text-4xl font-heading font-bold text-white mb-2">
                   {stat.value}
                 </div>
                 <div className="text-white/90">{stat.label}</div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -99,18 +98,11 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {programs.map((program, index) => (
-              <Card
-                key={index}
-                className="overflow-hidden hover:shadow-warm transition-all duration-300 animate-slide-up"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
+            {programs.map((program, index) => <Card key={index} className="overflow-hidden hover:shadow-warm transition-all duration-300 animate-slide-up" style={{
+            animationDelay: `${index * 150}ms`
+          }}>
                 <div className="h-48 overflow-hidden">
-                  <img
-                    src={program.image}
-                    alt={program.title}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                  />
+                  <img src={program.image} alt={program.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
                 </div>
                 <CardContent className="p-6">
                   <program.icon className="w-10 h-10 text-primary mb-4" />
@@ -124,8 +116,7 @@ const Home = () => {
                     </Button>
                   </Link>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
 
           <div className="text-center mt-12">
@@ -143,11 +134,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
-              <img
-                src={inclusionIllustration}
-                alt="Inclusive community"
-                className="rounded-2xl shadow-card"
-              />
+              <img src={inclusionIllustration} alt="Inclusive community" className="rounded-2xl shadow-card" />
             </div>
             <div className="animate-slide-up">
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
@@ -159,18 +146,10 @@ const Home = () => {
                 safe, and inclusive spaces where:
               </p>
               <ul className="space-y-4 mb-8">
-                {[
-                  "Children can laugh without being judged",
-                  "Parents can rest without feeling alone",
-                  "Everyone can move, dance, and heal together",
-                  "Cultural identity is celebrated and uplifted",
-                  "Additional needs are understood and accommodated",
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start space-x-3">
+                {["Children can laugh without being judged", "Parents can rest without feeling alone", "Everyone can move, dance, and heal together", "Cultural identity is celebrated and uplifted", "Additional needs are understood and accommodated"].map((item, index) => <li key={index} className="flex items-start space-x-3">
                     <Heart className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                     <span className="text-muted-foreground">{item}</span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
               <Link to="/about">
                 <Button size="lg" variant="outline">
@@ -199,7 +178,7 @@ const Home = () => {
                 </Button>
               </Link>
               <Link to="/programs">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-primary">
                   View Schedule
                 </Button>
               </Link>
@@ -209,8 +188,6 @@ const Home = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Home;
