@@ -74,7 +74,7 @@ const Footer = () => {
                 <Facebook className="w-5 h-5" />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full hover:text-primary-foreground transition-all flex items-center justify-center bg-[#d32802]">
-                <Instagram className="w-5 h-5 bg-secondary" />
+                <Instagram className="w-5 h-5 bg-black/[0.02]" />
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full transition-all flex items-center justify-center bg-[#2b7bf2] text-white">
                 <Twitter className="w-5 h-5" />
