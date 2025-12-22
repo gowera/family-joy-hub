@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Heart, Mail, Phone, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
+import { Heart, Mail, Phone, MapPin, Facebook, Instagram } from "lucide-react";
+import logoFLP from "@/assets/logo-flp.jpeg";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-card border-t border-border mt-20">
@@ -8,7 +9,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <Heart className="w-8 h-8 text-primary" />
+              <Heart className="w-8 h-8 text-[#FF1493]" />
               <div>
                 <h3 className="font-heading font-bold text-lg">Happiness Comes First</h3>
                 <p className="text-sm text-muted-foreground">Where Everyone Belongs</p>
@@ -70,19 +71,31 @@ const Footer = () => {
           <div>
             <h4 className="font-heading font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-3">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full hover:text-primary-foreground transition-all flex items-center justify-center bg-[#22378d]">
+              <a href="https://www.facebook.com/share/1CuUVmE4ej/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full hover:text-primary-foreground transition-all flex items-center justify-center bg-[#1877F2] text-white">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full hover:text-primary-foreground transition-all flex items-center justify-center bg-[#d32802]">
-                <Instagram className="w-5 h-5 bg-black/[0.02]" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full transition-all flex items-center justify-center bg-[#2b7bf2] text-white">
-                <Twitter className="w-5 h-5" />
+              <a href="https://www.instagram.com/happinesscomesfirst?igsh=dzBuMHppd3Jjdzk0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full hover:text-primary-foreground transition-all flex items-center justify-center bg-gradient-to-br from-[#f09433] via-[#e6683c] to-[#bc1888] text-white">
+                <Instagram className="w-5 h-5" />
               </a>
             </div>
             <p className="text-xs text-muted-foreground mt-4">
               Scottish Charitable Incorporated Organisation (SCIO)
             </p>
+          </div>
+        </div>
+
+        {/* Foundation Support Section */}
+        <div className="border-t border-border mt-8 pt-8">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <p className="text-sm text-muted-foreground">Supported by</p>
+            <a href="https://www.facebook.com/share/1CuUVmE4ej/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
+              <img 
+                src={logoFLP} 
+                alt="Fondation Linda Pink Logo" 
+                className="h-16 w-auto rounded-lg"
+              />
+            </a>
+            <p className="text-xs text-muted-foreground">Fondation Linda Pink</p>
           </div>
         </div>
 
