@@ -30,9 +30,9 @@ const Navigation = () => {
               <svg width="0" height="0">
                 <defs>
                   <linearGradient id="heart-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="hsl(var(--primary))" />
-                    <stop offset="50%" stopColor="hsl(var(--secondary))" />
-                    <stop offset="100%" stopColor="hsl(var(--accent))" />
+            <stop offset="0%" stopColor="#FF1493" />
+            <stop offset="50%" stopColor="#FF69B4" />
+            <stop offset="100%" stopColor="#DB2777" />
                   </linearGradient>
                 </defs>
               </svg>
