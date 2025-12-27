@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import heroContact from "@/assets/hero-contact.jpg";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -47,9 +48,13 @@ const Contact = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="py-32 bg-hero-gradient text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+      <section 
+        className="py-32 bg-cover bg-center relative"
+        style={{ backgroundImage: `url(${heroContact})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
               Get In Touch
             </h1>

@@ -8,6 +8,8 @@ import activity7 from "@/assets/activity-7.jpeg";
 import activity8 from "@/assets/activity-8.jpeg";
 import activity9 from "@/assets/activity-9.jpeg";
 import activity10 from "@/assets/activity-10.jpeg";
+import heroPrograms from "@/assets/hero-programs.jpg";
+
 const Programs = () => {
   const mainPrograms = [{
     icon: Activity,
@@ -55,9 +57,13 @@ const Programs = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="py-32 bg-hero-gradient text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+      <section 
+        className="py-32 bg-cover bg-center relative"
+        style={{ backgroundImage: `url(${heroPrograms})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
               Our Programs
             </h1>
