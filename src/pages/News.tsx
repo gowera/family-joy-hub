@@ -33,7 +33,7 @@ const News = () => {
   const fetchPosts = async () => {
     try {
       const response = await fetch(
-        "https://totalementactus.net/wp-json/wp/v2/posts?_embed&per_page=12"
+        "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=12"
       );
       const data = await response.json();
       setPosts(data);
