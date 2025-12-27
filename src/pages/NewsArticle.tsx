@@ -42,7 +42,7 @@ const NewsArticle = () => {
   const fetchPost = async (postSlug: string) => {
     try {
       const response = await fetch(
-        `https://totalementactus.net/wp-json/wp/v2/posts?slug=${postSlug}&_embed`
+        `https://happynesscomefirst.com/wp-json/wp/v2/posts?slug=${postSlug}&_embed`
       );
       const data = await response.json();
       if (data.length > 0) {
@@ -58,7 +58,7 @@ const NewsArticle = () => {
   const fetchRecentPosts = async () => {
     try {
       const response = await fetch(
-        "https://totalementactus.net/wp-json/wp/v2/posts?_embed&per_page=3"
+        "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=3"
       );
       const data = await response.json();
       setRecentPosts(data);
@@ -208,7 +208,22 @@ const NewsArticle = () => {
               {/* Main Content */}
               <div className="lg:col-span-2">
                 <div
-                  className="prose prose-lg max-w-none mb-12"
+                  className="prose prose-lg max-w-none mb-12
+                    [&>p]:mb-6 [&>p]:leading-relaxed [&>p]:text-foreground/90
+                    [&>h1]:mt-10 [&>h1]:mb-6 [&>h1]:font-heading [&>h1]:text-3xl [&>h1]:font-bold
+                    [&>h2]:mt-10 [&>h2]:mb-5 [&>h2]:font-heading [&>h2]:text-2xl [&>h2]:font-semibold
+                    [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:font-heading [&>h3]:text-xl [&>h3]:font-semibold
+                    [&>h4]:mt-6 [&>h4]:mb-3 [&>h4]:font-heading [&>h4]:text-lg [&>h4]:font-medium
+                    [&>img]:my-8 [&>img]:rounded-xl [&>img]:shadow-card [&>img]:mx-auto
+                    [&_.wp-block-image]:my-8 [&_.wp-block-image_img]:rounded-xl [&_.wp-block-image_img]:shadow-card
+                    [&>ul]:my-6 [&>ul]:pl-6 [&>ul>li]:mb-3
+                    [&>ol]:my-6 [&>ol]:pl-6 [&>ol>li]:mb-3
+                    [&>blockquote]:my-8 [&>blockquote]:pl-6 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-muted-foreground
+                    [&>figure]:my-8 [&>figure_img]:rounded-xl [&>figure_img]:shadow-card [&>figure_figcaption]:text-center [&>figure_figcaption]:text-sm [&>figure_figcaption]:text-muted-foreground [&>figure_figcaption]:mt-3
+                    [&>a]:text-primary [&>a]:underline [&>a:hover]:text-primary/80
+                    [&>strong]:font-semibold [&>strong]:text-foreground
+                    [&>.aligncenter]:mx-auto [&>.aligncenter]:block
+                    [&>p>img]:my-8 [&>p>img]:rounded-xl [&>p>img]:shadow-card [&>p>img]:mx-auto"
                   dangerouslySetInnerHTML={{ __html: post.content.rendered }}
                 />
 
@@ -265,8 +280,8 @@ const NewsArticle = () => {
                 </Card>
               </div>
 
-              {/* Sidebar */}
-              <div className="space-y-8">
+              {/* Sidebar - Sticky */}
+              <div className="lg:sticky lg:top-24 lg:self-start space-y-8">
                 {/* Recent Posts */}
                 <Card className="shadow-card">
                   <CardContent className="p-6">
