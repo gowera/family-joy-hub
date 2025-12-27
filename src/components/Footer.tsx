@@ -99,9 +99,20 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 text-center">
+        <div className="border-t border-border mt-8 pt-8 text-center space-y-2">
           <p className="text-sm text-muted-foreground">
             © {currentYear} Happiness Comes First SCIO. All rights reserved.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Proudly designed by{" "}
+            <a 
+              href="https://oredytech.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              Oredy TECHNOLOGIES
+            </a>
           </p>
         </div>
       </div>

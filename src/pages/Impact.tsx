@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import heroImpact from "@/assets/hero-impact.jpg";
 import {
   Table,
   TableBody,
@@ -106,9 +107,13 @@ const Impact = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="py-32 bg-hero-gradient text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+      <section 
+        className="py-32 bg-cover bg-center relative"
+        style={{ backgroundImage: `url(${heroImpact})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
               Impact & Evaluation
             </h1>
