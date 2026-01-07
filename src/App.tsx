@@ -7,6 +7,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Programs from "./pages/Programs";
+import KidsHub from "./pages/KidsHub";
 import Impact from "./pages/Impact";
 import Safeguarding from "./pages/Safeguarding";
 import News from "./pages/News";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/programs" element={<Programs />} />
+          <Route path="/kids-hub" element={<KidsHub />} />
           <Route path="/impact" element={<Impact />} />
           <Route path="/safeguarding" element={<Safeguarding />} />
           <Route path="/news" element={<News />} />
