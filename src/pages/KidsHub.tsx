@@ -24,7 +24,9 @@ import {
   Users,
   Star,
   Sparkles,
-  PartyPopper
+  PartyPopper,
+  CreditCard,
+  Building2
 } from "lucide-react";
 
 const KidsHub = () => {
@@ -169,11 +171,6 @@ const KidsHub = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-pink-600/80 via-purple-600/70 to-cyan-500/80" />
         </div>
         <div className="relative z-10 text-center text-white px-4">
-          <div className="flex justify-center gap-2 mb-4">
-            <span className="text-5xl">🎪</span>
-            <span className="text-5xl">🎨</span>
-            <span className="text-5xl">🎵</span>
-          </div>
           <h1 className="font-heading text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">
             Pink & Bleu Kids' Hub
           </h1>
@@ -191,7 +188,7 @@ const KidsHub = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-4xl font-bold text-foreground mb-4">
-              🎪 Program Overview
+              Program Overview
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               A 4-week program featuring hula hoops, building blocks, Monster Track cars, dinosaurs, 
@@ -225,7 +222,7 @@ const KidsHub = () => {
 
           {/* Daily Schedule */}
           <div className="bg-white rounded-2xl p-8 shadow-lg mb-12">
-            <h3 className="font-heading text-2xl font-bold mb-6 text-center">📋 Daily Schedule</h3>
+            <h3 className="font-heading text-2xl font-bold mb-6 text-center">Daily Schedule</h3>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -237,15 +234,15 @@ const KidsHub = () => {
                 <tbody>
                   <tr className="border-b">
                     <td className="p-4 font-medium">2:00 – 2:10 PM</td>
-                    <td className="p-4">🎶 Warm-Up Activity (Music + Movement)</td>
+                    <td className="p-4">Warm-Up Activity (Music + Movement)</td>
                   </tr>
                   <tr className="border-b bg-muted/30">
                     <td className="p-4 font-medium">2:10 – 3:50 PM</td>
-                    <td className="p-4">🔄 5 Rotating Stations (20 minutes each)</td>
+                    <td className="p-4">5 Rotating Stations (20 minutes each)</td>
                   </tr>
                   <tr>
                     <td className="p-4 font-medium">3:50 – 4:00 PM</td>
-                    <td className="p-4">🎉 Group Cool-Down, Stickers, High-Fives</td>
+                    <td className="p-4">Group Cool-Down, Stickers, High-Fives</td>
                   </tr>
                 </tbody>
               </table>
@@ -258,7 +255,7 @@ const KidsHub = () => {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-4xl font-bold text-center mb-12">
-            ⭐ Our 4 Exciting Sessions
+            Our 4 Exciting Sessions
           </h2>
           
           <div className="space-y-8">
@@ -280,7 +277,7 @@ const KidsHub = () => {
                       <p className="text-muted-foreground">{session.color} Theme</p>
                     </div>
                     <div className="bg-white px-4 py-2 rounded-full shadow">
-                      <span className="font-medium">🎯 Focus: {session.focus}</span>
+                      <span className="font-medium">Focus: {session.focus}</span>
                     </div>
                   </div>
                 </div>
@@ -314,7 +311,7 @@ const KidsHub = () => {
           {/* Final Celebration */}
           <div className="mt-12 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 rounded-2xl p-8 text-white text-center">
             <PartyPopper className="w-16 h-16 mx-auto mb-4" />
-            <h3 className="font-heading text-3xl font-bold mb-4">🎊 Final Celebration (Session 4)</h3>
+            <h3 className="font-heading text-3xl font-bold mb-4">Final Celebration (Session 4)</h3>
             <div className="grid md:grid-cols-3 gap-6 mt-6">
               <div className="bg-white/20 rounded-xl p-4">
                 <Trophy className="w-8 h-8 mx-auto mb-2" />
@@ -419,7 +416,7 @@ const KidsHub = () => {
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="font-heading text-4xl font-bold text-foreground mb-4">
-                📝 Parental Consent Form
+                Parental Consent Form
               </h2>
               <p className="text-lg text-muted-foreground">
                 From Happiness Comes First Organisation<br />
@@ -430,8 +427,8 @@ const KidsHub = () => {
             <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8 space-y-8">
               {/* Child's Information */}
               <div>
-                <h3 className="font-heading text-xl font-bold mb-4 flex items-center gap-2 text-pink-600">
-                  <span className="text-2xl">👶</span> Child's Information
+                <h3 className="font-heading text-xl font-bold mb-4 text-pink-600">
+                  Child's Information
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -496,8 +493,8 @@ const KidsHub = () => {
 
               {/* Parent/Guardian Information */}
               <div>
-                <h3 className="font-heading text-xl font-bold mb-4 flex items-center gap-2 text-cyan-600">
-                  <span className="text-2xl">👨‍👩‍👧</span> Parent/Guardian Information
+                <h3 className="font-heading text-xl font-bold mb-4 text-cyan-600">
+                  Parent/Guardian Information
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -537,8 +534,8 @@ const KidsHub = () => {
 
               {/* Medical Information */}
               <div>
-                <h3 className="font-heading text-xl font-bold mb-4 flex items-center gap-2 text-purple-600">
-                  <span className="text-2xl">🏥</span> Medical Information
+                <h3 className="font-heading text-xl font-bold mb-4 text-purple-600">
+                  Medical Information
                 </h3>
                 
                 <div className="space-y-4">
@@ -598,8 +595,8 @@ const KidsHub = () => {
 
               {/* Consent */}
               <div className="bg-gradient-to-r from-pink-50 to-cyan-50 p-6 rounded-xl">
-                <h3 className="font-heading text-xl font-bold mb-4 flex items-center gap-2">
-                  <span className="text-2xl">✍️</span> Consent
+                <h3 className="font-heading text-xl font-bold mb-4">
+                  Consent
                 </h3>
                 <div className="text-sm text-muted-foreground mb-4 space-y-2">
                   <p>I, the undersigned, give permission for my child to participate in the Kids Summer Holiday Activity organised by From Happiness Comes First Organisation. I confirm that:</p>
@@ -637,10 +634,7 @@ const KidsHub = () => {
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
-                  <>
-                    <span className="animate-spin mr-2">⏳</span>
-                    Submitting...
-                  </>
+                  "Submitting..."
                 ) : (
                   <>
                     <Heart className="mr-2" />
@@ -653,6 +647,68 @@ const KidsHub = () => {
                 By submitting this form, you agree to the terms and conditions outlined above.
               </p>
             </form>
+          </div>
+        </div>
+      </section>
+
+      {/* Payment Information */}
+      <section className="py-16 bg-gradient-to-b from-white to-pink-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+              <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white">
+                <div className="flex items-center gap-3">
+                  <CreditCard className="w-8 h-8" />
+                  <h2 className="font-heading text-2xl font-bold">
+                    Payment Information
+                  </h2>
+                </div>
+                <p className="mt-2 opacity-90">Register your child for our activities</p>
+              </div>
+              
+              <div className="p-8">
+                <p className="text-lg mb-6 text-muted-foreground">
+                  Parents can register their children for activities by making a payment via bank transfer or card.
+                </p>
+
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Building2 className="w-6 h-6 text-green-600" />
+                    <h3 className="font-bold text-lg text-green-800">Bank Transfer Details</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center py-2 border-b border-green-200">
+                      <span className="text-muted-foreground">Bank Name</span>
+                      <span className="font-semibold">Bank of Scotland</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-green-200">
+                      <span className="text-muted-foreground">Account Name</span>
+                      <span className="font-semibold">Happiness Comes First (SCIO)</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-green-200">
+                      <span className="text-muted-foreground">Sort Code</span>
+                      <span className="font-semibold font-mono">80-22-60</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-muted-foreground">Account Number</span>
+                      <span className="font-semibold font-mono">27522367</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200">
+                  <CreditCard className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                  <p className="text-blue-700">
+                    <span className="font-semibold">Card payments accepted:</span> You can also pay by debit or credit card.
+                  </p>
+                </div>
+
+                <p className="mt-6 text-sm text-muted-foreground text-center">
+                  Please include your child's name as the payment reference.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
