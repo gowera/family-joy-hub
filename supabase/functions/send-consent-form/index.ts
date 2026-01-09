@@ -112,11 +112,60 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
+    // Send confirmation email to parent (in test mode, can only send to submitter's email)
+    const confirmationHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          h1 { color: #FF1493; }
+          .info-box { background: #f0f9ff; border-left: 4px solid #00CED1; padding: 15px; margin: 20px 0; }
+          .payment-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; }
+          .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Inscription confirmée - ${formData.childName}</h1>
+          <p>Cher(e) ${formData.parentName},</p>
+          <p>Nous avons bien reçu le formulaire de consentement pour <strong>${formData.childName}</strong> aux activités Kids Summer Holiday.</p>
+          
+          <div class="info-box">
+            <h3>Récapitulatif de l'inscription</h3>
+            <ul>
+              <li><strong>Enfant :</strong> ${formData.childName} (${formData.childAge} ans)</li>
+              <li><strong>Session :</strong> ${formData.sessionTime}</li>
+              <li><strong>Jours :</strong> ${formData.daysAttending.join(", ")}</li>
+            </ul>
+          </div>
+          
+          <div class="payment-box">
+            <h3>Informations de paiement</h3>
+            <p><strong>Banque :</strong> Bank of Scotland</p>
+            <p><strong>Nom du compte :</strong> Happiness Comes First (SCIO)</p>
+            <p><strong>Sort Code :</strong> 80-22-60</p>
+            <p><strong>Numéro de compte :</strong> 27522367</p>
+            <p>Les paiements par carte sont également acceptés.</p>
+          </div>
+          
+          <p>Si vous avez des questions, n'hésitez pas à nous contacter à happynesscome01@gmail.com</p>
+          
+          <div class="footer">
+            <p>Happiness Comes First (SCIO)</p>
+            <p>Email: happynesscome01@gmail.com</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
     const emailResponse = await resend.emails.send({
-      from: "Kids Hub <onboarding@resend.dev>",
-      to: ["happynesscome01@gmail.com"],
-      subject: `🎪 New Consent Form: ${formData.childName}`,
-      html: emailHtml,
+      from: "Happiness Comes First <onboarding@resend.dev>",
+      to: [formData.email],
+      subject: `Inscription confirmée - ${formData.childName}`,
+      html: confirmationHtml,
     });
 
     console.log("Email sent successfully:", emailResponse);
