@@ -227,7 +227,7 @@ const KidsHub = () => {
             <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-t-4 border-pink-500">
               <Clock className="w-12 h-12 mx-auto mb-4 text-pink-500" />
               <h3 className="font-bold text-lg mb-2">Time</h3>
-              <p className="text-muted-foreground text-center">Morning - Aftnoon</p>
+              <p className="text-muted-foreground text-center">Morning - Afternoon</p>
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-t-4 border-cyan-500">
               <Users className="w-12 h-12 mx-auto mb-4 text-cyan-500" />
