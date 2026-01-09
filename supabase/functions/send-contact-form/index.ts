@@ -81,10 +81,10 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
-    // Send notification to admin
+    // Send confirmation to the sender
     const emailResponse = await resend.emails.send({
-      from: "Happiness Comes First <onboarding@resend.dev>",
-      to: [formData.email], // In test mode, send to submitter's email
+      from: "Happiness Comes First <noreply@happynesscomefirst.com>",
+      to: [formData.email],
       subject: `Message reçu - Happiness Comes First`,
       html: `
         <!DOCTYPE html>
@@ -121,7 +121,15 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Email sent successfully:", emailResponse);
+    // Send notification to admin
+    await resend.emails.send({
+      from: "Happiness Comes First <noreply@happynesscomefirst.com>",
+      to: ["happynesscome01@gmail.com"],
+      subject: `Nouveau message de ${formData.name}`,
+      html: emailHtml,
+    });
+
+    console.log("Emails sent successfully:", emailResponse);
 
     return new Response(JSON.stringify({ success: true, data: emailResponse }), {
       status: 200,

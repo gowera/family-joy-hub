@@ -162,10 +162,18 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "Happiness Comes First <onboarding@resend.dev>",
+      from: "Happiness Comes First <noreply@happynesscomefirst.com>",
       to: [formData.email],
       subject: `Inscription confirmée - ${formData.childName}`,
       html: confirmationHtml,
+    });
+
+    // Send notification to admin
+    await resend.emails.send({
+      from: "Happiness Comes First <noreply@happynesscomefirst.com>",
+      to: ["happynesscome01@gmail.com"],
+      subject: `Nouvelle inscription - ${formData.childName}`,
+      html: emailHtml,
     });
 
     console.log("Email sent successfully:", emailResponse);
