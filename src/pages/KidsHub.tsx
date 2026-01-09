@@ -10,29 +10,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-kidshub.jpg";
-import { 
-  Palette, 
-  Music, 
-  Dumbbell, 
-  Car, 
-  Blocks, 
-  Trophy,
-  Heart,
-  Camera,
-  Shield,
-  Clock,
-  Users,
-  Star,
-  Sparkles,
-  PartyPopper,
-  CreditCard,
-  Building2
-} from "lucide-react";
-
+import { Palette, Music, Dumbbell, Car, Blocks, Trophy, Heart, Camera, Shield, Clock, Users, Star, Sparkles, PartyPopper, CreditCard, Building2 } from "lucide-react";
 const KidsHub = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Form state
   const [formData, setFormData] = useState({
     childName: "",
@@ -46,32 +30,28 @@ const KidsHub = () => {
     allergiesDetails: "",
     hasMedication: false,
     medicationDetails: "",
-    photoConsent: true,
+    photoConsent: true
   });
-
   const handleDayChange = (day: string, checked: boolean) => {
     setFormData(prev => ({
       ...prev,
-      daysAttending: checked 
-        ? [...prev.daysAttending, day]
-        : prev.daysAttending.filter(d => d !== day)
+      daysAttending: checked ? [...prev.daysAttending, day] : prev.daysAttending.filter(d => d !== day)
     }));
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
-      const { data, error } = await supabase.functions.invoke('send-consent-form', {
+      const {
+        data,
+        error
+      } = await supabase.functions.invoke('send-consent-form', {
         body: formData
       });
-
       if (error) throw error;
-
       toast({
         title: "Form Submitted Successfully! 🎉",
-        description: "Thank you for registering your child. We will contact you shortly.",
+        description: "Thank you for registering your child. We will contact you shortly."
       });
 
       // Reset form
@@ -87,87 +67,133 @@ const KidsHub = () => {
         allergiesDetails: "",
         hasMedication: false,
         medicationDetails: "",
-        photoConsent: true,
+        photoConsent: true
       });
     } catch (error: any) {
       console.error("Error submitting form:", error);
       toast({
         title: "Submission Error",
         description: "There was an error submitting the form. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  const sessions = [
-    {
-      number: 1,
-      title: "Circus Fun World",
-      color: "Pink & Blue",
-      focus: "Physical Movement + Exploration",
-      stations: [
-        { name: "Twist Disk & Hula Spin Zone", equipment: "Twist disks, 6 hula hoops, 1,3,5kgs dumbbells", ages: "6-10" },
-        { name: "Car Racetrack", equipment: "Monster Track Cars", ages: "5-6" },
-        { name: "Soft Ball Dribble", equipment: "Soft balls, cones, mini goals", ages: "7-10" },
-        { name: "Mega Block Builders", equipment: "Kids' building blocks", ages: "5-7" },
-        { name: "Painting the Circus", equipment: "Crayons, paint, paper", ages: "Any" },
-      ]
-    },
-    {
-      number: 2,
-      title: "Jungle Jam Safari",
-      color: "Green & Orange",
-      focus: "Creativity + Balance",
-      stations: [
-        { name: "Dino & Car Story Track", equipment: "Dinosaurs and cars", ages: "4-6" },
-        { name: "Jungle Art Safari", equipment: "Paint and brushes", ages: "5-10" },
-        { name: "Bounce & Balance Trail", equipment: "Bunny bouncing balls", ages: "5-8" },
-        { name: "Jungle Jenga Tower", equipment: "Building blocks", ages: "5-10" },
-        { name: "Animal Sound Mic Jam", equipment: "Microphone", ages: "5-6" },
-      ]
-    },
-    {
-      number: 3,
-      title: "Superstar Stage Show",
-      color: "Pink & Blue",
-      focus: "Performance + Creativity",
-      stations: [
-        { name: "Karaoke Star Booth", equipment: "Microphone and music", ages: "8-10" },
-        { name: "Fashion Fit Walk", equipment: "Runway setup", ages: "6-10" },
-        { name: "Hula Hoop Challenge", equipment: "Hula hoops, soft balls", ages: "Any" },
-        { name: "Block Beat Builders", equipment: "Building blocks", ages: "5-6" },
-        { name: "If I Were a Star Drawing", equipment: "Art supplies", ages: "5-10" },
-      ]
-    },
-    {
-      number: 4,
-      title: "Happy Olympics Carnival",
-      color: "Rainbow",
-      focus: "Teamwork + Celebration",
-      stations: [
-        { name: "Obstacle Adventure Course", equipment: "Hoops, blocks, bouncing balls", ages: "7-10" },
-        { name: "Soft Ball Ring Toss", equipment: "Soft balls, hoops", ages: "5-7" },
-        { name: "Friendly Boxing Tag", equipment: "Soft gloves, targets", ages: "5-10" },
-        { name: "Team Tower Showdown", equipment: "Building blocks", ages: "5-7" },
-        { name: "Medal Making & Bubbles", equipment: "Paper, bubble sticks", ages: "Everyone" },
-      ]
-    },
-  ];
-
+  const sessions = [{
+    number: 1,
+    title: "Circus Fun World",
+    color: "Pink & Blue",
+    focus: "Physical Movement + Exploration",
+    stations: [{
+      name: "Twist Disk & Hula Spin Zone",
+      equipment: "Twist disks, 6 hula hoops, 1,3,5kgs dumbbells",
+      ages: "6-10"
+    }, {
+      name: "Car Racetrack",
+      equipment: "Monster Track Cars",
+      ages: "5-6"
+    }, {
+      name: "Soft Ball Dribble",
+      equipment: "Soft balls, cones, mini goals",
+      ages: "7-10"
+    }, {
+      name: "Mega Block Builders",
+      equipment: "Kids' building blocks",
+      ages: "5-7"
+    }, {
+      name: "Painting the Circus",
+      equipment: "Crayons, paint, paper",
+      ages: "Any"
+    }]
+  }, {
+    number: 2,
+    title: "Jungle Jam Safari",
+    color: "Green & Orange",
+    focus: "Creativity + Balance",
+    stations: [{
+      name: "Dino & Car Story Track",
+      equipment: "Dinosaurs and cars",
+      ages: "4-6"
+    }, {
+      name: "Jungle Art Safari",
+      equipment: "Paint and brushes",
+      ages: "5-10"
+    }, {
+      name: "Bounce & Balance Trail",
+      equipment: "Bunny bouncing balls",
+      ages: "5-8"
+    }, {
+      name: "Jungle Jenga Tower",
+      equipment: "Building blocks",
+      ages: "5-10"
+    }, {
+      name: "Animal Sound Mic Jam",
+      equipment: "Microphone",
+      ages: "5-6"
+    }]
+  }, {
+    number: 3,
+    title: "Superstar Stage Show",
+    color: "Pink & Blue",
+    focus: "Performance + Creativity",
+    stations: [{
+      name: "Karaoke Star Booth",
+      equipment: "Microphone and music",
+      ages: "8-10"
+    }, {
+      name: "Fashion Fit Walk",
+      equipment: "Runway setup",
+      ages: "6-10"
+    }, {
+      name: "Hula Hoop Challenge",
+      equipment: "Hula hoops, soft balls",
+      ages: "Any"
+    }, {
+      name: "Block Beat Builders",
+      equipment: "Building blocks",
+      ages: "5-6"
+    }, {
+      name: "If I Were a Star Drawing",
+      equipment: "Art supplies",
+      ages: "5-10"
+    }]
+  }, {
+    number: 4,
+    title: "Happy Olympics Carnival",
+    color: "Rainbow",
+    focus: "Teamwork + Celebration",
+    stations: [{
+      name: "Obstacle Adventure Course",
+      equipment: "Hoops, blocks, bouncing balls",
+      ages: "7-10"
+    }, {
+      name: "Soft Ball Ring Toss",
+      equipment: "Soft balls, hoops",
+      ages: "5-7"
+    }, {
+      name: "Friendly Boxing Tag",
+      equipment: "Soft gloves, targets",
+      ages: "5-10"
+    }, {
+      name: "Team Tower Showdown",
+      equipment: "Building blocks",
+      ages: "5-7"
+    }, {
+      name: "Medal Making & Bubbles",
+      equipment: "Paper, bubble sticks",
+      ages: "Everyone"
+    }]
+  }];
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Navigation />
       
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
+        <div className="absolute inset-0 bg-cover bg-center" style={{
+        backgroundImage: `url(${heroImage})`
+      }}>
           <div className="absolute inset-0 bg-gradient-to-r from-pink-600/80 via-purple-600/70 to-cyan-500/80" />
         </div>
         <div className="relative z-10 text-center text-white px-4">
@@ -201,7 +227,7 @@ const KidsHub = () => {
             <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-t-4 border-pink-500">
               <Clock className="w-12 h-12 mx-auto mb-4 text-pink-500" />
               <h3 className="font-bold text-lg mb-2">Time</h3>
-              <p className="text-muted-foreground">2:00 PM – 4:00 PM</p>
+              <p className="text-muted-foreground">Morning & Evening</p>
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-t-4 border-cyan-500">
               <Users className="w-12 h-12 mx-auto mb-4 text-cyan-500" />
@@ -259,16 +285,9 @@ const KidsHub = () => {
           </h2>
           
           <div className="space-y-8">
-            {sessions.map((session) => (
-              <div 
-                key={session.number}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg border-l-4"
-                style={{ 
-                  borderColor: session.number === 1 ? '#EC4899' : 
-                               session.number === 2 ? '#22C55E' : 
-                               session.number === 3 ? '#8B5CF6' : '#F59E0B'
-                }}
-              >
+            {sessions.map(session => <div key={session.number} className="bg-white rounded-2xl overflow-hidden shadow-lg border-l-4" style={{
+            borderColor: session.number === 1 ? '#EC4899' : session.number === 2 ? '#22C55E' : session.number === 3 ? '#8B5CF6' : '#F59E0B'
+          }}>
                 <div className="bg-gradient-to-r from-pink-100 via-purple-100 to-cyan-100 p-6">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
@@ -288,8 +307,7 @@ const KidsHub = () => {
                     5 Rotating Stations
                   </h4>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {session.stations.map((station, idx) => (
-                      <div key={idx} className="bg-muted/50 rounded-lg p-4">
+                    {session.stations.map((station, idx) => <div key={idx} className="bg-muted/50 rounded-lg p-4">
                         <div className="flex items-start gap-3">
                           <span className="bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
                             {idx + 1}
@@ -300,12 +318,10 @@ const KidsHub = () => {
                             <p className="text-xs text-muted-foreground">{station.equipment}</p>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
 
           {/* Final Celebration */}
@@ -433,36 +449,26 @@ const KidsHub = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="childName">Full Name *</Label>
-                    <Input
-                      id="childName"
-                      value={formData.childName}
-                      onChange={(e) => setFormData(prev => ({ ...prev, childName: e.target.value }))}
-                      required
-                      className="mt-1"
-                    />
+                    <Input id="childName" value={formData.childName} onChange={e => setFormData(prev => ({
+                    ...prev,
+                    childName: e.target.value
+                  }))} required className="mt-1" />
                   </div>
                   <div>
                     <Label htmlFor="childAge">Age *</Label>
-                    <Input
-                      id="childAge"
-                      type="number"
-                      min="5"
-                      max="10"
-                      value={formData.childAge}
-                      onChange={(e) => setFormData(prev => ({ ...prev, childAge: e.target.value }))}
-                      required
-                      className="mt-1"
-                    />
+                    <Input id="childAge" type="number" min="5" max="10" value={formData.childAge} onChange={e => setFormData(prev => ({
+                    ...prev,
+                    childAge: e.target.value
+                  }))} required className="mt-1" />
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <Label>Session Time *</Label>
-                  <RadioGroup
-                    value={formData.sessionTime}
-                    onValueChange={(value) => setFormData(prev => ({ ...prev, sessionTime: value }))}
-                    className="flex gap-6 mt-2"
-                  >
+                  <RadioGroup value={formData.sessionTime} onValueChange={value => setFormData(prev => ({
+                  ...prev,
+                  sessionTime: value
+                }))} className="flex gap-6 mt-2">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="morning" id="morning" />
                       <Label htmlFor="morning">Morning</Label>
@@ -477,16 +483,10 @@ const KidsHub = () => {
                 <div className="mt-4">
                   <Label>Days Attending</Label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
-                    {days.map((day) => (
-                      <div key={day} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={day}
-                          checked={formData.daysAttending.includes(day)}
-                          onCheckedChange={(checked) => handleDayChange(day, checked as boolean)}
-                        />
+                    {days.map(day => <div key={day} className="flex items-center space-x-2">
+                        <Checkbox id={day} checked={formData.daysAttending.includes(day)} onCheckedChange={checked => handleDayChange(day, checked as boolean)} />
                         <Label htmlFor={day} className="cursor-pointer">{day}</Label>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </div>
               </div>
@@ -499,36 +499,25 @@ const KidsHub = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="parentName">Full Name *</Label>
-                    <Input
-                      id="parentName"
-                      value={formData.parentName}
-                      onChange={(e) => setFormData(prev => ({ ...prev, parentName: e.target.value }))}
-                      required
-                      className="mt-1"
-                    />
+                    <Input id="parentName" value={formData.parentName} onChange={e => setFormData(prev => ({
+                    ...prev,
+                    parentName: e.target.value
+                  }))} required className="mt-1" />
                   </div>
                   <div>
                     <Label htmlFor="contactNumber">Contact Number *</Label>
-                    <Input
-                      id="contactNumber"
-                      type="tel"
-                      value={formData.contactNumber}
-                      onChange={(e) => setFormData(prev => ({ ...prev, contactNumber: e.target.value }))}
-                      required
-                      className="mt-1"
-                    />
+                    <Input id="contactNumber" type="tel" value={formData.contactNumber} onChange={e => setFormData(prev => ({
+                    ...prev,
+                    contactNumber: e.target.value
+                  }))} required className="mt-1" />
                   </div>
                 </div>
                 <div className="mt-4">
                   <Label htmlFor="email">Email Address *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    required
-                    className="mt-1"
-                  />
+                  <Input id="email" type="email" value={formData.email} onChange={e => setFormData(prev => ({
+                  ...prev,
+                  email: e.target.value
+                }))} required className="mt-1" />
                 </div>
               </div>
 
@@ -541,11 +530,10 @@ const KidsHub = () => {
                 <div className="space-y-4">
                   <div>
                     <p className="font-medium mb-2">Does your child have any allergies, medical conditions, or additional needs?</p>
-                    <RadioGroup
-                      value={formData.hasAllergies ? "yes" : "no"}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, hasAllergies: value === "yes" }))}
-                      className="flex gap-6"
-                    >
+                    <RadioGroup value={formData.hasAllergies ? "yes" : "no"} onValueChange={value => setFormData(prev => ({
+                    ...prev,
+                    hasAllergies: value === "yes"
+                  }))} className="flex gap-6">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="no" id="allergies-no" />
                         <Label htmlFor="allergies-no">No</Label>
@@ -555,23 +543,18 @@ const KidsHub = () => {
                         <Label htmlFor="allergies-yes">Yes</Label>
                       </div>
                     </RadioGroup>
-                    {formData.hasAllergies && (
-                      <Textarea
-                        placeholder="Please specify allergies, conditions, or additional needs..."
-                        value={formData.allergiesDetails}
-                        onChange={(e) => setFormData(prev => ({ ...prev, allergiesDetails: e.target.value }))}
-                        className="mt-2"
-                      />
-                    )}
+                    {formData.hasAllergies && <Textarea placeholder="Please specify allergies, conditions, or additional needs..." value={formData.allergiesDetails} onChange={e => setFormData(prev => ({
+                    ...prev,
+                    allergiesDetails: e.target.value
+                  }))} className="mt-2" />}
                   </div>
 
                   <div>
                     <p className="font-medium mb-2">Is your child currently taking any medication?</p>
-                    <RadioGroup
-                      value={formData.hasMedication ? "yes" : "no"}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, hasMedication: value === "yes" }))}
-                      className="flex gap-6"
-                    >
+                    <RadioGroup value={formData.hasMedication ? "yes" : "no"} onValueChange={value => setFormData(prev => ({
+                    ...prev,
+                    hasMedication: value === "yes"
+                  }))} className="flex gap-6">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="no" id="medication-no" />
                         <Label htmlFor="medication-no">No</Label>
@@ -581,14 +564,10 @@ const KidsHub = () => {
                         <Label htmlFor="medication-yes">Yes</Label>
                       </div>
                     </RadioGroup>
-                    {formData.hasMedication && (
-                      <Textarea
-                        placeholder="Please specify medication details..."
-                        value={formData.medicationDetails}
-                        onChange={(e) => setFormData(prev => ({ ...prev, medicationDetails: e.target.value }))}
-                        className="mt-2"
-                      />
-                    )}
+                    {formData.hasMedication && <Textarea placeholder="Please specify medication details..." value={formData.medicationDetails} onChange={e => setFormData(prev => ({
+                    ...prev,
+                    medicationDetails: e.target.value
+                  }))} className="mt-2" />}
                   </div>
                 </div>
               </div>
@@ -610,11 +589,10 @@ const KidsHub = () => {
                 
                 <div className="mt-4">
                   <p className="font-medium mb-2">I give permission for my child to be photographed during the sessions for internal use and promotion:</p>
-                  <RadioGroup
-                    value={formData.photoConsent ? "yes" : "no"}
-                    onValueChange={(value) => setFormData(prev => ({ ...prev, photoConsent: value === "yes" }))}
-                    className="flex gap-6"
-                  >
+                  <RadioGroup value={formData.photoConsent ? "yes" : "no"} onValueChange={value => setFormData(prev => ({
+                  ...prev,
+                  photoConsent: value === "yes"
+                }))} className="flex gap-6">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="yes" id="photo-yes" />
                       <Label htmlFor="photo-yes" className="text-green-600 font-medium">Yes</Label>
@@ -627,20 +605,11 @@ const KidsHub = () => {
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
-                size="lg" 
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-lg py-6"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  "Submitting..."
-                ) : (
-                  <>
+              <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-lg py-6" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : <>
                     <Heart className="mr-2" />
                     Submit Consent Form
-                  </>
-                )}
+                  </>}
               </Button>
               
               <p className="text-center text-sm text-muted-foreground">
@@ -714,8 +683,6 @@ const KidsHub = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default KidsHub;
