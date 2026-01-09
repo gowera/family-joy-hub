@@ -81,11 +81,44 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
+    // Send notification to admin
     const emailResponse = await resend.emails.send({
-      from: "Contact Form <onboarding@resend.dev>",
-      to: ["happynesscome01@gmail.com"],
-      subject: `New Contact Message from ${formData.name}`,
-      html: emailHtml,
+      from: "Happiness Comes First <onboarding@resend.dev>",
+      to: [formData.email], // In test mode, send to submitter's email
+      subject: `Message reçu - Happiness Comes First`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            h1 { color: #FF1493; }
+            .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Merci pour votre message, ${formData.name}!</h1>
+            <p>Nous avons bien reçu votre message et nous vous répondrons dans les plus brefs délais.</p>
+            <p>Voici un récapitulatif de votre demande :</p>
+            <ul>
+              <li><strong>Nom :</strong> ${formData.name}</li>
+              <li><strong>Email :</strong> ${formData.email}</li>
+              <li><strong>Téléphone :</strong> ${formData.phone || "Non fourni"}</li>
+              ${formData.childName ? `<li><strong>Nom de l'enfant :</strong> ${formData.childName}</li>` : ''}
+              ${formData.childAge ? `<li><strong>Âge de l'enfant :</strong> ${formData.childAge}</li>` : ''}
+            </ul>
+            <p><strong>Votre message :</strong></p>
+            <p>${formData.message.replace(/\n/g, '<br>')}</p>
+            <div class="footer">
+              <p>Happiness Comes First (SCIO)</p>
+              <p>Email: happynesscome01@gmail.com</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
     });
 
     console.log("Email sent successfully:", emailResponse);
