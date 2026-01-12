@@ -14,16 +14,350 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      attendance: {
+        Row: {
+          created_at: string
+          enrollment_id: string
+          id: string
+          notes: string | null
+          present: boolean | null
+          session_date: string
+        }
+        Insert: {
+          created_at?: string
+          enrollment_id: string
+          id?: string
+          notes?: string | null
+          present?: boolean | null
+          session_date: string
+        }
+        Update: {
+          created_at?: string
+          enrollment_id?: string
+          id?: string
+          notes?: string | null
+          present?: boolean | null
+          session_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: false
+            referencedRelation: "enrollments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      children: {
+        Row: {
+          allergies: string | null
+          created_at: string
+          date_of_birth: string
+          full_name: string
+          id: string
+          medical_conditions: string | null
+          medication: string | null
+          parent_id: string
+          photo_consent: boolean | null
+          special_needs: string | null
+          updated_at: string
+        }
+        Insert: {
+          allergies?: string | null
+          created_at?: string
+          date_of_birth: string
+          full_name: string
+          id?: string
+          medical_conditions?: string | null
+          medication?: string | null
+          parent_id: string
+          photo_consent?: boolean | null
+          special_needs?: string | null
+          updated_at?: string
+        }
+        Update: {
+          allergies?: string | null
+          created_at?: string
+          date_of_birth?: string
+          full_name?: string
+          id?: string
+          medical_conditions?: string | null
+          medication?: string | null
+          parent_id?: string
+          photo_consent?: boolean | null
+          special_needs?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "children_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "parents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enrollments: {
+        Row: {
+          child_id: string
+          created_at: string
+          days_attending: string[] | null
+          end_date: string | null
+          enrollment_date: string
+          id: string
+          notes: string | null
+          program_id: string
+          start_date: string
+          status: Database["public"]["Enums"]["enrollment_status"] | null
+          updated_at: string
+        }
+        Insert: {
+          child_id: string
+          created_at?: string
+          days_attending?: string[] | null
+          end_date?: string | null
+          enrollment_date?: string
+          id?: string
+          notes?: string | null
+          program_id: string
+          start_date: string
+          status?: Database["public"]["Enums"]["enrollment_status"] | null
+          updated_at?: string
+        }
+        Update: {
+          child_id?: string
+          created_at?: string
+          days_attending?: string[] | null
+          end_date?: string | null
+          enrollment_date?: string
+          id?: string
+          notes?: string | null
+          program_id?: string
+          start_date?: string
+          status?: Database["public"]["Enums"]["enrollment_status"] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enrollments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollments_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      parents: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string
+          emergency_contact: string | null
+          emergency_phone: string | null
+          full_name: string
+          id: string
+          phone: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email: string
+          emergency_contact?: string | null
+          emergency_phone?: string | null
+          full_name: string
+          id?: string
+          phone: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string
+          emergency_contact?: string | null
+          emergency_phone?: string | null
+          full_name?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          enrollment_id: string
+          id: string
+          notes: string | null
+          payment_date: string | null
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          payment_status: Database["public"]["Enums"]["payment_status"] | null
+          reference: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          enrollment_id: string
+          id?: string
+          notes?: string | null
+          payment_date?: string | null
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          reference?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          enrollment_id?: string
+          id?: string
+          notes?: string | null
+          payment_date?: string | null
+          payment_method?: Database["public"]["Enums"]["payment_method"]
+          payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          reference?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: false
+            referencedRelation: "enrollments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programs: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string
+          id: string
+          max_capacity: number | null
+          name: string
+          price_per_session: number | null
+          session_days: string[]
+          session_time: string
+          start_date: string
+          total_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date: string
+          id?: string
+          max_capacity?: number | null
+          name: string
+          price_per_session?: number | null
+          session_days: string[]
+          session_time: string
+          start_date: string
+          total_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string
+          id?: string
+          max_capacity?: number | null
+          name?: string
+          price_per_session?: number | null
+          session_days?: string[]
+          session_time?: string
+          start_date?: string
+          total_price?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          author_name: string | null
+          category: string
+          content: string
+          created_at: string
+          id: string
+          is_featured: boolean | null
+          program_id: string | null
+        }
+        Insert: {
+          author_name?: string | null
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean | null
+          program_id?: string | null
+        }
+        Update: {
+          author_name?: string | null
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean | null
+          program_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "testimonials_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "staff" | "viewer"
+      enrollment_status: "active" | "completed" | "cancelled" | "waitlist"
+      payment_method: "bank_transfer" | "card" | "cash" | "other"
+      payment_status: "pending" | "paid" | "partial" | "refunded"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +484,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "staff", "viewer"],
+      enrollment_status: ["active", "completed", "cancelled", "waitlist"],
+      payment_method: ["bank_transfer", "card", "cash", "other"],
+      payment_status: ["pending", "paid", "partial", "refunded"],
+    },
   },
 } as const
