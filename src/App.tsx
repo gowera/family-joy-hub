@@ -23,6 +23,7 @@ import Payments from "./pages/admin/Payments";
 import Attendance from "./pages/admin/Attendance";
 import Documents from "./pages/admin/Documents";
 import Testimonials from "./pages/admin/Testimonials";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
           <Route path="/admin/attendance" element={<Attendance />} />
           <Route path="/admin/documents" element={<Documents />} />
           <Route path="/admin/testimonials" element={<Testimonials />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
