@@ -9,7 +9,8 @@ import {
   MessageSquare,
   ClipboardCheck,
   LogOut,
-  Heart
+  Heart,
+  Shield
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,6 +30,7 @@ const AdminSidebar = () => {
     { path: "/admin/attendance", icon: ClipboardCheck, label: "Présences" },
     { path: "/admin/documents", icon: FileText, label: "Documents" },
     { path: "/admin/testimonials", icon: MessageSquare, label: "Témoignages" },
+    { path: "/admin/users", icon: Shield, label: "Administrateurs" },
   ];
 
   const handleSignOut = async () => {
