@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
+import { LanguageProvider } from "@/hooks/useLanguage";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Programs from "./pages/Programs";
@@ -29,35 +30,37 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/programs" element={<Programs />} />
-          <Route path="/kids-hub" element={<KidsHub />} />
-          <Route path="/impact" element={<Impact />} />
-          <Route path="/safeguarding" element={<Safeguarding />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/news/:slug" element={<NewsArticle />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/children" element={<Children />} />
-          <Route path="/admin/parents" element={<Parents />} />
-          <Route path="/admin/enrollments" element={<Enrollments />} />
-          <Route path="/admin/payments" element={<Payments />} />
-          <Route path="/admin/attendance" element={<Attendance />} />
-          <Route path="/admin/documents" element={<Documents />} />
-          <Route path="/admin/testimonials" element={<Testimonials />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/programs" element={<Programs />} />
+            <Route path="/kids-hub" element={<KidsHub />} />
+            <Route path="/impact" element={<Impact />} />
+            <Route path="/safeguarding" element={<Safeguarding />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/news/:slug" element={<NewsArticle />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/children" element={<Children />} />
+            <Route path="/admin/parents" element={<Parents />} />
+            <Route path="/admin/enrollments" element={<Enrollments />} />
+            <Route path="/admin/payments" element={<Payments />} />
+            <Route path="/admin/attendance" element={<Attendance />} />
+            <Route path="/admin/documents" element={<Documents />} />
+            <Route path="/admin/testimonials" element={<Testimonials />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
