@@ -79,7 +79,11 @@ const AdminUsers = () => {
     setIsLoading(true);
 
     try {
-      // Create the user via Supabase Auth
+      // Store current session before creating new user
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      
+      // Create the user via Supabase Auth Admin API through signUp
+      // Note: signUp doesn't change the current session when emailRedirectTo is set
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: newUserEmail,
         password: newUserPassword,
@@ -91,10 +95,12 @@ const AdminUsers = () => {
       if (authError) throw authError;
 
       if (authData.user) {
-        // Add the role
-        const { error: roleError } = await supabase
-          .from("user_roles")
-          .insert([{ user_id: authData.user.id, role: newUserRole }]);
+        // Use the security definer function to add the role
+        // This bypasses RLS since it runs with elevated privileges
+        const { error: roleError } = await supabase.rpc('admin_add_user_role', {
+          target_user_id: authData.user.id,
+          target_role: newUserRole
+        });
 
         if (roleError) throw roleError;
 
