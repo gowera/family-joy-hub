@@ -38,7 +38,8 @@ interface UserRole {
   id: string;
   user_id: string;
   role: AppRole;
-  user_email?: string;
+  user_email: string;
+  created_at: string;
 }
 
 const roleLabels: Record<AppRole, { label: string; icon: typeof Crown; color: string }> = {
@@ -62,15 +63,12 @@ const AdminUsers = () => {
   }, []);
 
   const fetchUserRoles = async () => {
-    const { data, error } = await supabase
-      .from("user_roles")
-      .select("*")
-      .order("role");
+    const { data, error } = await supabase.rpc("get_users_with_roles");
 
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
-      setUserRoles(data || []);
+      setUserRoles((data as UserRole[]) || []);
     }
   };
 
@@ -267,8 +265,9 @@ const AdminUsers = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>ID Utilisateur</TableHead>
+                  <TableHead>Email</TableHead>
                   <TableHead>Rôle</TableHead>
+                  <TableHead>Créé le</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -280,13 +279,15 @@ const AdminUsers = () => {
                   
                   return (
                     <TableRow key={userRole.id}>
-                      <TableCell className="font-mono text-sm">
-                        {userRole.user_id.slice(0, 8)}...
-                        {isCurrentUser && (
-                          <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                            Vous
-                          </span>
-                        )}
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{userRole.user_email}</span>
+                          {isCurrentUser && (
+                            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
+                              Vous
+                            </span>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <Select
@@ -314,6 +315,9 @@ const AdminUsers = () => {
                           </SelectContent>
                         </Select>
                       </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {new Date(userRole.created_at).toLocaleDateString('fr-FR')}
+                      </TableCell>
                       <TableCell>
                         <Button
                           size="sm"
@@ -329,7 +333,7 @@ const AdminUsers = () => {
                 })}
                 {userRoles.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
                       Aucun utilisateur trouvé
                     </TableCell>
                   </TableRow>
