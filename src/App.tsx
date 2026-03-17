@@ -14,6 +14,8 @@ import Safeguarding from "./pages/Safeguarding";
 import News from "./pages/News";
 import NewsArticle from "./pages/NewsArticle";
 import Contact from "./pages/Contact";
+import SurveyChildren from "./pages/SurveyChildren";
+import SurveyParent from "./pages/SurveyParent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/admin/Dashboard";
@@ -46,6 +48,8 @@ const App = () => (
             <Route path="/news" element={<News />} />
             <Route path="/news/:slug" element={<NewsArticle />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/survey/children" element={<SurveyChildren />} />
+            <Route path="/survey/parents" element={<SurveyParent />} />
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/children" element={<Children />} />
