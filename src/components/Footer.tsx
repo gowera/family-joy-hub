@@ -45,6 +45,16 @@ const Footer = () => {
                   Safeguarding Policy
                 </Link>
               </li>
+              <li>
+                <Link to="/survey/children" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Digital Safety Survey (Children)
+                </Link>
+              </li>
+              <li>
+                <Link to="/survey/parents" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Parent Questionnaire
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -58,7 +68,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start space-x-2 text-sm text-muted-foreground">
                 <Mail className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
-                <span>contact@happynesscomefirst.com</span>
+                <span>happynesscome01@gmail.com</span>
               </li>
               <li className="flex items-start space-x-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4 mt-0.5 text-primary flex-shrink-0" />
