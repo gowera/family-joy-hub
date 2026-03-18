@@ -55,6 +55,11 @@ const Footer = () => {
                   Parent Questionnaire
                 </Link>
               </li>
+              <li>
+                <Link to="/survey/community" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Community Survey
+                </Link>
+              </li>
             </ul>
           </div>
 
