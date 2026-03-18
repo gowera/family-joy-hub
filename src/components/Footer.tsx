@@ -3,8 +3,8 @@ import { Heart, Mail, Phone, MapPin, Facebook, Instagram } from "lucide-react";
 import logoFLP from "@/assets/logo-flp.jpeg";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  return <footer className="bg-card border-t border-border mt-20">
-      <div className="container mx-auto px-4 py-12 bg-[sidebar-accent-foreground] bg-neutral-950 text-primary-foreground">
+  return <footer className="bg-neutral-950 border-t border-border mt-20 w-full">
+      <div className="w-full px-4 md:px-8 lg:px-16 py-12 text-primary-foreground">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
