@@ -284,6 +284,27 @@ export type Database = {
         }
         Relationships: []
       }
+      survey_responses: {
+        Row: {
+          answers: Json
+          created_at: string
+          id: string
+          survey_type: string
+        }
+        Insert: {
+          answers: Json
+          created_at?: string
+          id?: string
+          survey_type: string
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          id?: string
+          survey_type?: string
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           author_name: string | null

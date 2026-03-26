@@ -28,6 +28,7 @@ import Attendance from "./pages/admin/Attendance";
 import Documents from "./pages/admin/Documents";
 import Testimonials from "./pages/admin/Testimonials";
 import AdminUsers from "./pages/admin/AdminUsers";
+import SurveyStats from "./pages/admin/SurveyStats";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/admin/documents" element={<Documents />} />
             <Route path="/admin/testimonials" element={<Testimonials />} />
             <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/survey-stats" element={<SurveyStats />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
