@@ -35,6 +35,7 @@ const AdminSidebar = () => {
     { path: "/admin/attendance", icon: ClipboardCheck, label: "Présences" },
     { path: "/admin/documents", icon: FileText, label: "Documents" },
     { path: "/admin/testimonials", icon: MessageSquare, label: "Témoignages" },
+    { path: "/admin/survey-stats", icon: ClipboardCheck, label: "Sondages" },
     { path: "/admin/users", icon: Shield, label: "Administrateurs" },
   ];
 

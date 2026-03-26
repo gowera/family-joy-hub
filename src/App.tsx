@@ -28,6 +28,7 @@ import Attendance from "./pages/admin/Attendance";
 import Documents from "./pages/admin/Documents";
 import Testimonials from "./pages/admin/Testimonials";
 import AdminUsers from "./pages/admin/AdminUsers";
+import SurveyStats from "./pages/admin/SurveyStats";
 
 const queryClient = new QueryClient();
 
