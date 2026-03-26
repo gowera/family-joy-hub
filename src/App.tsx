@@ -29,6 +29,7 @@ import Documents from "./pages/admin/Documents";
 import Testimonials from "./pages/admin/Testimonials";
 import AdminUsers from "./pages/admin/AdminUsers";
 import SurveyStats from "./pages/admin/SurveyStats";
+import PublicSurveyStats from "./pages/PublicSurveyStats";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/survey/children" element={<SurveyChildren />} />
             <Route path="/survey/parents" element={<SurveyParent />} />
             <Route path="/survey/community" element={<SurveyCommunity />} />
+            <Route path="/survey-stats" element={<PublicSurveyStats />} />
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/children" element={<Children />} />
