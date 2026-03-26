@@ -63,6 +63,7 @@ const App = () => (
             <Route path="/admin/documents" element={<Documents />} />
             <Route path="/admin/testimonials" element={<Testimonials />} />
             <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/survey-stats" element={<SurveyStats />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
