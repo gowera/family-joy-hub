@@ -205,7 +205,13 @@ const PublicSurveyStats = () => {
             </p>
             <p className="text-muted-foreground text-xs mt-1">Happiness Comes First</p>
           </div>
-          <LanguageToggle />
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={handleDownloadPdf} className="gap-1.5 text-xs sm:text-sm">
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">PDF</span>
+            </Button>
+            <LanguageToggle />
+          </div>
         </div>
 
         {/* Summary cards */}
