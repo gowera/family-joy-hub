@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, BarChart3, Users, Shield, Heart, TrendingUp } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import LanguageToggle from "@/components/LanguageToggle";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line
