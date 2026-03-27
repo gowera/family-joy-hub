@@ -116,21 +116,26 @@ const PublicSurveyStats = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex items-center justify-between flex-wrap gap-4">
+      <Navigation />
+      <div className="w-full px-4 md:px-8 lg:px-16 py-8 space-y-6">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl md:text-3xl font-heading font-bold text-foreground">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-foreground">
               {t("Statistiques des Sondages", "Survey Statistics")}
             </h1>
-            <p className="text-muted-foreground text-sm mt-1">
+            <p className="text-muted-foreground text-xs sm:text-sm mt-1">
               {t("Données en temps réel des formulaires soumis", "Real-time data from submitted forms")}
             </p>
             <p className="text-muted-foreground text-xs mt-1">Happiness Comes First</p>
@@ -139,40 +144,40 @@ const PublicSurveyStats = () => {
         </div>
 
         {/* Summary cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
           <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="bg-primary/10 p-2 rounded-lg"><BarChart3 className="w-5 h-5 text-primary" /></div>
+            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+              <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg"><BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" /></div>
               <div>
-                <p className="text-2xl font-bold">{responses.length}</p>
-                <p className="text-xs text-muted-foreground">{t("Total réponses", "Total responses")}</p>
+                <p className="text-lg sm:text-2xl font-bold">{responses.length}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{t("Total réponses", "Total responses")}</p>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="bg-blue-500/10 p-2 rounded-lg"><Shield className="w-5 h-5 text-blue-500" /></div>
+            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+              <div className="bg-blue-500/10 p-1.5 sm:p-2 rounded-lg"><Shield className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" /></div>
               <div>
-                <p className="text-2xl font-bold">{childrenResponses.length}</p>
-                <p className="text-xs text-muted-foreground">Digital Safety</p>
+                <p className="text-lg sm:text-2xl font-bold">{childrenResponses.length}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">Digital Safety</p>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="bg-green-500/10 p-2 rounded-lg"><Users className="w-5 h-5 text-green-500" /></div>
+            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+              <div className="bg-green-500/10 p-1.5 sm:p-2 rounded-lg"><Users className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" /></div>
               <div>
-                <p className="text-2xl font-bold">{parentResponses.length}</p>
-                <p className="text-xs text-muted-foreground">{t("Parents", "Parents")}</p>
+                <p className="text-lg sm:text-2xl font-bold">{parentResponses.length}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{t("Parents", "Parents")}</p>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="bg-pink-500/10 p-2 rounded-lg"><Heart className="w-5 h-5 text-pink-500" /></div>
+            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+              <div className="bg-pink-500/10 p-1.5 sm:p-2 rounded-lg"><Heart className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" /></div>
               <div>
-                <p className="text-2xl font-bold">{communityResponses.length}</p>
-                <p className="text-xs text-muted-foreground">{t("Communauté", "Community")}</p>
+                <p className="text-lg sm:text-2xl font-bold">{communityResponses.length}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{t("Communauté", "Community")}</p>
               </div>
             </CardContent>
           </Card>
@@ -181,13 +186,13 @@ const PublicSurveyStats = () => {
         {/* Submissions over time */}
         {responses.length > 0 && (
           <Card>
-            <CardHeader><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4" />{t("Soumissions au fil du temps", "Submissions over time")}</CardTitle></CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={200}>
+            <CardHeader className="pb-2 sm:pb-4"><CardTitle className="text-xs sm:text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4" />{t("Soumissions au fil du temps", "Submissions over time")}</CardTitle></CardHeader>
+            <CardContent className="px-1 sm:px-6">
+              <ResponsiveContainer width="100%" height={180}>
                 <LineChart data={submissionsOverTime(responses)}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-                  <YAxis allowDecimals={false} />
+                  <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
                   <Tooltip />
                   <Line type="monotone" dataKey="count" stroke="#FF1493" strokeWidth={2} dot={{ fill: "#FF1493" }} />
                 </LineChart>
@@ -199,14 +204,14 @@ const PublicSurveyStats = () => {
         {/* Tabs */}
         <Tabs defaultValue="children" className="w-full">
           <TabsList className="w-full flex flex-wrap h-auto gap-1">
-            <TabsTrigger value="children" className="flex-1 min-w-[120px] text-xs md:text-sm">
-              <Shield className="w-3 h-3 mr-1 hidden md:inline" />Digital Safety
+            <TabsTrigger value="children" className="flex-1 min-w-[90px] text-[10px] sm:text-xs md:text-sm px-2 py-1.5">
+              <Shield className="w-3 h-3 mr-1 hidden sm:inline" />Digital Safety
             </TabsTrigger>
-            <TabsTrigger value="parent" className="flex-1 min-w-[120px] text-xs md:text-sm">
-              <Users className="w-3 h-3 mr-1 hidden md:inline" />{t("Parents", "Parents")}
+            <TabsTrigger value="parent" className="flex-1 min-w-[90px] text-[10px] sm:text-xs md:text-sm px-2 py-1.5">
+              <Users className="w-3 h-3 mr-1 hidden sm:inline" />{t("Parents", "Parents")}
             </TabsTrigger>
-            <TabsTrigger value="community" className="flex-1 min-w-[120px] text-xs md:text-sm">
-              <Heart className="w-3 h-3 mr-1 hidden md:inline" />{t("Communauté", "Community")}
+            <TabsTrigger value="community" className="flex-1 min-w-[90px] text-[10px] sm:text-xs md:text-sm px-2 py-1.5">
+              <Heart className="w-3 h-3 mr-1 hidden sm:inline" />{t("Communauté", "Community")}
             </TabsTrigger>
           </TabsList>
 
@@ -214,7 +219,7 @@ const PublicSurveyStats = () => {
             {childrenResponses.length === 0 ? (
               <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune réponse pour le moment", "No responses yet")}</CardContent></Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <PieChartCard title={t("Tranches d'âge", "Age groups")} data={countField(childrenResponses, "age")} noDataText={noData} />
                 <PieChartCard title={t("Genre", "Gender")} data={countField(childrenResponses, "gender")} noDataText={noData} />
                 <BarChartCard title={t("Plateformes utilisées", "Platforms used")} data={countArrayField(childrenResponses, "platforms")} noDataText={noData} />
@@ -233,7 +238,7 @@ const PublicSurveyStats = () => {
             {parentResponses.length === 0 ? (
               <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune réponse pour le moment", "No responses yet")}</CardContent></Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <PieChartCard title={t("Âge de l'enfant", "Child's age")} data={countField(parentResponses, "childAge")} noDataText={noData} />
                 <PieChartCard title={t("Remplisseur", "Completing as")} data={countField(parentResponses, "completingAs")} noDataText={noData} />
                 <BarChartCard title={t("Plateformes utilisées", "Platforms used")} data={countArrayField(parentResponses, "platforms")} noDataText={noData} />
@@ -255,7 +260,7 @@ const PublicSurveyStats = () => {
             {communityResponses.length === 0 ? (
               <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune réponse pour le moment", "No responses yet")}</CardContent></Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <PieChartCard title={t("Tranche d'âge", "Age group")} data={countField(communityResponses, "ageGroup")} noDataText={noData} />
                 <PieChartCard title={t("Profil", "Describes as")} data={countField(communityResponses, "describes")} noDataText={noData} />
                 <PieChartCard title={t("Niveau de forme", "Fitness level")} data={countField(communityResponses, "fitnessLevel")} noDataText={noData} />
@@ -274,6 +279,7 @@ const PublicSurveyStats = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer />
     </div>
   );
 };
