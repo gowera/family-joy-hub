@@ -116,6 +116,69 @@ const PublicSurveyStats = () => {
 
   const noData = t("Aucune donnée", "No data");
 
+  const handleDownloadPdf = () => {
+    generateSurveyStatsPdf({
+      language,
+      totalResponses: responses.length,
+      childrenCount: childrenResponses.length,
+      parentCount: parentResponses.length,
+      communityCount: communityResponses.length,
+      sections: [
+        {
+          title: "Digital Safety Survey",
+          charts: [
+            { title: t("Tranches d'âge", "Age groups"), data: countField(childrenResponses, "age") },
+            { title: t("Genre", "Gender"), data: countField(childrenResponses, "gender") },
+            { title: t("Plateformes utilisées", "Platforms used"), data: countArrayField(childrenResponses, "platforms") },
+            { title: t("Heures par jour", "Hours per day"), data: countField(childrenResponses, "hoursPerDay") },
+            { title: t("Moment d'utilisation", "Peak usage time"), data: countField(childrenResponses, "peakUsage") },
+            { title: t("Expérience négative en ligne", "Negative experience online"), data: countField(childrenResponses, "negativeExperience") },
+            { title: t("Types de comportements négatifs", "Types of negative behaviour"), data: countArrayField(childrenResponses, "negativeTypes") },
+            { title: t("Se sent en sécurité en ligne", "Feels safe online"), data: countField(childrenResponses, "feelsSafe") },
+            { title: t("Sait à qui parler", "Knows who to talk to"), data: countField(childrenResponses, "knowsWhoToTalkTo") },
+            { title: t("Veut apprendre la sécurité en ligne", "Wants to learn online safety"), data: countField(childrenResponses, "wantsToLearn") },
+          ],
+        },
+        {
+          title: t("Questionnaire Parents", "Parent Questionnaire"),
+          charts: [
+            { title: t("Âge de l'enfant", "Child's age"), data: countField(parentResponses, "childAge") },
+            { title: t("Remplisseur", "Completing as"), data: countField(parentResponses, "completingAs") },
+            { title: t("Plateformes utilisées", "Platforms used"), data: countArrayField(parentResponses, "platforms") },
+            { title: t("Heures par jour", "Hours per day"), data: countField(parentResponses, "hoursPerDay") },
+            { title: t("Expérience négative", "Negative experience"), data: countField(parentResponses, "negativeExperience") },
+            { title: t("Types négatifs", "Negative types"), data: countArrayField(parentResponses, "negativeTypes") },
+            { title: t("Impact sur le bien-être", "Wellbeing impact"), data: countField(parentResponses, "wellbeingImpact") },
+            { title: t("Signes observés", "Signs noticed"), data: countArrayField(parentResponses, "wellbeingSigns") },
+            { title: t("Niveau de confiance", "Confidence level"), data: countField(parentResponses, "confidenceLevel") },
+            { title: t("Outils utilisés", "Tools used"), data: countArrayField(parentResponses, "toolsUsed") },
+            { title: t("Besoins de soutien", "Support needs"), data: countArrayField(parentResponses, "supportNeeds") },
+            { title: t("Intéressé par les ateliers", "Interested in workshops"), data: countField(parentResponses, "interestedInWorkshops") },
+            { title: t("Bénéficiaires", "Beneficiaries"), data: countArrayField(parentResponses, "beneficiaries") },
+          ],
+        },
+        {
+          title: t("Sondage Communautaire", "Community Survey"),
+          charts: [
+            { title: t("Tranche d'âge", "Age group"), data: countField(communityResponses, "ageGroup") },
+            { title: t("Profil", "Describes as"), data: countField(communityResponses, "describes") },
+            { title: t("Niveau de forme", "Fitness level"), data: countField(communityResponses, "fitnessLevel") },
+            { title: t("Obstacles", "Barriers"), data: countArrayField(communityResponses, "barriers") },
+            { title: t("Facteurs de confort", "Comfort factors"), data: countArrayField(communityResponses, "comfortFactors") },
+            { title: t("Le fitness améliore le bien-être", "Fitness improves wellbeing"), data: countField(communityResponses, "fitnessImprovesWellbeing") },
+            { title: t("Défis rencontrés", "Challenges"), data: countArrayField(communityResponses, "challenges") },
+            { title: t("Activités souhaitées", "Desired activities"), data: countArrayField(communityResponses, "desiredActivities") },
+            { title: t("Horaires préférés", "Preferred time"), data: countArrayField(communityResponses, "preferredTime") },
+            { title: t("Lieux préférés", "Preferred location"), data: countArrayField(communityResponses, "preferredLocation") },
+            { title: t("Intéressé par le programme", "Interested in programme"), data: countField(communityResponses, "interestedInProgramme") },
+            { title: t("Facteurs de participation", "Attendance factors"), data: countArrayField(communityResponses, "attendanceFactors") },
+            { title: t("Assez d'opportunités", "Enough opportunities"), data: countField(communityResponses, "enoughOpportunities") },
+          ],
+        },
+      ],
+    });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
