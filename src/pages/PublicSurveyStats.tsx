@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, BarChart3, Users, Shield, Heart, TrendingUp } from "lucide-react";
+import { Loader2, BarChart3, Users, Shield, Heart, TrendingUp, Download } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import LanguageToggle from "@/components/LanguageToggle";
 import Navigation from "@/components/Navigation";
