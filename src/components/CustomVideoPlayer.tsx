@@ -124,8 +124,6 @@ const CustomVideoPlayer = ({ src, type, poster, className }: CustomVideoPlayerPr
         onClick={togglePlay}
         controlsList="nodownload noremoteplayback noplaybackrate"
         disablePictureInPicture
-        // @ts-expect-error - non-standard attribute
-        disableRemotePlayback
       >
         <source src={src} type={type} />
       </video>
