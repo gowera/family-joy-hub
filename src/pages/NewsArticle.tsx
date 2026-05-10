@@ -242,21 +242,23 @@ const NewsArticle = () => {
 
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Main Content */}
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 min-w-0 max-w-full overflow-hidden">
                 <div
-                  className="prose prose-lg max-w-none mb-12 break-words overflow-hidden
-                    [&_*]:max-w-full
-                    [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_img]:shadow-card [&_img]:mx-auto [&_img]:my-6
+                  ref={contentRef}
+                  className="prose prose-lg max-w-none w-full mb-12 break-words [overflow-wrap:anywhere]
+                    [&_*]:max-w-full [&_*]:min-w-0
+                    [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_img]:shadow-card [&_img]:mx-auto [&_img]:my-6 [&_img]:block
                     [&_iframe]:max-w-full [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:h-auto [&_iframe]:rounded-xl
                     [&_video]:max-w-full [&_video]:h-auto [&_video]:rounded-xl
-                    [&_figure]:max-w-full [&_figure]:my-6
+                    [&_figure]:max-w-full [&_figure]:my-6 [&_figure]:mx-0
                     [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:block
-                    [&>p]:mb-6 [&>p]:leading-relaxed [&>p]:text-foreground/90
-                    [&>h1]:mt-10 [&>h1]:mb-6 [&>h1]:font-heading [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-bold
-                    [&>h2]:mt-10 [&>h2]:mb-5 [&>h2]:font-heading [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-semibold
-                    [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:font-heading [&>h3]:text-lg md:[&>h3]:text-xl [&>h3]:font-semibold
-                    [&>h4]:mt-6 [&>h4]:mb-3 [&>h4]:font-heading [&>h4]:text-base md:[&>h4]:text-lg [&>h4]:font-medium
-                    [&_.wp-block-image]:my-6 [&_.wp-block-image]:max-w-full [&_.wp-block-image_img]:rounded-xl [&_.wp-block-image_img]:shadow-card [&_.wp-block-image_img]:max-w-full [&_.wp-block-image_img]:h-auto
+                    [&>p]:mb-6 [&>p]:leading-relaxed [&>p]:text-foreground/90 [&>p]:break-words
+                    [&_p]:break-words
+                    [&>h1]:mt-10 [&>h1]:mb-6 [&>h1]:font-heading [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-bold [&>h1]:break-words
+                    [&>h2]:mt-10 [&>h2]:mb-5 [&>h2]:font-heading [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:break-words
+                    [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:font-heading [&>h3]:text-lg md:[&>h3]:text-xl [&>h3]:font-semibold [&>h3]:break-words
+                    [&>h4]:mt-6 [&>h4]:mb-3 [&>h4]:font-heading [&>h4]:text-base md:[&>h4]:text-lg [&>h4]:font-medium [&>h4]:break-words
+                    [&_.wp-block-image]:my-6 [&_.wp-block-image]:max-w-full [&_.wp-block-image]:mx-0 [&_.wp-block-image_img]:rounded-xl [&_.wp-block-image_img]:shadow-card [&_.wp-block-image_img]:max-w-full [&_.wp-block-image_img]:h-auto
                     [&_.wp-block-embed]:max-w-full [&_.wp-block-embed]:my-6
                     [&_.wp-block-embed__wrapper]:relative [&_.wp-block-embed__wrapper]:w-full [&_.wp-block-embed__wrapper]:aspect-video
                     [&_.wp-block-embed__wrapper>iframe]:absolute [&_.wp-block-embed__wrapper>iframe]:inset-0 [&_.wp-block-embed__wrapper>iframe]:w-full [&_.wp-block-embed__wrapper>iframe]:h-full
@@ -264,13 +266,16 @@ const NewsArticle = () => {
                     [&>ol]:my-6 [&>ol]:pl-6 [&>ol>li]:mb-3
                     [&>blockquote]:my-8 [&>blockquote]:pl-6 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-muted-foreground
                     [&_figure_img]:rounded-xl [&_figure_img]:shadow-card [&_figure_img]:mx-auto [&_figure_figcaption]:text-center [&_figure_figcaption]:text-sm [&_figure_figcaption]:text-muted-foreground [&_figure_figcaption]:mt-3
-                    [&_a]:text-primary [&_a]:underline [&_a]:break-words [&_a:hover]:text-primary/80
+                    [&_a]:text-primary [&_a]:underline [&_a]:break-all [&_a:hover]:text-primary/80
                     [&>strong]:font-semibold [&>strong]:text-foreground
                     [&_.aligncenter]:mx-auto [&_.aligncenter]:block
-                    [&_pre]:overflow-x-auto [&_pre]:max-w-full
-                    [&_code]:break-words"
+                    [&_.alignleft]:float-none [&_.alignleft]:mx-auto [&_.alignleft]:block
+                    [&_.alignright]:float-none [&_.alignright]:mx-auto [&_.alignright]:block
+                    [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:whitespace-pre-wrap
+                    [&_code]:break-words [&_code]:whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{ __html: post.content.rendered }}
                 />
+
 
                 {/* Comment Form */}
                 <Card className="shadow-card">
