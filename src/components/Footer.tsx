@@ -76,6 +76,7 @@ const Footer = () => {
                   Survey Statistics
                 </Link>
               </li>
+            </ul>
           </div>
 
           {/* Contact Info */}
