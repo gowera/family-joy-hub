@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
+import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 
 interface WPMedia {
   id: number;
