@@ -32,7 +32,27 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const formData: ConsentFormRequest = await req.json();
-    console.log("Received consent form data:", formData);
+
+    // Basic server-side validation
+    const okStr = (v: unknown, max: number) =>
+      typeof v === "string" && v.trim().length > 0 && v.length <= max;
+    if (
+      !okStr(formData?.childName, 100) ||
+      !okStr(formData?.childAge, 10) ||
+      !okStr(formData?.parentName, 100) ||
+      !okStr(formData?.contactNumber, 50) ||
+      !okStr(formData?.email, 255) ||
+      !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email) ||
+      !Array.isArray(formData?.daysAttending) ||
+      formData.daysAttending.length > 7 ||
+      (formData.allergiesDetails && formData.allergiesDetails.length > 2000) ||
+      (formData.medicationDetails && formData.medicationDetails.length > 2000)
+    ) {
+      return new Response(
+        JSON.stringify({ error: "Invalid form data" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     const emailHtml = `
       <!DOCTYPE html>
@@ -188,7 +208,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-consent-form function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "Unable to submit your consent form. Please try again later." }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },

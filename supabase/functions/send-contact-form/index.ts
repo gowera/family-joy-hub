@@ -25,7 +25,24 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const formData: ContactFormRequest = await req.json();
-    console.log("Received contact form data:", formData);
+
+    // Basic server-side validation to prevent abuse / oversized payloads
+    const isStr = (v: unknown, max = 1000) =>
+      typeof v === "string" && v.trim().length > 0 && v.length <= max;
+    if (
+      !isStr(formData?.name, 100) ||
+      !isStr(formData?.email, 255) ||
+      !isStr(formData?.message, 5000) ||
+      !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email) ||
+      (formData.phone && formData.phone.length > 50) ||
+      (formData.childName && formData.childName.length > 100) ||
+      (formData.childAge && formData.childAge.length > 10)
+    ) {
+      return new Response(
+        JSON.stringify({ error: "Invalid form data" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     const emailHtml = `
       <!DOCTYPE html>
@@ -141,7 +158,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-contact-form function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "Unable to process your message. Please try again later." }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
