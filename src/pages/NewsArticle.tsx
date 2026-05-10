@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import { useParams, Link } from "react-router-dom";
 import { Calendar, ArrowLeft, Facebook, Twitter, Mail, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 
 interface WordPressPost {
   id: number;
