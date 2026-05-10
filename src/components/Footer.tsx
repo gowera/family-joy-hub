@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Heart, Mail, Phone, MapPin, Facebook, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Instagram } from "lucide-react";
 import logoFLP from "@/assets/logo-flp.jpeg";
+import logoHCF from "@/assets/logo-hcf.jpeg";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-neutral-950 border-t border-border mt-20 w-full">
@@ -8,10 +9,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Heart className="w-8 h-8 text-[#FF1493]" />
-              <div>
-                <h3 className="font-heading font-bold text-lg">Happiness Comes First</h3>
+            <div className="flex items-center space-x-3 mb-4">
+              <img src={logoHCF} alt="HCF Logo" className="w-12 h-12 object-contain rounded-md bg-white p-1 flex-shrink-0" />
+              <div className="min-w-0">
+                <h3 className="font-heading font-bold text-lg truncate">Happiness Comes First</h3>
                 <p className="text-sm text-muted-foreground">Where Everyone Belongs</p>
               </div>
             </div>
@@ -58,6 +59,21 @@ const Footer = () => {
               <li>
                 <Link to="/survey/community" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Community Survey
+                </Link>
+              </li>
+              <li>
+                <Link to="/gallery" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Gallery
+                </Link>
+              </li>
+              <li>
+                <Link to="/videos" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Videos
+                </Link>
+              </li>
+              <li>
+                <Link to="/survey-stats" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Survey Statistics
                 </Link>
               </li>
             </ul>

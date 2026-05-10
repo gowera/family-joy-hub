@@ -30,6 +30,8 @@ import Testimonials from "./pages/admin/Testimonials";
 import AdminUsers from "./pages/admin/AdminUsers";
 import SurveyStats from "./pages/admin/SurveyStats";
 import PublicSurveyStats from "./pages/PublicSurveyStats";
+import Gallery from "./pages/Gallery";
+import Videos from "./pages/Videos";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +57,8 @@ const App = () => (
             <Route path="/survey/parents" element={<SurveyParent />} />
             <Route path="/survey/community" element={<SurveyCommunity />} />
             <Route path="/survey-stats" element={<PublicSurveyStats />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/videos" element={<Videos />} />
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/children" element={<Children />} />

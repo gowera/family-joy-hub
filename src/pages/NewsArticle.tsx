@@ -208,22 +208,31 @@ const NewsArticle = () => {
               {/* Main Content */}
               <div className="lg:col-span-2">
                 <div
-                  className="prose prose-lg max-w-none mb-12
+                  className="prose prose-lg max-w-none mb-12 break-words overflow-hidden
+                    [&_*]:max-w-full
+                    [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_img]:shadow-card [&_img]:mx-auto [&_img]:my-6
+                    [&_iframe]:max-w-full [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:h-auto [&_iframe]:rounded-xl
+                    [&_video]:max-w-full [&_video]:h-auto [&_video]:rounded-xl
+                    [&_figure]:max-w-full [&_figure]:my-6
+                    [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:block
                     [&>p]:mb-6 [&>p]:leading-relaxed [&>p]:text-foreground/90
-                    [&>h1]:mt-10 [&>h1]:mb-6 [&>h1]:font-heading [&>h1]:text-3xl [&>h1]:font-bold
-                    [&>h2]:mt-10 [&>h2]:mb-5 [&>h2]:font-heading [&>h2]:text-2xl [&>h2]:font-semibold
-                    [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:font-heading [&>h3]:text-xl [&>h3]:font-semibold
-                    [&>h4]:mt-6 [&>h4]:mb-3 [&>h4]:font-heading [&>h4]:text-lg [&>h4]:font-medium
-                    [&>img]:my-8 [&>img]:rounded-xl [&>img]:shadow-card [&>img]:mx-auto
-                    [&_.wp-block-image]:my-8 [&_.wp-block-image_img]:rounded-xl [&_.wp-block-image_img]:shadow-card
+                    [&>h1]:mt-10 [&>h1]:mb-6 [&>h1]:font-heading [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-bold
+                    [&>h2]:mt-10 [&>h2]:mb-5 [&>h2]:font-heading [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-semibold
+                    [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:font-heading [&>h3]:text-lg md:[&>h3]:text-xl [&>h3]:font-semibold
+                    [&>h4]:mt-6 [&>h4]:mb-3 [&>h4]:font-heading [&>h4]:text-base md:[&>h4]:text-lg [&>h4]:font-medium
+                    [&_.wp-block-image]:my-6 [&_.wp-block-image]:max-w-full [&_.wp-block-image_img]:rounded-xl [&_.wp-block-image_img]:shadow-card [&_.wp-block-image_img]:max-w-full [&_.wp-block-image_img]:h-auto
+                    [&_.wp-block-embed]:max-w-full [&_.wp-block-embed]:my-6
+                    [&_.wp-block-embed__wrapper]:relative [&_.wp-block-embed__wrapper]:w-full [&_.wp-block-embed__wrapper]:aspect-video
+                    [&_.wp-block-embed__wrapper>iframe]:absolute [&_.wp-block-embed__wrapper>iframe]:inset-0 [&_.wp-block-embed__wrapper>iframe]:w-full [&_.wp-block-embed__wrapper>iframe]:h-full
                     [&>ul]:my-6 [&>ul]:pl-6 [&>ul>li]:mb-3
                     [&>ol]:my-6 [&>ol]:pl-6 [&>ol>li]:mb-3
                     [&>blockquote]:my-8 [&>blockquote]:pl-6 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-muted-foreground
-                    [&>figure]:my-8 [&>figure_img]:rounded-xl [&>figure_img]:shadow-card [&>figure_figcaption]:text-center [&>figure_figcaption]:text-sm [&>figure_figcaption]:text-muted-foreground [&>figure_figcaption]:mt-3
-                    [&>a]:text-primary [&>a]:underline [&>a:hover]:text-primary/80
+                    [&_figure_img]:rounded-xl [&_figure_img]:shadow-card [&_figure_img]:mx-auto [&_figure_figcaption]:text-center [&_figure_figcaption]:text-sm [&_figure_figcaption]:text-muted-foreground [&_figure_figcaption]:mt-3
+                    [&_a]:text-primary [&_a]:underline [&_a]:break-words [&_a:hover]:text-primary/80
                     [&>strong]:font-semibold [&>strong]:text-foreground
-                    [&>.aligncenter]:mx-auto [&>.aligncenter]:block
-                    [&>p>img]:my-8 [&>p>img]:rounded-xl [&>p>img]:shadow-card [&>p>img]:mx-auto"
+                    [&_.aligncenter]:mx-auto [&_.aligncenter]:block
+                    [&_pre]:overflow-x-auto [&_pre]:max-w-full
+                    [&_code]:break-words"
                   dangerouslySetInnerHTML={{ __html: post.content.rendered }}
                 />
 

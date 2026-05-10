@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Heart } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoHCF from "@/assets/logo-hcf.jpeg";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,8 @@ const Navigation = () => {
     { name: "Impact", path: "/impact" },
     { name: "Safeguarding", path: "/safeguarding" },
     { name: "News", path: "/news" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "Videos", path: "/videos" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -23,26 +26,18 @@ const Navigation = () => {
   return (
     <nav className="bg-card shadow-card sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="relative w-8 h-8 group-hover:scale-110 transition-transform">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent rounded-full blur-sm opacity-75"></div>
-              <Heart className="w-8 h-8 relative fill-gradient-to-br from-primary via-secondary to-accent" style={{ fill: 'url(#heart-gradient)' }} />
-              <svg width="0" height="0">
-                <defs>
-                  <linearGradient id="heart-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF1493" />
-            <stop offset="50%" stopColor="#FF69B4" />
-            <stop offset="100%" stopColor="#DB2777" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div>
-              <h1 className="font-heading font-bold text-xl text-foreground leading-tight">
+        <div className="flex justify-between items-center py-3 gap-3">
+          <Link to="/" className="flex items-center space-x-2 group min-w-0">
+            <img
+              src={logoHCF}
+              alt="Happiness Comes First Logo"
+              className="w-12 h-12 md:w-14 md:h-14 object-contain rounded-md group-hover:scale-105 transition-transform flex-shrink-0"
+            />
+            <div className="min-w-0">
+              <h1 className="font-heading font-bold text-base md:text-xl text-foreground leading-tight truncate">
                 Happiness Comes First
               </h1>
-              <p className="text-xs text-muted-foreground">Where Everyone Belongs</p>
+              <p className="text-xs text-muted-foreground truncate">Where Everyone Belongs</p>
             </div>
           </Link>
 
