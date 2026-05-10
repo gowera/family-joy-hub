@@ -76,15 +76,7 @@ const Videos = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {videos.map((v) => (
                 <Card key={v.id} className="overflow-hidden shadow-card">
-                  <div className="aspect-video bg-black w-full">
-                    <video
-                      controls
-                      preload="metadata"
-                      className="w-full h-full object-contain"
-                    >
-                      <source src={v.source_url} type={v.mime_type} />
-                    </video>
-                  </div>
+                  <CustomVideoPlayer src={v.source_url} type={v.mime_type} />
                   <CardContent className="p-4">
                     <h3
                       className="font-heading font-semibold mb-1 line-clamp-2"
