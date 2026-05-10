@@ -33,6 +33,40 @@ const NewsArticle = () => {
   const [recentPosts, setRecentPosts] = useState<WordPressPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState({ name: "", email: "", message: "" });
+  const contentRef = useRef<HTMLDivElement>(null);
+  const rootsRef = useRef<Root[]>([]);
+
+  useEffect(() => {
+    if (!post || !contentRef.current) return;
+    // Cleanup previous roots
+    rootsRef.current.forEach((r) => {
+      try { r.unmount(); } catch { /* noop */ }
+    });
+    rootsRef.current = [];
+
+    const container = contentRef.current;
+    const videos = Array.from(container.querySelectorAll("video"));
+    videos.forEach((vid) => {
+      const sourceEl = vid.querySelector("source");
+      const src = vid.getAttribute("src") || sourceEl?.getAttribute("src") || "";
+      const type = vid.getAttribute("type") || sourceEl?.getAttribute("type") || undefined;
+      if (!src) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "my-6 max-w-full";
+      vid.parentNode?.replaceChild(wrapper, vid);
+      const root = createRoot(wrapper);
+      root.render(<CustomVideoPlayer src={src} type={type} />);
+      rootsRef.current.push(root);
+    });
+
+    return () => {
+      rootsRef.current.forEach((r) => {
+        try { r.unmount(); } catch { /* noop */ }
+      });
+      rootsRef.current = [];
+    };
+  }, [post]);
+
 
   useEffect(() => {
     if (slug) {
