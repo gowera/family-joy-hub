@@ -17,7 +17,20 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const { surveyType, answers } = await req.json();
-    console.log("Received survey data:", surveyType, answers);
+
+    // Validate input
+    if (
+      typeof surveyType !== "string" ||
+      !["children", "parent", "community"].includes(surveyType) ||
+      !answers ||
+      typeof answers !== "object" ||
+      JSON.stringify(answers).length > 50000
+    ) {
+      return new Response(
+        JSON.stringify({ error: "Invalid survey data" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     // Save to database
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -68,7 +81,7 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error in send-survey:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: "Unable to submit survey. Please try again later." }), {
       status: 500,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
