@@ -373,6 +373,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      get_public_survey_responses: {
+        Args: never
+        Returns: {
+          answers: Json
+          created_at: string
+          id: string
+          survey_type: string
+        }[]
+      }
       get_users_with_roles: {
         Args: never
         Returns: {
