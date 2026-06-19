@@ -12,8 +12,8 @@ export const wakeBackend = async (force = false): Promise<void> => {
   if (!force && now - lastWake < WAKE_INTERVAL) return;
   lastWake = now;
   try {
-    // Lightweight HEAD-like query to wake the database
-    await supabase.from("survey_responses").select("id", { count: "exact", head: true });
+    // Lightweight RPC to wake the database
+    await supabase.rpc("get_public_survey_responses");
   } catch {
     // Swallow — best effort
   }

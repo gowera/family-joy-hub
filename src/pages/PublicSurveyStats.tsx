@@ -90,10 +90,7 @@ const PublicSurveyStats = () => {
 
     const fetchData = async () => {
       try {
-        const { data, error } = await supabase
-          .from("survey_responses")
-          .select("*")
-          .order("created_at", { ascending: false });
+        const { data, error } = await supabase.rpc("get_public_survey_responses");
         if (!error && data) {
           setResponses(data as SurveyResponse[]);
           try {
