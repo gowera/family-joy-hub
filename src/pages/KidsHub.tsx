@@ -42,83 +42,22 @@ const KidsHub = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // 1. Create or find parent
-      const { data: existingParent } = await supabase
-        .from("parents")
-        .select("id")
-        .eq("email", formData.email)
-        .maybeSingle();
-
-      let parentId: string;
-
-      if (existingParent) {
-        parentId = existingParent.id;
-      } else {
-        const { data: newParent, error: parentError } = await supabase
-          .from("parents")
-          .insert({
-            full_name: formData.parentName,
-            email: formData.email,
-            phone: formData.contactNumber,
-          })
-          .select("id")
-          .single();
-
-        if (parentError) throw parentError;
-        parentId = newParent.id;
+      // Server-side validated registration (creates parent/child/enrollment under service role)
+      const { data, error } = await supabase.functions.invoke("register-kids-hub", {
+        body: formData,
+      });
+      if (error || (data && (data as any).error)) {
+        throw new Error((data as any)?.error || error?.message || "Registration failed");
       }
 
-      // 2. Calculate date of birth from age
-      const age = parseInt(formData.childAge) || 5;
-      const birthYear = new Date().getFullYear() - age;
-      const dateOfBirth = `${birthYear}-01-01`;
-
-      // 3. Create child
-      const { data: newChild, error: childError } = await supabase
-        .from("children")
-        .insert({
-          full_name: formData.childName,
-          parent_id: parentId,
-          date_of_birth: dateOfBirth,
-          photo_consent: formData.photoConsent,
-          allergies: formData.hasAllergies ? formData.allergiesDetails : null,
-          medication: formData.hasMedication ? formData.medicationDetails : null,
-        })
-        .select("id")
-        .single();
-
-      if (childError) throw childError;
-
-      // 4. Get the default program (Kids Hub)
-      const { data: programs } = await supabase
-        .from("programs")
-        .select("id")
-        .limit(1);
-
-      if (programs && programs.length > 0) {
-        // 5. Create enrollment
-        const { error: enrollmentError } = await supabase
-          .from("enrollments")
-          .insert({
-            child_id: newChild.id,
-            program_id: programs[0].id,
-            days_attending: formData.daysAttending,
-            status: "active",
-            start_date: new Date().toISOString().split("T")[0],
-            notes: `Session: ${formData.sessionTime}`,
-          });
-
-        if (enrollmentError) throw enrollmentError;
-      }
-
-      // 6. Also send email notification
-      await supabase.functions.invoke('send-consent-form', {
-        body: formData
+      // Also send email notification
+      await supabase.functions.invoke("send-consent-form", {
+        body: formData,
       });
 
       toast({
         title: "Form Submitted Successfully! 🎉",
-        description: "Thank you for registering your child. We will contact you shortly."
+        description: "Thank you for registering your child. We will contact you shortly.",
       });
 
       // Reset form
@@ -134,14 +73,14 @@ const KidsHub = () => {
         allergiesDetails: "",
         hasMedication: false,
         medicationDetails: "",
-        photoConsent: true
+        photoConsent: true,
       });
     } catch (error: any) {
       console.error("Error submitting form:", error);
       toast({
         title: "Submission Error",
         description: error.message || "There was an error submitting the form. Please try again.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
