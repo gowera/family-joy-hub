@@ -108,3 +108,60 @@ All colors MUST be HSL.
     @apply font-heading;
   }
 }
+
+/* TikTok-style videos page utilities */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.animate-marquee {
+  display: inline-block;
+  padding-right: 2rem;
+  animation: marquee 14s linear infinite;
+}
+
+@keyframes heart-pop {
+  0%   { transform: scale(0.3); opacity: 0; }
+  30%  { transform: scale(1.2); opacity: 1; }
+  60%  { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.animate-heart-pop { animation: heart-pop 0.7s ease-out forwards; }
+
+/* TikTok-like thin progress scrubber */
+.tiktok-scrubber {
+  cursor: pointer;
+  background: transparent;
+}
+.tiktok-scrubber::-webkit-slider-runnable-track {
+  height: 2px;
+  background: rgba(255,255,255,0.3);
+}
+.tiktok-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px; height: 10px;
+  border-radius: 9999px;
+  background: #fff;
+  margin-top: -4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.tiktok-scrubber:hover::-webkit-slider-thumb,
+.tiktok-scrubber:active::-webkit-slider-thumb { opacity: 1; }
+.tiktok-scrubber::-moz-range-track {
+  height: 2px;
+  background: rgba(255,255,255,0.3);
+}
+.tiktok-scrubber::-moz-range-thumb {
+  width: 10px; height: 10px;
+  border: none;
+  border-radius: 9999px;
+  background: #fff;
+  opacity: 0;
+}
+.tiktok-scrubber:hover::-moz-range-thumb,
+.tiktok-scrubber:active::-moz-range-thumb { opacity: 1; }
