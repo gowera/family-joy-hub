@@ -71,14 +71,45 @@ const PublicSurveyStats = () => {
 
   const t = (fr: string, en: string) => language === "fr" ? fr : en;
 
+  const CACHE_KEY = "hcf:survey-stats:cache:v1";
+
   useEffect(() => {
+    // Hydrate from cache immediately so data is available even if backend is offline
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached) as { data: SurveyResponse[] };
+        if (Array.isArray(parsed.data) && parsed.data.length) {
+          setResponses(parsed.data);
+          setLoading(false);
+        }
+      }
+    } catch {
+      // ignore cache parse errors
+    }
+
     const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("survey_responses")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (!error && data) setResponses(data as SurveyResponse[]);
-      setLoading(false);
+      try {
+        const { data, error } = await supabase
+          .from("survey_responses")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (!error && data) {
+          setResponses(data as SurveyResponse[]);
+          try {
+            localStorage.setItem(
+              CACHE_KEY,
+              JSON.stringify({ data, cachedAt: Date.now() })
+            );
+          } catch {
+            // storage full — ignore
+          }
+        }
+      } catch {
+        // network/backend offline — keep cached data
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
