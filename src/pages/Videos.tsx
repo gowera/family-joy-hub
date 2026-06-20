@@ -93,7 +93,9 @@ const formatCount = (n: number) => {
 };
 
 const Videos = () => {
+  const { videoId: routeVideoId } = useParams<{ videoId?: string }>();
   const fp = useMemo(getFingerprint, []);
+  const initialScrolled = useRef(false);
   const [videos, setVideos] = useState<WPMedia[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeIdx, setActiveIdx] = useState(0);
