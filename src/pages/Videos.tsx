@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Heart,
   MessageCircle,
@@ -93,7 +93,9 @@ const formatCount = (n: number) => {
 };
 
 const Videos = () => {
+  const { videoId: routeVideoId } = useParams<{ videoId?: string }>();
   const fp = useMemo(getFingerprint, []);
+  const initialScrolled = useRef(false);
   const [videos, setVideos] = useState<WPMedia[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -220,6 +222,19 @@ const Videos = () => {
     videoRefs.current.forEach((v) => v && (v.muted = muted));
   }, [muted]);
 
+  // Jump to the specific video when arriving via /v/:videoId
+  useEffect(() => {
+    if (initialScrolled.current || !routeVideoId || !videos.length) return;
+    const idx = videos.findIndex((v) => String(v.id) === String(routeVideoId));
+    if (idx >= 0) {
+      initialScrolled.current = true;
+      requestAnimationFrame(() => {
+        const el = itemRefs.current[idx];
+        if (el) el.scrollIntoView({ behavior: "auto" });
+      });
+    }
+  }, [routeVideoId, videos]);
+
   const goTo = useCallback((idx: number) => {
     const el = itemRefs.current[idx];
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -273,15 +288,18 @@ const Videos = () => {
   };
 
   const share = async (v: WPMedia) => {
-    const url = window.location.origin + "/videos";
-    const shareData = { title: "Happyness Come First", text: "Découvre cette vidéo", url };
+    // Clean, short shareable link — never expose the raw WP media URL
+    const url = `${window.location.origin}/v/${v.id}`;
+    const previewText = "Découvre cette vidéo de Happyness Come First Foundation 💛";
+    const shareData = { title: "Happyness Come First", text: previewText, url };
     try {
-      if (navigator.share) await navigator.share(shareData);
-      else {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Lien copié" });
+        // Confirmation only — do NOT echo the URL in the UI
+        toast({ title: "Lien copié", description: "Le lien de partage est dans votre presse-papiers." });
       }
-      // Count share once per user
       if (!myReactions[v.id]?.share) toggleReaction(v.id, "share");
     } catch {}
   };
