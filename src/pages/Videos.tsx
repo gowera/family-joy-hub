@@ -6,7 +6,6 @@ import {
   Share2,
   Music2,
   Play,
-  Pause,
   Volume2,
   VolumeX,
   ChevronUp,
@@ -15,7 +14,6 @@ import {
   Plus,
   Bookmark,
   Send,
-  X,
   Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo-hcf.jpeg";
 
 interface WPMedia {
@@ -35,37 +34,56 @@ interface WPMedia {
   description?: { rendered: string };
 }
 
-interface LocalComment {
+interface DBComment {
   id: string;
+  video_id: number;
+  fingerprint: string;
   author: string;
-  text: string;
-  date: number;
+  content: string;
+  created_at: string;
 }
 
-const LIKES_KEY = "hcf:videos:likes:v1";
-const SAVES_KEY = "hcf:videos:saves:v1";
-const FOLLOW_KEY = "hcf:videos:follow:v1";
-const COMMENTS_KEY = "hcf:videos:comments:v1";
-const COUNTS_KEY = "hcf:videos:counts:v1";
+interface Stats {
+  likes: number;
+  saves: number;
+  shares: number;
+  comments: number;
+}
 
-const readJSON = <T,>(k: string, fallback: T): T => {
-  try {
-    const raw = localStorage.getItem(k);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
+const FOLLOW_KEY = "hcf:videos:follow:v1";
+const FP_KEY = "hcf:fp:v1";
+const NAME_KEY = "hcf:videos:name:v1";
+
+const getFingerprint = (): string => {
+  let fp = localStorage.getItem(FP_KEY);
+  if (!fp) {
+    fp = crypto.randomUUID();
+    localStorage.setItem(FP_KEY, fp);
   }
-};
-const writeJSON = (k: string, v: unknown) => {
-  try {
-    localStorage.setItem(k, JSON.stringify(v));
-  } catch {}
+  return fp;
 };
 
 const stripHtml = (html: string) => {
   const t = document.createElement("div");
   t.innerHTML = html;
-  return t.textContent || "";
+  return (t.textContent || "").trim();
+};
+
+/** Remove any URLs from text (we never want to leak the raw video URL) */
+const cleanText = (text: string, sourceUrl?: string) => {
+  let out = text.replace(/https?:\/\/\S+/gi, "").trim();
+  if (sourceUrl) out = out.split(sourceUrl).join("").trim();
+  // collapse leftover whitespace
+  return out.replace(/\s{2,}/g, " ").trim();
+};
+
+/** Pretty title from a media object — strip extensions and codes */
+const prettyTitle = (raw: string) => {
+  let t = raw.replace(/\.(mp4|mov|webm|m4v|avi|mkv)$/i, "");
+  // hide WhatsApp-style file codes like VID-20260524-WA0015
+  if (/^VID[-_]\d{6,}[-_]?[A-Z0-9]*$/i.test(t)) return "";
+  if (/^IMG[-_]\d{6,}/i.test(t)) return "";
+  return t;
 };
 
 const formatCount = (n: number) => {
@@ -74,47 +92,27 @@ const formatCount = (n: number) => {
   return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
 };
 
-/** Deterministic pseudo-random base counts per video id */
-const baseCounts = (id: number) => {
-  const seed = (id * 9301 + 49297) % 233280;
-  const rand = seed / 233280;
-  return {
-    likes: 200 + Math.floor(rand * 14_000),
-    comments: 5 + Math.floor(rand * 400),
-    shares: 2 + Math.floor(rand * 200),
-    saves: 1 + Math.floor(rand * 150),
-  };
-};
-
 const Videos = () => {
+  const fp = useMemo(getFingerprint, []);
   const [videos, setVideos] = useState<WPMedia[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeIdx, setActiveIdx] = useState(0);
   const [muted, setMuted] = useState(true);
-  const [likes, setLikes] = useState<Record<number, boolean>>(() => readJSON(LIKES_KEY, {}));
-  const [saves, setSaves] = useState<Record<number, boolean>>(() => readJSON(SAVES_KEY, {}));
-  const [follow, setFollow] = useState<boolean>(() => readJSON(FOLLOW_KEY, false));
-  const [comments, setComments] = useState<Record<number, LocalComment[]>>(() =>
-    readJSON(COMMENTS_KEY, {})
-  );
+  const [stats, setStats] = useState<Record<number, Stats>>({});
+  const [myReactions, setMyReactions] = useState<Record<number, Record<string, boolean>>>({});
+  const [comments, setComments] = useState<Record<number, DBComment[]>>({});
+  const [follow, setFollow] = useState<boolean>(() => {
+    try { return JSON.parse(localStorage.getItem(FOLLOW_KEY) || "false"); } catch { return false; }
+  });
   const [openComments, setOpenComments] = useState<number | null>(null);
   const [commentDraft, setCommentDraft] = useState("");
+  const [authorName, setAuthorName] = useState<string>(() => localStorage.getItem(NAME_KEY) || "");
 
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Counts cached so they look stable across refreshes
-  const counts = useMemo(() => {
-    const stored = readJSON<Record<number, ReturnType<typeof baseCounts>>>(COUNTS_KEY, {});
-    const out: Record<number, ReturnType<typeof baseCounts>> = { ...stored };
-    videos.forEach((v) => {
-      if (!out[v.id]) out[v.id] = baseCounts(v.id);
-    });
-    writeJSON(COUNTS_KEY, out);
-    return out;
-  }, [videos]);
-
+  // Load videos from WP
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -140,6 +138,57 @@ const Videos = () => {
     };
     fetchAll();
   }, []);
+
+  // Load aggregated stats + my reactions when videos loaded
+  const refreshStats = useCallback(async () => {
+    const { data, error } = await supabase.rpc("get_video_stats");
+    if (error) return;
+    const map: Record<number, Stats> = {};
+    (data || []).forEach((row: any) => {
+      map[Number(row.video_id)] = {
+        likes: Number(row.likes) || 0,
+        saves: Number(row.saves) || 0,
+        shares: Number(row.shares) || 0,
+        comments: Number(row.comments) || 0,
+      };
+    });
+    setStats(map);
+  }, []);
+
+  const refreshMyReactions = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("video_reactions")
+      .select("video_id, kind")
+      .eq("fingerprint", fp);
+    if (error) return;
+    const m: Record<number, Record<string, boolean>> = {};
+    (data || []).forEach((r: any) => {
+      const id = Number(r.video_id);
+      m[id] = { ...(m[id] || {}), [r.kind]: true };
+    });
+    setMyReactions(m);
+  }, [fp]);
+
+  useEffect(() => {
+    if (!videos.length) return;
+    refreshStats();
+    refreshMyReactions();
+  }, [videos.length, refreshStats, refreshMyReactions]);
+
+  // Load comments lazily when sheet opens
+  const loadComments = useCallback(async (videoId: number) => {
+    const { data, error } = await supabase
+      .from("video_comments")
+      .select("*")
+      .eq("video_id", videoId)
+      .order("created_at", { ascending: false });
+    if (error) return;
+    setComments((prev) => ({ ...prev, [videoId]: (data as DBComment[]) || [] }));
+  }, []);
+
+  useEffect(() => {
+    if (openComments !== null) loadComments(openComments);
+  }, [openComments, loadComments]);
 
   // Intersection observer to autoplay the visible video and pause the rest
   useEffect(() => {
@@ -167,20 +216,15 @@ const Videos = () => {
     return () => observer.disconnect();
   }, [videos, muted]);
 
-  // Sync mute across all
   useEffect(() => {
     videoRefs.current.forEach((v) => v && (v.muted = muted));
   }, [muted]);
 
-  const goTo = useCallback(
-    (idx: number) => {
-      const el = itemRefs.current[idx];
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    },
-    []
-  );
+  const goTo = useCallback((idx: number) => {
+    const el = itemRefs.current[idx];
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
-  // Keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (openComments !== null) return;
@@ -202,58 +246,93 @@ const Videos = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, [activeIdx, videos.length, goTo, openComments]);
 
-  const toggleLike = (id: number) => {
-    setLikes((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      writeJSON(LIKES_KEY, next);
-      return next;
+  const toggleReaction = async (videoId: number, kind: "like" | "save" | "share") => {
+    const has = !!myReactions[videoId]?.[kind];
+    // Optimistic UI
+    setMyReactions((prev) => ({
+      ...prev,
+      [videoId]: { ...(prev[videoId] || {}), [kind]: !has },
+    }));
+    setStats((prev) => {
+      const s = prev[videoId] || { likes: 0, saves: 0, shares: 0, comments: 0 };
+      const key = (kind + "s") as "likes" | "saves" | "shares";
+      return { ...prev, [videoId]: { ...s, [key]: Math.max(0, s[key] + (has ? -1 : 1)) } };
     });
-  };
-
-  const toggleSave = (id: number) => {
-    setSaves((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      writeJSON(SAVES_KEY, next);
-      return next;
-    });
-    toast({ title: saves[id] ? "Removed from favorites" : "Added to favorites" });
-  };
-
-  const toggleFollow = () => {
-    setFollow((f) => {
-      writeJSON(FOLLOW_KEY, !f);
-      return !f;
-    });
+    if (has) {
+      await supabase
+        .from("video_reactions")
+        .delete()
+        .eq("video_id", videoId)
+        .eq("fingerprint", fp)
+        .eq("kind", kind);
+    } else {
+      await supabase
+        .from("video_reactions")
+        .insert({ video_id: videoId, fingerprint: fp, kind });
+    }
   };
 
   const share = async (v: WPMedia) => {
     const url = window.location.origin + "/videos";
-    const shareData = { title: "Happyness Come First", text: "Check out this video", url };
+    const shareData = { title: "Happyness Come First", text: "Découvre cette vidéo", url };
     try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
+      if (navigator.share) await navigator.share(shareData);
+      else {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied to clipboard" });
+        toast({ title: "Lien copié" });
       }
+      // Count share once per user
+      if (!myReactions[v.id]?.share) toggleReaction(v.id, "share");
     } catch {}
   };
 
-  const submitComment = (id: number) => {
+  const submitComment = async (videoId: number) => {
     const text = commentDraft.trim();
     if (!text) return;
-    const c: LocalComment = {
-      id: crypto.randomUUID(),
-      author: "You",
-      text,
-      date: Date.now(),
+    const author = (authorName.trim() || "Anonyme").slice(0, 50);
+    localStorage.setItem(NAME_KEY, author);
+    const tempId = crypto.randomUUID();
+    const optimistic: DBComment = {
+      id: tempId,
+      video_id: videoId,
+      fingerprint: fp,
+      author,
+      content: text,
+      created_at: new Date().toISOString(),
     };
-    setComments((prev) => {
-      const next = { ...prev, [id]: [c, ...(prev[id] || [])] };
-      writeJSON(COMMENTS_KEY, next);
-      return next;
+    setComments((prev) => ({ ...prev, [videoId]: [optimistic, ...(prev[videoId] || [])] }));
+    setStats((prev) => {
+      const s = prev[videoId] || { likes: 0, saves: 0, shares: 0, comments: 0 };
+      return { ...prev, [videoId]: { ...s, comments: s.comments + 1 } };
     });
     setCommentDraft("");
+    const { data, error } = await supabase
+      .from("video_comments")
+      .insert({ video_id: videoId, fingerprint: fp, author, content: text })
+      .select()
+      .single();
+    if (error) {
+      toast({ title: "Échec de l'envoi du commentaire", variant: "destructive" });
+      // rollback
+      setComments((prev) => ({
+        ...prev,
+        [videoId]: (prev[videoId] || []).filter((c) => c.id !== tempId),
+      }));
+      return;
+    }
+    if (data) {
+      setComments((prev) => ({
+        ...prev,
+        [videoId]: (prev[videoId] || []).map((c) => (c.id === tempId ? (data as DBComment) : c)),
+      }));
+    }
+  };
+
+  const toggleFollow = () => {
+    setFollow((f) => {
+      localStorage.setItem(FOLLOW_KEY, JSON.stringify(!f));
+      return !f;
+    });
   };
 
   if (loading) {
@@ -267,8 +346,8 @@ const Videos = () => {
   if (!videos.length) {
     return (
       <div className="fixed inset-0 bg-black flex flex-col items-center justify-center text-white gap-4">
-        <p>No videos yet.</p>
-        <Link to="/" className="underline">Back home</Link>
+        <p>Aucune vidéo pour le moment.</p>
+        <Link to="/" className="underline">Retour à l'accueil</Link>
       </div>
     );
   }
@@ -307,14 +386,12 @@ const Videos = () => {
         style={{ scrollbarWidth: "none" }}
       >
         {videos.map((v, idx) => {
-          const c = counts[v.id] || baseCounts(v.id);
-          const liked = !!likes[v.id];
-          const saved = !!saves[v.id];
-          const userComments = comments[v.id] || [];
-          const totalComments = c.comments + userComments.length;
-          const totalLikes = c.likes + (liked ? 1 : 0);
-          const title = stripHtml(v.title.rendered);
-          const caption = v.caption?.rendered ? stripHtml(v.caption.rendered) : "";
+          const s = stats[v.id] || { likes: 0, saves: 0, shares: 0, comments: 0 };
+          const liked = !!myReactions[v.id]?.like;
+          const saved = !!myReactions[v.id]?.save;
+          const title = prettyTitle(stripHtml(v.title.rendered));
+          const captionRaw = v.caption?.rendered ? stripHtml(v.caption.rendered) : "";
+          const caption = cleanText(captionRaw, v.source_url);
 
           return (
             <FeedItem
@@ -323,6 +400,10 @@ const Videos = () => {
               media={v}
               isActive={idx === activeIdx}
               muted={muted}
+              liked={liked}
+              onDoubleTapLike={() => {
+                if (!liked) toggleReaction(v.id, "like");
+              }}
               itemRef={(el) => (itemRefs.current[idx] = el)}
               videoRef={(el) => (videoRefs.current[idx] = el)}
             >
@@ -352,12 +433,12 @@ const Videos = () => {
                       stroke={liked ? "#ef4444" : "currentColor"}
                     />
                   }
-                  label={formatCount(totalLikes)}
-                  onClick={() => toggleLike(v.id)}
+                  label={formatCount(s.likes)}
+                  onClick={() => toggleReaction(v.id, "like")}
                 />
                 <ActionButton
                   icon={<MessageCircle className="w-7 h-7" />}
-                  label={formatCount(totalComments)}
+                  label={formatCount(s.comments)}
                   onClick={() => setOpenComments(v.id)}
                 />
                 <ActionButton
@@ -368,17 +449,17 @@ const Videos = () => {
                       stroke={saved ? "#facc15" : "currentColor"}
                     />
                   }
-                  label={formatCount(c.saves + (saved ? 1 : 0))}
-                  onClick={() => toggleSave(v.id)}
+                  label={formatCount(s.saves)}
+                  onClick={() => toggleReaction(v.id, "save")}
                 />
                 <ActionButton
                   icon={<Share2 className="w-7 h-7" />}
-                  label={formatCount(c.shares)}
+                  label={formatCount(s.shares)}
                   onClick={() => share(v)}
                 />
               </div>
 
-              {/* Bottom info */}
+              {/* Bottom info — NEVER show the source URL */}
               <div className="absolute left-0 right-16 bottom-6 px-4 z-20 text-white">
                 <p className="font-semibold text-base mb-1">@happynesscomefirst</p>
                 {title && <p className="text-sm opacity-95 mb-1 line-clamp-2">{title}</p>}
@@ -426,54 +507,61 @@ const Videos = () => {
           <SheetHeader className="px-4 py-3 border-b">
             <SheetTitle className="text-center">
               {openComments !== null
-                ? formatCount(
-                    (counts[openComments]?.comments || 0) +
-                      (comments[openComments]?.length || 0)
-                  )
+                ? formatCount(stats[openComments]?.comments || 0)
                 : 0}{" "}
-              comments
+              commentaires
             </SheetTitle>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
             {openComments !== null && (comments[openComments]?.length ?? 0) === 0 && (
               <p className="text-center text-muted-foreground text-sm py-12">
-                Be the first to comment!
+                Soyez le premier à commenter !
               </p>
             )}
             {openComments !== null &&
               (comments[openComments] || []).map((c) => (
                 <div key={c.id} className="flex gap-3">
                   <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-sm font-semibold shrink-0">
-                    {c.author[0]}
+                    {(c.author[0] || "?").toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold">{c.author}</p>
-                    <p className="text-sm break-words">{c.text}</p>
+                    <p className="text-sm break-words">{c.content}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {new Date(c.date).toLocaleString()}
+                      {new Date(c.created_at).toLocaleString()}
                     </p>
                   </div>
                 </div>
               ))}
           </div>
-          <div className="border-t p-3 flex gap-2 items-center">
+          <div className="border-t p-3 space-y-2">
             <Input
-              value={commentDraft}
-              onChange={(e) => setCommentDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && openComments !== null) submitComment(openComments);
-              }}
-              placeholder="Add a comment..."
-              className="flex-1"
+              value={authorName}
+              onChange={(e) => setAuthorName(e.target.value)}
+              placeholder="Votre nom (optionnel)"
+              maxLength={50}
+              className="text-sm"
             />
-            <Button
-              size="icon"
-              onClick={() => openComments !== null && submitComment(openComments)}
-              disabled={!commentDraft.trim()}
-              aria-label="Send"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
+            <div className="flex gap-2 items-center">
+              <Input
+                value={commentDraft}
+                onChange={(e) => setCommentDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && openComments !== null) submitComment(openComments);
+                }}
+                placeholder="Ajouter un commentaire..."
+                maxLength={1000}
+                className="flex-1"
+              />
+              <Button
+                size="icon"
+                onClick={() => openComments !== null && submitComment(openComments)}
+                disabled={!commentDraft.trim()}
+                aria-label="Send"
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </SheetContent>
       </Sheet>
@@ -503,12 +591,24 @@ interface FeedItemProps {
   media: WPMedia;
   isActive: boolean;
   muted: boolean;
+  liked: boolean;
+  onDoubleTapLike: () => void;
   itemRef: (el: HTMLDivElement | null) => void;
   videoRef: (el: HTMLVideoElement | null) => void;
   children: React.ReactNode;
 }
 
-const FeedItem = ({ index, media, isActive, muted, itemRef, videoRef, children }: FeedItemProps) => {
+const FeedItem = ({
+  index,
+  media,
+  isActive,
+  muted,
+  liked,
+  onDoubleTapLike,
+  itemRef,
+  videoRef,
+  children,
+}: FeedItemProps) => {
   const localRef = useRef<HTMLVideoElement>(null);
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -541,9 +641,9 @@ const FeedItem = ({ index, media, isActive, muted, itemRef, videoRef, children }
     if (!v) return;
     const now = Date.now();
     if (now - lastTap.current < 300) {
-      // double tap = heart
       setShowHeart(true);
       window.setTimeout(() => setShowHeart(false), 700);
+      onDoubleTapLike();
       lastTap.current = 0;
       return;
     }
@@ -581,14 +681,12 @@ const FeedItem = ({ index, media, isActive, muted, itemRef, videoRef, children }
         disablePictureInPicture
       />
 
-      {/* Pause indicator */}
       {paused && isActive && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <Play className="w-20 h-20 text-white/80 drop-shadow-lg" fill="currentColor" />
         </div>
       )}
 
-      {/* Heart on double tap */}
       {showHeart && (
         <Heart
           className="absolute w-32 h-32 text-red-500 animate-heart-pop pointer-events-none"
@@ -598,7 +696,6 @@ const FeedItem = ({ index, media, isActive, muted, itemRef, videoRef, children }
 
       {children}
 
-      {/* Progress scrubber */}
       <input
         type="range"
         min={0}

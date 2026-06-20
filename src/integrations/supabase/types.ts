@@ -361,6 +361,54 @@ export type Database = {
         }
         Relationships: []
       }
+      video_comments: {
+        Row: {
+          author: string
+          content: string
+          created_at: string
+          fingerprint: string
+          id: string
+          video_id: number
+        }
+        Insert: {
+          author: string
+          content: string
+          created_at?: string
+          fingerprint: string
+          id?: string
+          video_id: number
+        }
+        Update: {
+          author?: string
+          content?: string
+          created_at?: string
+          fingerprint?: string
+          id?: string
+          video_id?: number
+        }
+        Relationships: []
+      }
+      video_reactions: {
+        Row: {
+          created_at: string
+          fingerprint: string
+          kind: string
+          video_id: number
+        }
+        Insert: {
+          created_at?: string
+          fingerprint: string
+          kind: string
+          video_id: number
+        }
+        Update: {
+          created_at?: string
+          fingerprint?: string
+          kind?: string
+          video_id?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -390,6 +438,16 @@ export type Database = {
           role: Database["public"]["Enums"]["app_role"]
           user_email: string
           user_id: string
+        }[]
+      }
+      get_video_stats: {
+        Args: never
+        Returns: {
+          comments: number
+          likes: number
+          saves: number
+          shares: number
+          video_id: number
         }[]
       }
       has_role: {
