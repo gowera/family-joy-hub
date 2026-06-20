@@ -222,6 +222,19 @@ const Videos = () => {
     videoRefs.current.forEach((v) => v && (v.muted = muted));
   }, [muted]);
 
+  // Jump to the specific video when arriving via /v/:videoId
+  useEffect(() => {
+    if (initialScrolled.current || !routeVideoId || !videos.length) return;
+    const idx = videos.findIndex((v) => String(v.id) === String(routeVideoId));
+    if (idx >= 0) {
+      initialScrolled.current = true;
+      requestAnimationFrame(() => {
+        const el = itemRefs.current[idx];
+        if (el) el.scrollIntoView({ behavior: "auto" });
+      });
+    }
+  }, [routeVideoId, videos]);
+
   const goTo = useCallback((idx: number) => {
     const el = itemRefs.current[idx];
     if (el) el.scrollIntoView({ behavior: "smooth" });
