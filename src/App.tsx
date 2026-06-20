@@ -57,6 +57,7 @@ const AppRoutes = () => {
         <Route path="/survey-stats" element={<PublicSurveyStats />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/videos" element={<Videos />} />
+        <Route path="/v/:videoId" element={<Videos />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/children" element={<Children />} />
