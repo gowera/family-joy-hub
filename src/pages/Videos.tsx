@@ -275,15 +275,18 @@ const Videos = () => {
   };
 
   const share = async (v: WPMedia) => {
-    const url = window.location.origin + "/videos";
-    const shareData = { title: "Happyness Come First", text: "Découvre cette vidéo", url };
+    // Clean, short shareable link — never expose the raw WP media URL
+    const url = `${window.location.origin}/v/${v.id}`;
+    const previewText = "Découvre cette vidéo de Happyness Come First Foundation 💛";
+    const shareData = { title: "Happyness Come First", text: previewText, url };
     try {
-      if (navigator.share) await navigator.share(shareData);
-      else {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Lien copié" });
+        // Confirmation only — do NOT echo the URL in the UI
+        toast({ title: "Lien copié", description: "Le lien de partage est dans votre presse-papiers." });
       }
-      // Count share once per user
       if (!myReactions[v.id]?.share) toggleReaction(v.id, "share");
     } catch {}
   };
