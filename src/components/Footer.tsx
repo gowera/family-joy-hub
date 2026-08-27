@@ -62,6 +62,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/unity-circle" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  The unity circle
+                </Link>
+              </li>
+              <li>
                 <Link to="/gallery" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Gallery
                 </Link>

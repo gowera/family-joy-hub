@@ -21,7 +21,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Validate input
     if (
       typeof surveyType !== "string" ||
-      !["children", "parent", "community"].includes(surveyType) ||
+      !["children", "parent", "community", "unity_circle"].includes(surveyType) ||
       !answers ||
       typeof answers !== "object" ||
       JSON.stringify(answers).length > 50000
@@ -57,6 +57,9 @@ const handler = async (req: Request): Promise<Response> => {
     } else if (surveyType === "community") {
       subject = `Community Survey - Voices of Happiness (${new Date().toLocaleDateString("en-GB")})`;
       htmlBody = buildCommunitySurveyHtml(answers);
+    } else if (surveyType === "unity_circle") {
+      subject = `Unity Circle Registration & Consent (${new Date().toLocaleDateString("en-GB")})`;
+      htmlBody = buildUnityCircleHtml(answers);
     } else {
       throw new Error("Unknown survey type");
     }
@@ -238,6 +241,46 @@ function buildCommunitySurveyHtml(a: Record<string, any>): string {
         <p>Happiness Comes First – Voices of Happiness</p>
       </div>
     </div></body></html>`;
+}
+
+function buildUnityCircleHtml(a: Record<string, any>): string {
+  const sections = [
+    ["Participant details", ["fullName", "dateOfBirthAge", "address", "postcode", "phone", "email", "gender", "preferredLanguage", "ethnicBackground", "parentCarer", "howHeard", "firstSessionDate"]],
+    ["Family / child participants", ["familyParticipants"]],
+    ["Emergency contact", ["emergencyName", "emergencyRelationship", "emergencyPhone", "alternativePhone", "emergencyEmail", "importantInformation"]],
+    ["Health, accessibility & support", ["accessibilityNeeds", "allergiesMedical", "sensoryAdaptation", "otherSupport"]],
+    ["What the participant would like from Unity Circle", ["desiredActivities"]],
+    ["Consent & permissions", ["consents"]],
+    ["Photo / video consent", ["photoConsent"]],
+    ["Communication consent", ["communicationConsent"]],
+    ["Participant declaration", ["declarationName", "signature", "declarationDate", "staffMember", "participantId", "registrationNotes"]],
+    ["Session feedback", ["sessionDate", "activityAttended", "feelingBefore", "feelingAfter", "enjoyedMost", "improvements", "attendAgain", "recommend"]],
+  ] as const;
+
+  const labels: Record<string, string> = {
+    fullName: "Full name", dateOfBirthAge: "Date of birth / Age", address: "Address", postcode: "Postcode",
+    phone: "Phone number", email: "Email address", gender: "Gender", preferredLanguage: "Preferred language",
+    ethnicBackground: "Ethnic / cultural background", parentCarer: "Parent / carer", howHeard: "How they heard about Unity Circle",
+    firstSessionDate: "First session date", familyParticipants: "Family / child participants", emergencyName: "Emergency contact name",
+    emergencyRelationship: "Emergency contact relationship", emergencyPhone: "Emergency phone", alternativePhone: "Alternative phone",
+    emergencyEmail: "Emergency email", importantInformation: "Important information", accessibilityNeeds: "Accessibility needs",
+    allergiesMedical: "Allergies / medical information", sensoryAdaptation: "Sensory-friendly or adapted participation",
+    otherSupport: "Other support", desiredActivities: "Desired activities", consents: "Consents", photoConsent: "Photo / video consent",
+    communicationConsent: "Communication consent", declarationName: "Participant / parent-carer name", signature: "Signature",
+    declarationDate: "Declaration date", staffMember: "Staff member receiving form", participantId: "Participant ID",
+    registrationNotes: "Registration status / notes", sessionDate: "Session date", activityAttended: "Activity attended",
+    feelingBefore: "Feeling before", feelingAfter: "Feeling after", enjoyedMost: "Enjoyed most", improvements: "What could improve",
+    attendAgain: "Would attend again", recommend: "Would recommend Unity Circle",
+  };
+  const content = sections.map(([title, keys]) => {
+    const fields = keys.map((key) => {
+      const value = a[key];
+      if (value === undefined || value === null || value === "" || (Array.isArray(value) && value.length === 0)) return "";
+      return `<div class="field"><span class="label">${escapeHtml(labels[key] || key)}:</span> <span class="value">${formatAnswer(value)}</span></div>`;
+    }).join("");
+    return fields ? `<h2>${escapeHtml(title)}</h2>${fields}` : "";
+  }).join("");
+  return `<!DOCTYPE html><html><head><style>body{font-family:Arial,sans-serif;color:#333;line-height:1.6}.container{max-width:700px;margin:0 auto;padding:20px}h1{color:#FF1493;border-bottom:2px solid #FF1493;padding-bottom:10px}h2{color:#DB2777;margin-top:22px}.field{margin:8px 0;padding:10px;background:#f9f9f9;border-radius:5px}.label{font-weight:bold;color:#666}.footer{margin-top:30px;padding-top:20px;border-top:1px solid #ddd;color:#666;font-size:12px}</style></head><body><div class="container"><h1>Unity Circle: Where Families Heal & Connect</h1><p>A new participant registration and consent form has been submitted.</p>${content}<div class="footer"><p>Submitted on: ${new Date().toLocaleString("en-GB", { timeZone: "Europe/London" })}</p><p>Happiness Comes First - Unity Circle</p></div></div></body></html>`;
 }
 
 serve(handler);

@@ -3,7 +3,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, BarChart3, PieChart as PieChartIcon, Users, Shield, Heart, TrendingUp } from "lucide-react";
+import { Loader2, BarChart3, PieChart as PieChartIcon, Users, Shield, Heart, TrendingUp, ClipboardList } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -15,7 +15,7 @@ const COLORS = ["#FF1493", "#FF69B4", "#DB2777", "#EC4899", "#F472B6", "#FB923C"
 type SurveyResponse = {
   id: string;
   survey_type: string;
-  answers: Record<string, any>;
+  answers: Record<string, unknown>;
   created_at: string;
 };
 
@@ -41,6 +41,7 @@ const SurveyStats = () => {
   const childrenResponses = useMemo(() => responses.filter(r => r.survey_type === "children"), [responses]);
   const parentResponses = useMemo(() => responses.filter(r => r.survey_type === "parent"), [responses]);
   const communityResponses = useMemo(() => responses.filter(r => r.survey_type === "community"), [responses]);
+  const unityCircleResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_circle"), [responses]);
 
   // Helper to count occurrences of a field value
   const countField = (data: SurveyResponse[], field: string) => {
@@ -152,6 +153,15 @@ const SurveyStats = () => {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-3">
+              <div className="bg-orange-500/10 p-2 rounded-lg"><ClipboardList className="w-5 h-5 text-orange-500" /></div>
+              <div>
+                <p className="text-2xl font-bold">{unityCircleResponses.length}</p>
+                <p className="text-xs text-muted-foreground">Unity Circle</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4 flex items-center gap-3">
               <div className="bg-blue-500/10 p-2 rounded-lg"><Shield className="w-5 h-5 text-blue-500" /></div>
               <div>
                 <p className="text-2xl font-bold">{childrenResponses.length}</p>
@@ -211,6 +221,10 @@ const SurveyStats = () => {
             <TabsTrigger value="community" className="flex-1 min-w-[120px] text-xs md:text-sm">
               <Heart className="w-3 h-3 mr-1 hidden md:inline" />
               {t("Communauté", "Community")}
+            </TabsTrigger>
+            <TabsTrigger value="unity_circle" className="flex-1 min-w-[120px] text-xs md:text-sm">
+              <ClipboardList className="w-3 h-3 mr-1 hidden md:inline" />
+              Unity Circle
             </TabsTrigger>
           </TabsList>
 
@@ -276,6 +290,43 @@ const SurveyStats = () => {
                 <PieChartCard title={t("Intéressé par le programme", "Interested in programme")} data={countField(communityResponses, "interestedInProgramme")} />
                 <BarChartCard title={t("Facteurs de participation", "Attendance factors")} data={countArrayField(communityResponses, "attendanceFactors")} />
                 <PieChartCard title={t("Assez d'opportunités", "Enough opportunities")} data={countField(communityResponses, "enoughOpportunities")} />
+              </div>
+            )}
+          </TabsContent>
+
+          {/* UNITY CIRCLE REGISTRATIONS */}
+          <TabsContent value="unity_circle" className="space-y-4 mt-4">
+            {unityCircleResponses.length === 0 ? (
+              <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune inscription pour le moment", "No registrations yet")}</CardContent></Card>
+            ) : (
+              <div className="space-y-4">
+                {unityCircleResponses.map((response) => {
+                  const answers = response.answers;
+                  return (
+                    <Card key={response.id}>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-base flex flex-wrap items-center justify-between gap-2">
+                          <span>{String(answers.fullName || "Unnamed participant")}</span>
+                          <span className="text-xs font-normal text-muted-foreground">{new Date(response.created_at).toLocaleString("en-GB")}</span>
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground">{String(answers.email || "No email")} {answers.phone ? `- ${String(answers.phone)}` : ""}</p>
+                      </CardHeader>
+                      <CardContent>
+                        <details className="text-sm">
+                          <summary className="cursor-pointer font-medium text-primary">View full registration</summary>
+                          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                            {Object.entries(answers).map(([key, value]) => (
+                              <div key={key} className="rounded-md bg-muted/50 p-3 min-w-0">
+                                <p className="font-medium break-words">{key.replace(/([A-Z])/g, " $1")}</p>
+                                <p className="text-muted-foreground whitespace-pre-wrap break-words">{Array.isArray(value) ? value.join(", ") : String(value || "-")}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </TabsContent>

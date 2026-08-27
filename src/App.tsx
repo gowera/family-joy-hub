@@ -18,6 +18,7 @@ import Contact from "./pages/Contact";
 import SurveyChildren from "./pages/SurveyChildren";
 import SurveyParent from "./pages/SurveyParent";
 import SurveyCommunity from "./pages/SurveyCommunity";
+import UnityCircle from "./pages/UnityCircle";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/admin/Dashboard";
@@ -54,6 +55,7 @@ const AppRoutes = () => {
         <Route path="/survey/children" element={<SurveyChildren />} />
         <Route path="/survey/parents" element={<SurveyParent />} />
         <Route path="/survey/community" element={<SurveyCommunity />} />
+        <Route path="/unity-circle" element={<UnityCircle />} />
         <Route path="/survey-stats" element={<PublicSurveyStats />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/videos" element={<Videos />} />
