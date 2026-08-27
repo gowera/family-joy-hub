@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Baby, Users, Calendar, CreditCard, TrendingUp, Heart, PoundSterling } from "lucide-react";
+import { Baby, Users, Calendar, CreditCard, TrendingUp, Heart, PoundSterling, ClipboardList } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import LanguageToggle from "@/components/LanguageToggle";
 import {
@@ -27,7 +28,9 @@ const Dashboard = () => {
     pendingPayments: 0,
     totalRevenue: 0,
     paidRevenue: 0,
+    unityCircleRegistrations: 0,
   });
+  const [recentUnityCircle, setRecentUnityCircle] = useState<Array<{ id: string; created_at: string; answers: Record<string, unknown> }>>([]);
   const [enrollmentsByStatus, setEnrollmentsByStatus] = useState<any[]>([]);
   const [paymentsByMethod, setPaymentsByMethod] = useState<any[]>([]);
   const [ageDistribution, setAgeDistribution] = useState<any[]>([]);
@@ -43,12 +46,13 @@ const Dashboard = () => {
   }, [language]);
 
   const fetchStats = async () => {
-    const [childrenRes, parentsRes, enrollmentsRes, paymentsRes, paidPaymentsRes] = await Promise.all([
+    const [childrenRes, parentsRes, enrollmentsRes, paymentsRes, paidPaymentsRes, unityCircleRes] = await Promise.all([
       supabase.from("children").select("id", { count: "exact" }),
       supabase.from("parents").select("id", { count: "exact" }),
       supabase.from("enrollments").select("id", { count: "exact" }).eq("status", "active"),
       supabase.from("payments").select("amount").eq("payment_status", "pending"),
       supabase.from("payments").select("amount").eq("payment_status", "paid"),
+      supabase.from("survey_responses").select("id, created_at, answers").eq("survey_type", "unity_circle").order("created_at", { ascending: false }),
     ]);
 
     const pendingTotal = paymentsRes.data?.reduce((sum, p) => sum + p.amount, 0) || 0;
@@ -61,7 +65,9 @@ const Dashboard = () => {
       pendingPayments: paymentsRes.data?.length || 0,
       totalRevenue: pendingTotal + paidTotal,
       paidRevenue: paidTotal,
+      unityCircleRegistrations: unityCircleRes.count || unityCircleRes.data?.length || 0,
     });
+    if (unityCircleRes.data) setRecentUnityCircle(unityCircleRes.data as Array<{ id: string; created_at: string; answers: Record<string, unknown> }>);
   };
 
   const fetchChartData = async () => {
@@ -131,6 +137,7 @@ const Dashboard = () => {
     { title: t("dashboard.parents"), value: stats.totalParents, icon: Users, color: "text-blue-500" },
     { title: t("dashboard.activeEnrollments"), value: stats.activeEnrollments, icon: Calendar, color: "text-green-500" },
     { title: t("dashboard.pendingPayments"), value: stats.pendingPayments, icon: CreditCard, color: "text-orange-500" },
+    { title: "Unity Circle", value: stats.unityCircleRegistrations, icon: ClipboardList, color: "text-primary" },
   ];
 
   const highlights = [
@@ -296,6 +303,35 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between gap-3 p-3 md:p-6">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <ClipboardList className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              Unity Circle registrations
+            </CardTitle>
+            <Link to="/admin/survey-stats" className="text-xs md:text-sm text-primary hover:underline whitespace-nowrap">
+              View all
+            </Link>
+          </CardHeader>
+          <CardContent className="p-3 pt-0 md:p-6 md:pt-0">
+            {recentUnityCircle.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No Unity Circle registrations yet.</p>
+            ) : (
+              <div className="space-y-3">
+                {recentUnityCircle.slice(0, 5).map((registration) => (
+                  <div key={registration.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 border-b border-border pb-3 last:border-0 last:pb-0">
+                    <div className="min-w-0">
+                      <p className="font-medium truncate">{String(registration.answers.fullName || "Unnamed participant")}</p>
+                      <p className="text-xs text-muted-foreground truncate">{String(registration.answers.email || "No email")} {registration.answers.phone ? `- ${String(registration.answers.phone)}` : ""}</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">{new Date(registration.created_at).toLocaleDateString("en-GB")}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );
