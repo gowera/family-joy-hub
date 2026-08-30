@@ -12,6 +12,7 @@ interface WordPressPost {
   title: { rendered: string };
   excerpt?: { rendered: string };
   date: string;
+  categories?: number[];
   _embedded?: {
     "wp:featuredmedia"?: Array<{
       source_url: string;
@@ -46,7 +47,7 @@ const JobOffers = () => {
         "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=12"
       );
       const jobListingsRequest = fetch(
-        "https://happynesscomefirst.com/wp-json/wp/v2/job_listing?_embed&per_page=12"
+        "https://happynesscomefirst.com/wp-json/wp/v2/job-listings?_embed&per_page=12"
       );
 
       const [categoriesResult, postsResult, jobListingsResult] = await Promise.allSettled([

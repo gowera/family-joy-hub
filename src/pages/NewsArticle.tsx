@@ -79,7 +79,7 @@ const NewsArticle = () => {
     try {
       const endpoints = [
         `https://happynesscomefirst.com/wp-json/wp/v2/posts?slug=${postSlug}&_embed`,
-        `https://happynesscomefirst.com/wp-json/wp/v2/job_listing?slug=${postSlug}&_embed`,
+        `https://happynesscomefirst.com/wp-json/wp/v2/job-listings?slug=${postSlug}&_embed`,
       ];
 
       const responses = await Promise.allSettled(endpoints.map((url) => fetch(url)));
@@ -103,7 +103,7 @@ const NewsArticle = () => {
     try {
       const endpoints = [
         "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=3",
-        "https://happynesscomefirst.com/wp-json/wp/v2/job_listing?_embed&per_page=3",
+        "https://happynesscomefirst.com/wp-json/wp/v2/job-listings?_embed&per_page=3",
       ];
 
       const responses = await Promise.allSettled(endpoints.map((url) => fetch(url)));
