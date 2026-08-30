@@ -15,8 +15,8 @@ interface WordPressPost {
   id: number;
   slug: string;
   title: { rendered: string };
-  content: { rendered: string };
-  excerpt: { rendered: string };
+  content?: { rendered: string };
+  excerpt?: { rendered: string };
   date: string;
   _embedded?: {
     "wp:featuredmedia"?: Array<{
@@ -77,12 +77,20 @@ const NewsArticle = () => {
 
   const fetchPost = async (postSlug: string) => {
     try {
-      const response = await fetch(
-        `https://happynesscomefirst.com/wp-json/wp/v2/posts?slug=${postSlug}&_embed`
-      );
-      const data = await response.json();
-      if (data.length > 0) {
-        setPost(data[0]);
+      const endpoints = [
+        `https://happynesscomefirst.com/wp-json/wp/v2/posts?slug=${postSlug}&_embed`,
+        `https://happynesscomefirst.com/wp-json/wp/v2/job_listing?slug=${postSlug}&_embed`,
+      ];
+
+      const responses = await Promise.allSettled(endpoints.map((url) => fetch(url)));
+
+      for (const response of responses) {
+        if (response.status !== "fulfilled") continue;
+        const data = await response.value.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setPost(data[0]);
+          return;
+        }
       }
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -93,11 +101,23 @@ const NewsArticle = () => {
 
   const fetchRecentPosts = async () => {
     try {
-      const response = await fetch(
-        "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=3"
-      );
-      const data = await response.json();
-      setRecentPosts(data);
+      const endpoints = [
+        "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=3",
+        "https://happynesscomefirst.com/wp-json/wp/v2/job_listing?_embed&per_page=3",
+      ];
+
+      const responses = await Promise.allSettled(endpoints.map((url) => fetch(url)));
+      const merged: WordPressPost[] = [];
+
+      for (const response of responses) {
+        if (response.status !== "fulfilled") continue;
+        const data = await response.value.json();
+        if (Array.isArray(data)) {
+          merged.push(...data);
+        }
+      }
+
+      setRecentPosts(merged.slice(0, 3));
     } catch (error) {
       console.error("Error fetching recent posts:", error);
     }

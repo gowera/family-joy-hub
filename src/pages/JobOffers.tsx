@@ -10,7 +10,7 @@ interface WordPressPost {
   id: number;
   slug: string;
   title: { rendered: string };
-  excerpt: { rendered: string };
+  excerpt?: { rendered: string };
   date: string;
   _embedded?: {
     "wp:featuredmedia"?: Array<{
@@ -39,25 +39,54 @@ const JobOffers = () => {
 
   const fetchJobOffers = async () => {
     try {
-      const categoriesResponse = await fetch(
+      const categoryRequest = fetch(
         "https://happynesscomefirst.com/wp-json/wp/v2/categories?per_page=100"
       );
-      const categories = await categoriesResponse.json();
-
-      const matchingCategory = categories.find((category: { slug?: string }) =>
-        category.slug && JOB_CATEGORY_SLUGS.includes(category.slug.toLowerCase())
+      const postsRequest = fetch(
+        "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=12"
+      );
+      const jobListingsRequest = fetch(
+        "https://happynesscomefirst.com/wp-json/wp/v2/job_listing?_embed&per_page=12"
       );
 
-      if (!matchingCategory) {
-        setPosts([]);
-        return;
-      }
+      const [categoriesResult, postsResult, jobListingsResult] = await Promise.allSettled([
+        categoryRequest,
+        postsRequest,
+        jobListingsRequest,
+      ]);
 
-      const postsResponse = await fetch(
-        `https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=12&categories=${matchingCategory.id}`
+      const categories = categoriesResult.status === "fulfilled"
+        ? await categoriesResult.value.json()
+        : [];
+
+      const matchingCategoryIds = new Set(
+        categories
+          .filter((category: { slug?: string }) =>
+            category.slug && JOB_CATEGORY_SLUGS.includes(category.slug.toLowerCase())
+          )
+          .map((category: { id: number }) => category.id)
       );
-      const data = await postsResponse.json();
-      setPosts(Array.isArray(data) ? data : []);
+
+      const regularPosts = postsResult.status === "fulfilled"
+        ? await postsResult.value.json()
+        : [];
+
+      const jobListings = jobListingsResult.status === "fulfilled"
+        ? await jobListingsResult.value.json()
+        : [];
+
+      const categoryPosts = Array.isArray(regularPosts)
+        ? regularPosts.filter((post: WordPressPost) =>
+            post.categories && post.categories.some((categoryId) => matchingCategoryIds.has(categoryId))
+          )
+        : [];
+
+      const merged = [...categoryPosts, ...jobListings].filter((post, index, array) => {
+        const key = `${post.id}-${post.slug}`;
+        return array.findIndex((item) => `${item.id}-${item.slug}` === key) === index;
+      });
+
+      setPosts(merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     } catch (error) {
       console.error("Error fetching job offers:", error);
       setPosts([]);
@@ -137,9 +166,9 @@ const JobOffers = () => {
                       dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                     />
                     <p className="text-muted-foreground mb-4 line-clamp-3">
-                      {stripHtml(post.excerpt.rendered)}
+                      {stripHtml(post.excerpt?.rendered || "") || "Job opportunity details available in the listing."}
                     </p>
-                    <Link to={`/news/${post.slug}`}>
+                    <Link to={`/offers/${post.slug}`}>
                       <Badge
                         variant="outline"
                         className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
