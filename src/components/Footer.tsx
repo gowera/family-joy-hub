@@ -81,6 +81,11 @@ const Footer = () => {
                   Survey Statistics
                 </Link>
               </li>
+              <li>
+                <Link to="/jobs" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Job Opportunities
+                </Link>
+              </li>
             </ul>
           </div>
 
