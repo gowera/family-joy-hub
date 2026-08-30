@@ -169,7 +169,7 @@ const JobOffers = () => {
                     <p className="text-muted-foreground mb-4 line-clamp-3">
                       {stripHtml(post.excerpt?.rendered || "") || "Job opportunity details available in the listing."}
                     </p>
-                    <Link to={`/offers/${post.slug}`}>
+                    <Link to={`/poste/${post.slug}`}>
                       <Badge
                         variant="outline"
                         className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"

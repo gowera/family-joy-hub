@@ -60,7 +60,11 @@ const AppRoutes = () => {
         <Route path="/survey-stats" element={<PublicSurveyStats />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/videos" element={<Videos />} />
+        <Route path="/offers" element={<JobOffers />} />
+        <Route path="/offers/:slug" element={<NewsArticle />} />
+        <Route path="/poste/:slug" element={<NewsArticle />} />
         <Route path="/jobs" element={<JobOffers />} />
+        <Route path="/jobs/:slug" element={<NewsArticle />} />
         <Route path="/v/:videoId" element={<Videos />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
