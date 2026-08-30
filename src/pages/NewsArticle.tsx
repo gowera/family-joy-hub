@@ -271,7 +271,7 @@ const NewsArticle = () => {
                     [&_iframe]:max-w-full [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:h-auto [&_iframe]:rounded-xl
                     [&_video]:max-w-full [&_video]:h-auto [&_video]:rounded-xl
                     [&_figure]:max-w-full [&_figure]:my-6 [&_figure]:mx-0
-                    [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:block
+                    [&_table]:w-full [&_table]:border-collapse [&_table]:border [&_table]:border-border [&_table]:overflow-hidden [&_table]:rounded-lg [&_thead]:bg-muted [&_thead_th]:text-left [&_th]:border [&_th]:border-border [&_th]:bg-muted [&_th]:px-3 [&_th]:py-2 [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 [&_tr:nth-child(even)]:bg-muted/30
                     [&>p]:mb-6 [&>p]:leading-relaxed [&>p]:text-foreground/90 [&>p]:break-words
                     [&_p]:break-words
                     [&>h1]:mt-10 [&>h1]:mb-6 [&>h1]:font-heading [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-bold [&>h1]:break-words
