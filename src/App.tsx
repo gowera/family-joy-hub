@@ -57,6 +57,7 @@ const AppRoutes = () => {
         <Route path="/survey/children" element={<SurveyChildren />} />
         <Route path="/survey/parents" element={<SurveyParent />} />
         <Route path="/survey/community" element={<SurveyCommunity />} />
+        <Route path="/survey/unity-circle" element={<SurveyUnityFeedback />} />
         <Route path="/unity-circle" element={<UnityCircle />} />
         <Route path="/survey-stats" element={<PublicSurveyStats />} />
         <Route path="/gallery" element={<Gallery />} />
