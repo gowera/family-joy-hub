@@ -21,7 +21,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Validate input
     if (
       typeof surveyType !== "string" ||
-      !["children", "parent", "community", "unity_circle"].includes(surveyType) ||
+      !["children", "parent", "community", "unity_circle", "unity_feedback"].includes(surveyType) ||
       !answers ||
       typeof answers !== "object" ||
       JSON.stringify(answers).length > 50000
@@ -57,6 +57,9 @@ const handler = async (req: Request): Promise<Response> => {
     } else if (surveyType === "community") {
       subject = `Community Survey - Voices of Happiness (${new Date().toLocaleDateString("en-GB")})`;
       htmlBody = buildCommunitySurveyHtml(answers);
+    } else if (surveyType === "unity_feedback") {
+      subject = `Unity Circle - Quick Feedback Survey (${new Date().toLocaleDateString("en-GB")})`;
+      htmlBody = buildUnityFeedbackHtml(answers);
     } else if (surveyType === "unity_circle") {
       subject = `Unity Circle Registration & Consent (${new Date().toLocaleDateString("en-GB")})`;
       htmlBody = buildUnityCircleHtml(answers);
@@ -104,6 +107,38 @@ function formatAnswer(val: any): string {
   if (typeof val === "string") return escapeHtml(val);
   if (typeof val === "boolean") return val ? "Yes" : "No";
   return String(val);
+}
+
+function buildUnityFeedbackHtml(a: Record<string, any>): string {
+  const row = (label: string, val: any) =>
+    `<div class="field"><span class="label">${label}:</span> <span class="value">${formatAnswer(val ?? "-")}</span></div>`;
+  return `
+    <!DOCTYPE html><html><head><style>
+      body{font-family:Arial,sans-serif;color:#333;line-height:1.6}
+      .container{max-width:600px;margin:0 auto;padding:20px}
+      h1{color:#FF1493;border-bottom:2px solid #FF1493;padding-bottom:10px}
+      .field{margin:8px 0;padding:10px;background:#f9f9f9;border-radius:5px}
+      .label{font-weight:bold;color:#666}.value{color:#333}
+      .footer{margin-top:30px;padding-top:20px;border-top:1px solid #ddd;color:#666;font-size:12px}
+    </style></head><body><div class="container">
+      <h1>\u{1F91D} The Unity Circle – Quick Feedback Survey</h1>
+      ${row("Session date", a.sessionDate)}
+      ${row("Enjoyed today's session", a.enjoyment)}
+      ${row("Activities enjoyed", a.activities)}
+      ${a.activitiesOther ? row("Other activity", a.activitiesOther) : ""}
+      ${row("Feels happier", a.feelHappier)}
+      ${row("Feels more connected", a.feelConnected)}
+      ${row("Feels more active", a.feelActive)}
+      ${row("Feels welcome & included", a.feelWelcome)}
+      ${row("Would attend another session", a.wouldReturn)}
+      ${a.enjoyedMost ? row("Enjoyed most", a.enjoyedMost) : ""}
+      ${a.improvements ? row("Suggested improvements", a.improvements) : ""}
+      ${a.anythingElse ? row("Anything else", a.anythingElse) : ""}
+      <div class="footer">
+        <p>Submitted on: ${new Date().toLocaleString("en-GB", { timeZone: "Europe/London" })}</p>
+        <p>Happiness Comes First – Building Stronger Communities, Inspiring Happier Lives.</p>
+      </div>
+    </div></body></html>`;
 }
 
 function buildChildrenSurveyHtml(a: Record<string, any>): string {
