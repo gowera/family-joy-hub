@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, BarChart3, Users, Shield, Heart, TrendingUp, Download } from "lucide-react";
+import { Loader2, BarChart3, Users, Shield, Heart, TrendingUp, Download, ClipboardList } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import LanguageToggle from "@/components/LanguageToggle";
 import Navigation from "@/components/Navigation";
@@ -114,6 +114,7 @@ const PublicSurveyStats = () => {
   const childrenResponses = useMemo(() => responses.filter(r => r.survey_type === "children"), [responses]);
   const parentResponses = useMemo(() => responses.filter(r => r.survey_type === "parent"), [responses]);
   const communityResponses = useMemo(() => responses.filter(r => r.survey_type === "community"), [responses]);
+  const unityFeedbackResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_feedback"), [responses]);
 
   const countField = (data: SurveyResponse[], field: string) => {
     const counts: Record<string, number> = {};
@@ -151,6 +152,7 @@ const PublicSurveyStats = () => {
       childrenCount: childrenResponses.length,
       parentCount: parentResponses.length,
       communityCount: communityResponses.length,
+      unityFeedbackCount: unityFeedbackResponses.length,
       sections: [
         {
           title: "Digital Safety Survey",
@@ -203,6 +205,18 @@ const PublicSurveyStats = () => {
             { title: t("Assez d'opportunités", "Enough opportunities"), data: countField(communityResponses, "enoughOpportunities") },
           ],
         },
+        {
+          title: t("Unity Circle – Retour rapide", "Unity Circle – Quick Feedback"),
+          charts: [
+            { title: t("Appréciation de la séance", "Session enjoyment"), data: countField(unityFeedbackResponses, "enjoyment") },
+            { title: t("Activités appréciées", "Activities enjoyed"), data: countArrayField(unityFeedbackResponses, "activities") },
+            { title: t("Se sent plus heureux", "Feels happier"), data: countField(unityFeedbackResponses, "feelHappier") },
+            { title: t("Se sent plus connecté", "Feels more connected"), data: countField(unityFeedbackResponses, "feelConnected") },
+            { title: t("Se sent plus actif", "Feels more active"), data: countField(unityFeedbackResponses, "feelActive") },
+            { title: t("Se sent bienvenu et inclus", "Feels welcome and included"), data: countField(unityFeedbackResponses, "feelWelcome") },
+            { title: t("Reviendrait à une séance", "Would return"), data: countField(unityFeedbackResponses, "wouldReturn") },
+          ],
+        },
       ],
     });
   };
@@ -243,7 +257,7 @@ const PublicSurveyStats = () => {
         </div>
 
         {/* Summary cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
           <Card>
             <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
               <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg"><BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" /></div>
@@ -280,6 +294,15 @@ const PublicSurveyStats = () => {
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+              <div className="bg-orange-500/10 p-1.5 sm:p-2 rounded-lg"><ClipboardList className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" /></div>
+              <div>
+                <p className="text-lg sm:text-2xl font-bold">{unityFeedbackResponses.length}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">Unity Circle</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Submissions over time */}
@@ -311,6 +334,9 @@ const PublicSurveyStats = () => {
             </TabsTrigger>
             <TabsTrigger value="community" className="flex-1 min-w-[90px] text-[10px] sm:text-xs md:text-sm px-2 py-1.5">
               <Heart className="w-3 h-3 mr-1 hidden sm:inline" />{t("Communauté", "Community")}
+            </TabsTrigger>
+            <TabsTrigger value="unity_feedback" className="flex-1 min-w-[90px] text-[10px] sm:text-xs md:text-sm px-2 py-1.5">
+              <ClipboardList className="w-3 h-3 mr-1 hidden sm:inline" />Unity Circle
             </TabsTrigger>
           </TabsList>
 
@@ -373,6 +399,21 @@ const PublicSurveyStats = () => {
                 <PieChartCard title={t("Intéressé par le programme", "Interested in programme")} data={countField(communityResponses, "interestedInProgramme")} noDataText={noData} />
                 <BarChartCard title={t("Facteurs de participation", "Attendance factors")} data={countArrayField(communityResponses, "attendanceFactors")} noDataText={noData} />
                 <PieChartCard title={t("Assez d'opportunités", "Enough opportunities")} data={countField(communityResponses, "enoughOpportunities")} noDataText={noData} />
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent value="unity_feedback" className="space-y-4 mt-4">
+            {unityFeedbackResponses.length === 0 ? (
+              <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune réponse pour le moment", "No responses yet")}</CardContent></Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <PieChartCard title={t("Appréciation de la séance", "Session enjoyment")} data={countField(unityFeedbackResponses, "enjoyment")} noDataText={noData} />
+                <BarChartCard title={t("Activités appréciées", "Activities enjoyed")} data={countArrayField(unityFeedbackResponses, "activities")} noDataText={noData} />
+                <PieChartCard title={t("Se sent plus heureux", "Feels happier")} data={countField(unityFeedbackResponses, "feelHappier")} noDataText={noData} />
+                <PieChartCard title={t("Se sent plus connecté", "Feels more connected")} data={countField(unityFeedbackResponses, "feelConnected")} noDataText={noData} />
+                <PieChartCard title={t("Se sent plus actif", "Feels more active")} data={countField(unityFeedbackResponses, "feelActive")} noDataText={noData} />
+                <PieChartCard title={t("Se sent bienvenu et inclus", "Feels welcome and included")} data={countField(unityFeedbackResponses, "feelWelcome")} noDataText={noData} />
+                <PieChartCard title={t("Reviendrait à une séance", "Would return to a session")} data={countField(unityFeedbackResponses, "wouldReturn")} noDataText={noData} />
               </div>
             )}
           </TabsContent>
