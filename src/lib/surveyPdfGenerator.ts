@@ -14,6 +14,7 @@ interface SurveyPdfData {
   childrenCount: number;
   parentCount: number;
   communityCount: number;
+  unityFeedbackCount?: number;
   sections: SurveySection[];
 }
 
@@ -61,12 +62,14 @@ export const generateSurveyStatsPdf = (data: SurveyPdfData) => {
       "Digital Safety",
       t("Parents", "Parents"),
       t("Communauté", "Community"),
+      "Unity Circle",
     ]],
     body: [[
       data.totalResponses.toString(),
       data.childrenCount.toString(),
       data.parentCount.toString(),
       data.communityCount.toString(),
+      (data.unityFeedbackCount ?? 0).toString(),
     ]],
     theme: "grid",
     headStyles: { fillColor: [PINK[0], PINK[1], PINK[2]], fontSize: 10 },

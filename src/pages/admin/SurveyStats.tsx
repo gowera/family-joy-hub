@@ -42,6 +42,7 @@ const SurveyStats = () => {
   const parentResponses = useMemo(() => responses.filter(r => r.survey_type === "parent"), [responses]);
   const communityResponses = useMemo(() => responses.filter(r => r.survey_type === "community"), [responses]);
   const unityCircleResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_circle"), [responses]);
+  const unityFeedbackResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_feedback"), [responses]);
 
   // Helper to count occurrences of a field value
   const countField = (data: SurveyResponse[], field: string) => {
