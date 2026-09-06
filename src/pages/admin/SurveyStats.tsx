@@ -344,6 +344,23 @@ const SurveyStats = () => {
               </div>
             )}
           </TabsContent>
+
+          {/* UNITY CIRCLE QUICK FEEDBACK */}
+          <TabsContent value="unity_feedback" className="space-y-4 mt-4">
+            {unityFeedbackResponses.length === 0 ? (
+              <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune réponse pour le moment", "No responses yet")}</CardContent></Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <PieChartCard title={t("Appréciation de la séance", "Session enjoyment")} data={countField(unityFeedbackResponses, "enjoyment")} />
+                <BarChartCard title={t("Activités appréciées", "Activities enjoyed")} data={countArrayField(unityFeedbackResponses, "activities")} />
+                <PieChartCard title={t("Se sent plus heureux", "Feels happier")} data={countField(unityFeedbackResponses, "feelHappier")} />
+                <PieChartCard title={t("Se sent plus connecté", "Feels more connected")} data={countField(unityFeedbackResponses, "feelConnected")} />
+                <PieChartCard title={t("Se sent plus actif", "Feels more active")} data={countField(unityFeedbackResponses, "feelActive")} />
+                <PieChartCard title={t("Se sent bienvenu et inclus", "Feels welcome and included")} data={countField(unityFeedbackResponses, "feelWelcome")} />
+                <PieChartCard title={t("Reviendrait à une séance", "Would return")} data={countField(unityFeedbackResponses, "wouldReturn")} />
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </div>
     </AdminLayout>
