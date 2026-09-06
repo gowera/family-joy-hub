@@ -236,6 +236,10 @@ const SurveyStats = () => {
               <ClipboardList className="w-3 h-3 mr-1 hidden md:inline" />
               Unity Circle
             </TabsTrigger>
+            <TabsTrigger value="unity_feedback" className="flex-1 min-w-[120px] text-xs md:text-sm">
+              <ClipboardList className="w-3 h-3 mr-1 hidden md:inline" />
+              {t("UC – Retour", "UC – Feedback")}
+            </TabsTrigger>
           </TabsList>
 
           {/* CHILDREN SURVEY */}
