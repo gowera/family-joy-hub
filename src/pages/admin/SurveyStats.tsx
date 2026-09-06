@@ -42,6 +42,7 @@ const SurveyStats = () => {
   const parentResponses = useMemo(() => responses.filter(r => r.survey_type === "parent"), [responses]);
   const communityResponses = useMemo(() => responses.filter(r => r.survey_type === "community"), [responses]);
   const unityCircleResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_circle"), [responses]);
+  const unityFeedbackResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_feedback"), [responses]);
 
   // Helper to count occurrences of a field value
   const countField = (data: SurveyResponse[], field: string) => {
@@ -187,6 +188,15 @@ const SurveyStats = () => {
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="bg-purple-500/10 p-2 rounded-lg"><ClipboardList className="w-5 h-5 text-purple-500" /></div>
+              <div>
+                <p className="text-2xl font-bold">{unityFeedbackResponses.length}</p>
+                <p className="text-xs text-muted-foreground">{t("Unity Circle – Retour", "Unity Circle – Feedback")}</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Submissions over time */}
@@ -225,6 +235,10 @@ const SurveyStats = () => {
             <TabsTrigger value="unity_circle" className="flex-1 min-w-[120px] text-xs md:text-sm">
               <ClipboardList className="w-3 h-3 mr-1 hidden md:inline" />
               Unity Circle
+            </TabsTrigger>
+            <TabsTrigger value="unity_feedback" className="flex-1 min-w-[120px] text-xs md:text-sm">
+              <ClipboardList className="w-3 h-3 mr-1 hidden md:inline" />
+              {t("UC – Retour", "UC – Feedback")}
             </TabsTrigger>
           </TabsList>
 
@@ -327,6 +341,23 @@ const SurveyStats = () => {
                     </Card>
                   );
                 })}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* UNITY CIRCLE QUICK FEEDBACK */}
+          <TabsContent value="unity_feedback" className="space-y-4 mt-4">
+            {unityFeedbackResponses.length === 0 ? (
+              <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune réponse pour le moment", "No responses yet")}</CardContent></Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <PieChartCard title={t("Appréciation de la séance", "Session enjoyment")} data={countField(unityFeedbackResponses, "enjoyment")} />
+                <BarChartCard title={t("Activités appréciées", "Activities enjoyed")} data={countArrayField(unityFeedbackResponses, "activities")} />
+                <PieChartCard title={t("Se sent plus heureux", "Feels happier")} data={countField(unityFeedbackResponses, "feelHappier")} />
+                <PieChartCard title={t("Se sent plus connecté", "Feels more connected")} data={countField(unityFeedbackResponses, "feelConnected")} />
+                <PieChartCard title={t("Se sent plus actif", "Feels more active")} data={countField(unityFeedbackResponses, "feelActive")} />
+                <PieChartCard title={t("Se sent bienvenu et inclus", "Feels welcome and included")} data={countField(unityFeedbackResponses, "feelWelcome")} />
+                <PieChartCard title={t("Reviendrait à une séance", "Would return")} data={countField(unityFeedbackResponses, "wouldReturn")} />
               </div>
             )}
           </TabsContent>

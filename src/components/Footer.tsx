@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-neutral-950 border-t border-border mt-20 w-full">
       <div className="w-full px-4 md:px-8 lg:px-16 py-12 text-primary-foreground">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-3 mb-4">
@@ -22,72 +22,61 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Discover */}
           <div>
-            <h4 className="font-heading font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-heading font-semibold mb-4">Discover</h4>
             <ul className="space-y-2">
-              <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/programs" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Our Programs
-                </Link>
-              </li>
-              <li>
-                <Link to="/impact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Impact & Evaluation
-                </Link>
-              </li>
-              <li>
-                <Link to="/safeguarding" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Safeguarding Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/survey/children" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Digital Safety Survey (Children)
-                </Link>
-              </li>
-              <li>
-                <Link to="/survey/parents" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Parent Questionnaire
-                </Link>
-              </li>
-              <li>
-                <Link to="/survey/community" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Community Survey
-                </Link>
-              </li>
-              <li>
-                <Link to="/unity-circle" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  The unity circle
-                </Link>
-              </li>
-              <li>
-                <Link to="/gallery" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link to="/videos" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Videos
-                </Link>
-              </li>
-              <li>
-                <Link to="/survey-stats" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Survey Statistics
-                </Link>
-              </li>
-              <li>
-                <Link to="/jobs" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Job Opportunities
-                </Link>
-              </li>
+              {[
+                { to: "/about", label: "About Us" },
+                { to: "/programs", label: "Our Programs" },
+                { to: "/impact", label: "Impact & Evaluation" },
+                { to: "/safeguarding", label: "Safeguarding Policy" },
+                { to: "/gallery", label: "Gallery" },
+                { to: "/videos", label: "Videos" },
+                { to: "/jobs", label: "Job Opportunities" },
+              ].map(link => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
+
+          {/* Surveys & Statistics */}
+          <div>
+            <h4 className="font-heading font-semibold mb-4">Surveys & Statistics</h4>
+            <ul className="space-y-2">
+              {[
+                { to: "/survey/children", label: "Digital Safety Survey (Children)" },
+                { to: "/survey/parents", label: "Parent Questionnaire" },
+                { to: "/survey/community", label: "Community Survey" },
+                { to: "/survey-stats", label: "Survey Statistics" },
+              ].map(link => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <h4 className="font-heading font-semibold mt-6 mb-4">The Unity Circle</h4>
+            <ul className="space-y-2">
+              {[
+                { to: "/unity-circle", label: "About The Unity Circle" },
+                { to: "/survey/unity-circle", label: "Quick Feedback Survey" },
+              ].map(link => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
 
           {/* Contact Info */}
           <div>
