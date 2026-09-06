@@ -188,6 +188,15 @@ const SurveyStats = () => {
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="bg-purple-500/10 p-2 rounded-lg"><ClipboardList className="w-5 h-5 text-purple-500" /></div>
+              <div>
+                <p className="text-2xl font-bold">{unityFeedbackResponses.length}</p>
+                <p className="text-xs text-muted-foreground">{t("Unity Circle – Retour", "Unity Circle – Feedback")}</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Submissions over time */}
