@@ -37,6 +37,31 @@ const consentOptions = [
 ];
 const activityOptions = ["Family fitness / movement", "Afrobeat dance / Zumba", "African music / cultural activities", "Storytelling / heritage", "Arts & crafts / creative wellbeing", "Family connection / peer support", "Activities for neurodivergent children", "Community events / celebrations"];
 
+type TextFieldProps = {
+  label: string;
+  name: keyof FormState;
+  value: string;
+  type?: string;
+  required?: boolean;
+  onValueChange: (name: keyof FormState, value: string) => void;
+};
+
+const TextField = ({ label, name, value, type = "text", required = false, onValueChange }: TextFieldProps) => (
+  <div className="space-y-2">
+    <Label htmlFor={name}>
+      {label}{required && <span className="text-primary"> *</span>}
+    </Label>
+    <Input id={name} name={name} type={type} value={value} onChange={(event) => onValueChange(name, event.target.value)} required={required} />
+  </div>
+);
+
+const TextAreaField = ({ label, name, value, onValueChange }: Omit<TextFieldProps, "type" | "required">) => (
+  <div className="space-y-2">
+    <Label htmlFor={name}>{label}</Label>
+    <Textarea id={name} name={name} value={value} onChange={(event) => onValueChange(name, event.target.value)} rows={3} />
+  </div>
+);
+
 const UnityCircle = () => {
   const [form, setForm] = useState(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,10 +89,8 @@ const UnityCircle = () => {
     }
   };
 
-  const Field = ({ label, name, type = "text", required = false }: { label: string; name: keyof FormState; type?: string; required?: boolean }) => (
-    <div className="space-y-2"><Label htmlFor={name}>{label}{required && <span className="text-primary"> *</span>}</Label><Input id={name} type={type} value={form[name] as string} onChange={(event) => set(name, event.target.value)} required={required} /></div>
-  );
-  const Area = ({ label, name }: { label: string; name: keyof FormState }) => <div className="space-y-2"><Label htmlFor={name}>{label}</Label><Textarea id={name} value={form[name] as string} onChange={(event) => set(name, event.target.value)} rows={3} /></div>;
+  const Field = ({ label, name, type = "text", required = false }: { label: string; name: keyof FormState; type?: string; required?: boolean }) => <TextField label={label} name={name} type={type} required={required} value={form[name] as string} onValueChange={set} />;
+  const Area = ({ label, name }: { label: string; name: keyof FormState }) => <TextAreaField label={label} name={name} value={form[name] as string} onValueChange={set} />;
   const Choice = ({ label, name, options }: { label: string; name: "parentCarer" | "photoConsent" | "attendAgain" | "recommend"; options: string[] }) => <div className="space-y-3"><Label>{label}</Label><RadioGroup value={form[name]} onValueChange={(value) => set(name, value)} className="grid gap-2 sm:grid-cols-2">{options.map((option) => <div className="flex items-center gap-2" key={option}><RadioGroupItem value={option} id={`${name}-${option}`} /><Label htmlFor={`${name}-${option}`} className="font-normal">{option}</Label></div>)}</RadioGroup></div>;
   const Checks = ({ options, name }: { options: string[]; name: "desiredActivities" | "consents" | "communicationConsent" }) => <div className="grid gap-3 sm:grid-cols-2">{options.map((option) => <label key={option} className="flex items-start gap-3 rounded-md border border-border p-3 cursor-pointer hover:bg-accent/40"><Checkbox checked={form[name].includes(option)} onCheckedChange={() => toggle(name, option)} /><span className="text-sm leading-5">{option}</span></label>)}</div>;
 
