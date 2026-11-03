@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart, Users, Target, TrendingUp, Music, Palette, Activity } from "lucide-react";
+import { Heart, Users, Target, TrendingUp, Music, Palette, Activity, Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import HeroSlider from "@/components/HeroSlider";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
