@@ -11,7 +11,59 @@ import activity1 from "@/assets/activity-1.jpeg";
 import activity2 from "@/assets/activity-2.jpeg";
 import activity3 from "@/assets/activity-3.jpeg";
 import inclusionIllustration from "@/assets/inclusion-illustration.jpg";
+
+interface WordPressPost {
+  id: number;
+  slug: string;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  date: string;
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{
+      source_url: string;
+      alt_text: string;
+    }>;
+  };
+}
+
 const Home = () => {
+  const [blogPosts, setBlogPosts] = useState<WordPressPost[]>([]);
+  const [blogLoading, setBlogLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await fetch(
+          "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=3"
+        );
+        const data = await response.json();
+        if (active) setBlogPosts(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        if (active) setBlogLoading(false);
+      }
+    };
+    fetchBlogPosts();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+  const stripHtml = (html: string) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  };
+
   const stats = [{
     icon: Users,
     value: "500+",
