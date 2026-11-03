@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart, Users, Target, TrendingUp, Music, Palette, Activity } from "lucide-react";
+import { Heart, Users, Target, TrendingUp, Music, Palette, Activity, Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import HeroSlider from "@/components/HeroSlider";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -9,7 +11,59 @@ import activity1 from "@/assets/activity-1.jpeg";
 import activity2 from "@/assets/activity-2.jpeg";
 import activity3 from "@/assets/activity-3.jpeg";
 import inclusionIllustration from "@/assets/inclusion-illustration.jpg";
+
+interface WordPressPost {
+  id: number;
+  slug: string;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  date: string;
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{
+      source_url: string;
+      alt_text: string;
+    }>;
+  };
+}
+
 const Home = () => {
+  const [blogPosts, setBlogPosts] = useState<WordPressPost[]>([]);
+  const [blogLoading, setBlogLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await fetch(
+          "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=3"
+        );
+        const data = await response.json();
+        if (active) setBlogPosts(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        if (active) setBlogLoading(false);
+      }
+    };
+    fetchBlogPosts();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+  const stripHtml = (html: string) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  };
+
   const stats = [{
     icon: Users,
     value: "500+",
@@ -157,6 +211,86 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+              From Our Blog
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Stories, updates and voices from our community.
+            </p>
+          </div>
+
+          {blogLoading ? (
+            <div className="text-center py-16">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <p className="mt-4 text-muted-foreground">Loading articles...</p>
+            </div>
+          ) : blogPosts.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-xl text-muted-foreground">No articles found.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8">
+              {blogPosts.map((post, index) => (
+                <Card
+                  key={post.id}
+                  className="overflow-hidden shadow-card hover:shadow-warm transition-all duration-300 animate-slide-up flex flex-col h-full"
+                  style={{ animationDelay: `${index * 120}ms` }}
+                >
+                  {post._embedded?.["wp:featuredmedia"]?.[0] && (
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        src={post._embedded["wp:featuredmedia"][0].source_url}
+                        alt={
+                          post._embedded["wp:featuredmedia"][0].alt_text ||
+                          post.title.rendered
+                        }
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+                  <CardContent className="p-6 flex flex-col flex-1">
+                    <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-3">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDate(post.date)}</span>
+                    </div>
+                    <h3
+                      className="text-xl font-heading font-semibold mb-3 line-clamp-2"
+                      dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                    />
+                    <p className="text-muted-foreground mb-4 line-clamp-3">
+                      {stripHtml(post.excerpt.rendered)}
+                    </p>
+                    <Link
+                      to={`/news/${post.slug}`}
+                      className="mt-auto inline-flex w-fit"
+                    >
+                      <Badge
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+                      >
+                        Read More <ArrowRight className="w-3 h-3 ml-1" />
+                      </Badge>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          <div className="text-center mt-12">
+            <Link to="/news">
+              <Button size="lg" variant="outline">
+                View All Articles
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
