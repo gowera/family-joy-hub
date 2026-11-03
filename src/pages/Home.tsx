@@ -215,6 +215,86 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Blog Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+              From Our Blog
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Stories, updates and voices from our community.
+            </p>
+          </div>
+
+          {blogLoading ? (
+            <div className="text-center py-16">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <p className="mt-4 text-muted-foreground">Loading articles...</p>
+            </div>
+          ) : blogPosts.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-xl text-muted-foreground">No articles found.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8">
+              {blogPosts.map((post, index) => (
+                <Card
+                  key={post.id}
+                  className="overflow-hidden shadow-card hover:shadow-warm transition-all duration-300 animate-slide-up flex flex-col h-full"
+                  style={{ animationDelay: `${index * 120}ms` }}
+                >
+                  {post._embedded?.["wp:featuredmedia"]?.[0] && (
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        src={post._embedded["wp:featuredmedia"][0].source_url}
+                        alt={
+                          post._embedded["wp:featuredmedia"][0].alt_text ||
+                          post.title.rendered
+                        }
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+                  <CardContent className="p-6 flex flex-col flex-1">
+                    <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-3">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDate(post.date)}</span>
+                    </div>
+                    <h3
+                      className="text-xl font-heading font-semibold mb-3 line-clamp-2"
+                      dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                    />
+                    <p className="text-muted-foreground mb-4 line-clamp-3">
+                      {stripHtml(post.excerpt.rendered)}
+                    </p>
+                    <Link
+                      to={`/news/${post.slug}`}
+                      className="mt-auto inline-flex w-fit"
+                    >
+                      <Badge
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+                      >
+                        Read More <ArrowRight className="w-3 h-3 ml-1" />
+                      </Badge>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          <div className="text-center mt-12">
+            <Link to="/news">
+              <Button size="lg" variant="outline">
+                View All Articles
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-card-gradient text-white">
         <div className="container mx-auto px-4 text-center">
