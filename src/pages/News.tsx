@@ -22,22 +22,31 @@ interface WordPressPost {
   };
 }
 
-const News = () => {
+interface NewsProps { categorySlug?: string; title?: string; subtitle?: string }
+
+const News = ({ categorySlug, title = "News & Updates", subtitle = "Stay informed about our latest activities and community stories" }: NewsProps = {}) => {
   const [posts, setPosts] = useState<WordPressPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    setLoading(true);
     fetchPosts();
-  }, []);
+  }, [categorySlug]);
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(
-        "https://happynesscomefirst.com/wp-json/wp/v2/posts?_embed&per_page=12"
-      );
+      const base = "https://happynesscomefirst.com/wp-json/wp/v2";
+      let catParam = "";
+      if (categorySlug) {
+        const cr = await fetch(`${base}/categories?slug=${categorySlug}`);
+        const cats = await cr.json();
+        if (!Array.isArray(cats) || !cats[0]) { setPosts([]); return; }
+        catParam = `&categories=${cats[0].id}`;
+      }
+      const response = await fetch(`${base}/posts?_embed&per_page=${categorySlug ? 100 : 12}${catParam}`);
       const data = await response.json();
-      setPosts(data);
+      setPosts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching posts:", error);
     } finally {
@@ -77,10 +86,10 @@ const News = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-              News & Updates
+              {title}
             </h1>
             <p className="text-xl md:text-2xl text-white/90">
-              Stay informed about our latest activities and community stories
+              {subtitle}
             </p>
           </div>
         </div>

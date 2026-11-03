@@ -67,6 +67,8 @@ const Footer = () => {
               {[
                 { to: "/unity-circle", label: "About The Unity Circle" },
                 { to: "/survey/unity-circle", label: "Quick Feedback Survey" },
+                { to: "/testimony", label: "Testimony" },
+                { to: "/united-circle", label: "United Circle Stories" },
               ].map(link => (
                 <li key={link.to}>
                   <Link to={link.to} className="text-sm text-muted-foreground hover:text-primary transition-colors">

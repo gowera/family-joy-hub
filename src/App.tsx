@@ -36,6 +36,8 @@ import PublicSurveyStats from "./pages/PublicSurveyStats";
 import Gallery from "./pages/Gallery";
 import Videos from "./pages/Videos";
 import JobOffers from "./pages/JobOffers";
+import Testimony from "./pages/Testimony";
+import UnitedCircle from "./pages/UnitedCircle";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +62,8 @@ const AppRoutes = () => {
         <Route path="/survey/unity-circle" element={<SurveyUnityFeedback />} />
         <Route path="/unity-circle" element={<UnityCircle />} />
         <Route path="/survey-stats" element={<PublicSurveyStats />} />
+        <Route path="/testimony" element={<Testimony />} />
+        <Route path="/united-circle" element={<UnitedCircle />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/offers" element={<JobOffers />} />
