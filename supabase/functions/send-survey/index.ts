@@ -280,32 +280,18 @@ function buildCommunitySurveyHtml(a: Record<string, any>): string {
 
 function buildUnityCircleHtml(a: Record<string, any>): string {
   const sections = [
-    ["Participant details", ["fullName", "dateOfBirthAge", "address", "postcode", "phone", "email", "gender", "preferredLanguage", "ethnicBackground", "parentCarer", "howHeard", "firstSessionDate"]],
-    ["Family / child participants", ["familyParticipants"]],
-    ["Emergency contact", ["emergencyName", "emergencyRelationship", "emergencyPhone", "alternativePhone", "emergencyEmail", "importantInformation"]],
-    ["Health, accessibility & support", ["accessibilityNeeds", "allergiesMedical", "sensoryAdaptation", "otherSupport"]],
-    ["What the participant would like from Unity Circle", ["desiredActivities"]],
-    ["Consent & permissions", ["consents"]],
-    ["Photo / video consent", ["photoConsent"]],
-    ["Communication consent", ["communicationConsent"]],
-    ["Participant declaration", ["declarationName", "signature", "declarationDate", "staffMember", "participantId", "registrationNotes"]],
-    ["Session feedback", ["sessionDate", "activityAttended", "feelingBefore", "feelingAfter", "enjoyedMost", "improvements", "attendAgain", "recommend"]],
+    ["Participant details", ["fullName", "phone"]],
+    ["How many people are coming", ["adults", "children", "childrenAges"]],
+    ["Allergies or additional support needs", ["supportNeeds"]],
+    ["Photo / video permission", ["photoConsent"]],
+    ["Consent", ["consent"]],
   ] as const;
 
   const labels: Record<string, string> = {
-    fullName: "Full name", dateOfBirthAge: "Date of birth / Age", address: "Address", postcode: "Postcode",
-    phone: "Phone number", email: "Email address", gender: "Gender", preferredLanguage: "Preferred language",
-    ethnicBackground: "Ethnic / cultural background", parentCarer: "Parent / carer", howHeard: "How they heard about Unity Circle",
-    firstSessionDate: "First session date", familyParticipants: "Family / child participants", emergencyName: "Emergency contact name",
-    emergencyRelationship: "Emergency contact relationship", emergencyPhone: "Emergency phone", alternativePhone: "Alternative phone",
-    emergencyEmail: "Emergency email", importantInformation: "Important information", accessibilityNeeds: "Accessibility needs",
-    allergiesMedical: "Allergies / medical information", sensoryAdaptation: "Sensory-friendly or adapted participation",
-    otherSupport: "Other support", desiredActivities: "Desired activities", consents: "Consents", photoConsent: "Photo / video consent",
-    communicationConsent: "Communication consent", declarationName: "Participant / parent-carer name", signature: "Signature",
-    declarationDate: "Declaration date", staffMember: "Staff member receiving form", participantId: "Participant ID",
-    registrationNotes: "Registration status / notes", sessionDate: "Session date", activityAttended: "Activity attended",
-    feelingBefore: "Feeling before", feelingAfter: "Feeling after", enjoyedMost: "Enjoyed most", improvements: "What could improve",
-    attendAgain: "Would attend again", recommend: "Would recommend Unity Circle",
+    fullName: "Full name", phone: "Phone / WhatsApp number",
+    adults: "Adults", children: "Children", childrenAges: "Children's ages",
+    supportNeeds: "Allergies or additional support needs",
+    photoConsent: "Photo / video permission", consent: "Consent accepted",
   };
   const content = sections.map(([title, keys]) => {
     const fields = keys.map((key) => {
