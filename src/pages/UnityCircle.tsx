@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { CheckCircle, Heart, Send } from "lucide-react";
+import { format } from "date-fns";
+import { CalendarIcon, CheckCircle, Heart, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
@@ -15,6 +19,7 @@ import Footer from "@/components/Footer";
 type FormState = {
   fullName: string;
   phone: string;
+  availabilityDate?: Date;
   adults: string;
   children: string;
   childrenAges: string;
@@ -26,6 +31,7 @@ type FormState = {
 const initialForm: FormState = {
   fullName: "",
   phone: "",
+  availabilityDate: undefined,
   adults: "",
   children: "",
   childrenAges: "",
