@@ -203,21 +203,21 @@ const UnityCircle = () => {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>3. Children's Ages</CardTitle></CardHeader>
+              <CardHeader><CardTitle>4. Children's Ages</CardTitle></CardHeader>
               <CardContent>
                 <TextField label="Children's ages" hint="If bringing children, please enter their ages. Example: 5, 8, 10." name="childrenAges" value={form.childrenAges} onValueChange={set} />
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>4. Any Allergies or Additional Support Needs? (Optional)</CardTitle></CardHeader>
+              <CardHeader><CardTitle>5. Any Allergies or Additional Support Needs? (Optional)</CardTitle></CardHeader>
               <CardContent>
                 <TextAreaField label="Allergies or support needs" hint="Please tell us anything important that will help you or your children participate safely and comfortably." name="supportNeeds" value={form.supportNeeds} onValueChange={set} />
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>5. Photo / Video Permission</CardTitle></CardHeader>
+              <CardHeader><CardTitle>6. Photo / Video Permission</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-sm text-muted-foreground">Can we use photographs or videos of you or your children for our charity's website, social media and project reports?</p>
                 <RadioGroup value={form.photoConsent} onValueChange={(value) => set("photoConsent", value)} className="grid gap-2">
@@ -232,7 +232,7 @@ const UnityCircle = () => {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>6. Consent <span className="text-primary">*</span></CardTitle></CardHeader>
+              <CardHeader><CardTitle>7. Consent <span className="text-primary">*</span></CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <label className="flex items-start gap-3 rounded-md border border-border p-3 cursor-pointer hover:bg-accent/40">
                   <Checkbox checked={form.consent} onCheckedChange={(checked) => set("consent", checked === true)} />

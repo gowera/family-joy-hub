@@ -281,6 +281,7 @@ function buildCommunitySurveyHtml(a: Record<string, any>): string {
 function buildUnityCircleHtml(a: Record<string, any>): string {
   const sections = [
     ["Participant details", ["fullName", "phone"]],
+    ["Availability date", ["availabilityDate"]],
     ["How many people are coming", ["adults", "children", "childrenAges"]],
     ["Allergies or additional support needs", ["supportNeeds"]],
     ["Photo / video permission", ["photoConsent"]],
@@ -289,6 +290,7 @@ function buildUnityCircleHtml(a: Record<string, any>): string {
 
   const labels: Record<string, string> = {
     fullName: "Full name", phone: "Phone / WhatsApp number",
+    availabilityDate: "Availability date",
     adults: "Adults", children: "Children", childrenAges: "Children's ages",
     supportNeeds: "Allergies or additional support needs",
     photoConsent: "Photo / video permission", consent: "Consent accepted",
