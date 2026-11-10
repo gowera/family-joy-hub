@@ -107,13 +107,14 @@ const UnityCircle = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!form.fullName.trim() || !form.phone.trim() || !form.adults || !form.children || !form.consent) {
-      toast({ title: "Please complete the required fields", description: "Full name, phone number, number of people coming and consent are required.", variant: "destructive" });
+    if (!form.fullName.trim() || !form.phone.trim() || !form.availabilityDate || !form.adults || !form.children || !form.consent) {
+      toast({ title: "Please complete the required fields", description: "Full name, phone number, availability date, number of people coming and consent are required.", variant: "destructive" });
       return;
     }
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("send-survey", { body: { surveyType: "unity_circle", answers: form } });
+      const answers = { ...form, availabilityDate: form.availabilityDate ? format(form.availabilityDate, "PPP") : "" };
+      const { error } = await supabase.functions.invoke("send-survey", { body: { surveyType: "unity_circle", answers } });
       if (error) throw error;
       setSubmitted(true);
       toast({ title: "Registration submitted", description: "Thank you for joining Unity Circle." });
@@ -164,7 +165,37 @@ const UnityCircle = () => {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>2. How Many People Are Coming? <span className="text-primary">*</span></CardTitle></CardHeader>
+              <CardHeader><CardTitle>2. Your Availability Date <span className="text-primary">*</span></CardTitle></CardHeader>
+              <CardContent className="space-y-2">
+                <Label htmlFor="availabilityDate">Which date are you available to attend?</Label>
+                <p className="text-sm text-muted-foreground">Select the date that works best for you and your family.</p>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="availabilityDate"
+                      variant="outline"
+                      className={cn("w-full sm:w-[280px] justify-start text-left font-normal", !form.availabilityDate && "text-muted-foreground")}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {form.availabilityDate ? format(form.availabilityDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={form.availabilityDate}
+                      onSelect={(date) => set("availabilityDate", date)}
+                      disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader><CardTitle>3. How Many People Are Coming? <span className="text-primary">*</span></CardTitle></CardHeader>
               <CardContent className="grid gap-5 sm:grid-cols-2">
                 <NumberSelect label="Adults" name="adults" value={form.adults} onValueChange={set} />
                 <NumberSelect label="Children" name="children" value={form.children} onValueChange={set} />
