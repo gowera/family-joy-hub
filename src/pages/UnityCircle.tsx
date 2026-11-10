@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { CheckCircle, Heart, Send } from "lucide-react";
+import { format } from "date-fns";
+import { CalendarIcon, CheckCircle, Heart, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
@@ -15,6 +19,7 @@ import Footer from "@/components/Footer";
 type FormState = {
   fullName: string;
   phone: string;
+  availabilityDate?: Date;
   adults: string;
   children: string;
   childrenAges: string;
@@ -26,6 +31,7 @@ type FormState = {
 const initialForm: FormState = {
   fullName: "",
   phone: "",
+  availabilityDate: undefined,
   adults: "",
   children: "",
   childrenAges: "",
@@ -101,13 +107,14 @@ const UnityCircle = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!form.fullName.trim() || !form.phone.trim() || !form.adults || !form.children || !form.consent) {
-      toast({ title: "Please complete the required fields", description: "Full name, phone number, number of people coming and consent are required.", variant: "destructive" });
+    if (!form.fullName.trim() || !form.phone.trim() || !form.availabilityDate || !form.adults || !form.children || !form.consent) {
+      toast({ title: "Please complete the required fields", description: "Full name, phone number, availability date, number of people coming and consent are required.", variant: "destructive" });
       return;
     }
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("send-survey", { body: { surveyType: "unity_circle", answers: form } });
+      const answers = { ...form, availabilityDate: form.availabilityDate ? format(form.availabilityDate, "PPP") : "" };
+      const { error } = await supabase.functions.invoke("send-survey", { body: { surveyType: "unity_circle", answers } });
       if (error) throw error;
       setSubmitted(true);
       toast({ title: "Registration submitted", description: "Thank you for joining Unity Circle." });
@@ -158,7 +165,37 @@ const UnityCircle = () => {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>2. How Many People Are Coming? <span className="text-primary">*</span></CardTitle></CardHeader>
+              <CardHeader><CardTitle>2. Your Availability Date <span className="text-primary">*</span></CardTitle></CardHeader>
+              <CardContent className="space-y-2">
+                <Label htmlFor="availabilityDate">Which date are you available to attend?</Label>
+                <p className="text-sm text-muted-foreground">Select the date that works best for you and your family.</p>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="availabilityDate"
+                      variant="outline"
+                      className={cn("w-full sm:w-[280px] justify-start text-left font-normal", !form.availabilityDate && "text-muted-foreground")}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {form.availabilityDate ? format(form.availabilityDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={form.availabilityDate}
+                      onSelect={(date) => set("availabilityDate", date)}
+                      disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader><CardTitle>3. How Many People Are Coming? <span className="text-primary">*</span></CardTitle></CardHeader>
               <CardContent className="grid gap-5 sm:grid-cols-2">
                 <NumberSelect label="Adults" name="adults" value={form.adults} onValueChange={set} />
                 <NumberSelect label="Children" name="children" value={form.children} onValueChange={set} />
@@ -166,21 +203,21 @@ const UnityCircle = () => {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>3. Children's Ages</CardTitle></CardHeader>
+              <CardHeader><CardTitle>4. Children's Ages</CardTitle></CardHeader>
               <CardContent>
                 <TextField label="Children's ages" hint="If bringing children, please enter their ages. Example: 5, 8, 10." name="childrenAges" value={form.childrenAges} onValueChange={set} />
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>4. Any Allergies or Additional Support Needs? (Optional)</CardTitle></CardHeader>
+              <CardHeader><CardTitle>5. Any Allergies or Additional Support Needs? (Optional)</CardTitle></CardHeader>
               <CardContent>
                 <TextAreaField label="Allergies or support needs" hint="Please tell us anything important that will help you or your children participate safely and comfortably." name="supportNeeds" value={form.supportNeeds} onValueChange={set} />
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>5. Photo / Video Permission</CardTitle></CardHeader>
+              <CardHeader><CardTitle>6. Photo / Video Permission</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-sm text-muted-foreground">Can we use photographs or videos of you or your children for our charity's website, social media and project reports?</p>
                 <RadioGroup value={form.photoConsent} onValueChange={(value) => set("photoConsent", value)} className="grid gap-2">
@@ -195,7 +232,7 @@ const UnityCircle = () => {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>6. Consent <span className="text-primary">*</span></CardTitle></CardHeader>
+              <CardHeader><CardTitle>7. Consent <span className="text-primary">*</span></CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <label className="flex items-start gap-3 rounded-md border border-border p-3 cursor-pointer hover:bg-accent/40">
                   <Checkbox checked={form.consent} onCheckedChange={(checked) => set("consent", checked === true)} />
