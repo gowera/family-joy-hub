@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { isUnityCircleSessionDate, unityCircleDateHint } from "@/lib/unityCircleDates";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
@@ -168,7 +169,7 @@ const UnityCircle = () => {
               <CardHeader><CardTitle>2. Your Availability Date <span className="text-primary">*</span></CardTitle></CardHeader>
               <CardContent className="space-y-2">
                 <Label htmlFor="availabilityDate">Which date are you available to attend?</Label>
-                <p className="text-sm text-muted-foreground">Select the date that works best for you and your family.</p>
+                <p className="text-sm text-muted-foreground">{unityCircleDateHint()}</p>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -185,7 +186,7 @@ const UnityCircle = () => {
                       mode="single"
                       selected={form.availabilityDate}
                       onSelect={(date) => set("availabilityDate", date)}
-                      disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                      disabled={(date) => !isUnityCircleSessionDate(date)}
                       initialFocus
                       className={cn("p-3 pointer-events-auto")}
                     />
