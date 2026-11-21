@@ -6,7 +6,25 @@ import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
 
-const slides = [
+interface Slide {
+  image: string;
+  title: string;
+  subtitle: string;
+}
+
+interface WordPressPost {
+  id: number;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{
+      source_url: string;
+      alt_text: string;
+    }>;
+  };
+}
+
+const fallbackSlides: Slide[] = [
   {
     image: hero1,
     title: "Where Everyone Belongs",
@@ -24,8 +42,49 @@ const slides = [
   },
 ];
 
+const UNITY_CIRCLE_CATEGORY_ID = 26; // WordPress "united circle" category
+
+const stripHtml = (html: string) => {
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  return temp.textContent || temp.innerText || "";
+};
+
 const HeroSlider = () => {
+  const [slides, setSlides] = useState<Slide[]>(fallbackSlides);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    const fetchUnityCircleSlides = async () => {
+      try {
+        const response = await fetch(
+          `https://happynesscomefirst.com/wp-json/wp/v2/posts?categories=${UNITY_CIRCLE_CATEGORY_ID}&_embed&per_page=6`
+        );
+        const data: WordPressPost[] = await response.json();
+        if (!active || !Array.isArray(data)) return;
+
+        const wpSlides: Slide[] = data
+          .filter((post) => post._embedded?.["wp:featuredmedia"]?.[0]?.source_url)
+          .map((post) => ({
+            image: post._embedded!["wp:featuredmedia"]![0].source_url,
+            title: stripHtml(post.title.rendered),
+            subtitle: stripHtml(post.excerpt.rendered).slice(0, 140),
+          }));
+
+        if (wpSlides.length > 0) {
+          setSlides(wpSlides);
+          setCurrentSlide(0);
+        }
+      } catch (error) {
+        console.error("Error fetching Unity Circle slides:", error);
+      }
+    };
+    fetchUnityCircleSlides();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,7 +92,7 @@ const HeroSlider = () => {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
