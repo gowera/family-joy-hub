@@ -115,6 +115,23 @@ const PublicSurveyStats = () => {
   const parentResponses = useMemo(() => responses.filter(r => r.survey_type === "parent"), [responses]);
   const communityResponses = useMemo(() => responses.filter(r => r.survey_type === "community"), [responses]);
   const unityFeedbackResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_feedback"), [responses]);
+  const unityRegResponses = useMemo(() => responses.filter(r => r.survey_type === "unity_circle"), [responses]);
+  const sumField = (data: SurveyResponse[], field: string) =>
+    data.reduce((s, r) => s + (parseInt(String(r.answers?.[field] ?? 0), 10) || 0), 0);
+  const unityAdults = sumField(unityRegResponses, "adults");
+  const unityChildren = sumField(unityRegResponses, "children");
+  const unityDates = (() => {
+    const c: Record<string, number> = {};
+    unityRegResponses.forEach(r => {
+      const v = r.answers?.availabilityDate;
+      if (typeof v === "string" && v) {
+        const d = new Date(v);
+        const k = isNaN(d.getTime()) ? v : d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+        c[k] = (c[k] || 0) + 1;
+      }
+    });
+    return Object.entries(c).map(([name, value]) => ({ name, value }));
+  })();
 
   const countField = (data: SurveyResponse[], field: string) => {
     const counts: Record<string, number> = {};
@@ -154,6 +171,18 @@ const PublicSurveyStats = () => {
       communityCount: communityResponses.length,
       unityFeedbackCount: unityFeedbackResponses.length,
       sections: [
+        {
+          title: t("Unity Circle – Inscriptions", "Unity Circle – Registrations"),
+          charts: [
+            { title: t("Totaux", "Totals"), data: [
+              { name: t("Inscriptions", "Registrations"), value: unityRegResponses.length },
+              { name: t("Adultes", "Adults"), value: unityAdults },
+              { name: t("Enfants", "Children"), value: unityChildren },
+            ].filter(d => d.value > 0) },
+            { title: t("Date de disponibilité", "Availability date"), data: unityDates },
+            { title: t("Permission photo/vidéo", "Photo / video permission"), data: countField(unityRegResponses, "photoConsent") },
+          ],
+        },
         {
           title: "Digital Safety Survey",
           charts: [
@@ -257,7 +286,7 @@ const PublicSurveyStats = () => {
         </div>
 
         {/* Summary cards */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
           <Card>
             <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
               <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg"><BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" /></div>
@@ -303,6 +332,15 @@ const PublicSurveyStats = () => {
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardContent className="p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+              <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg"><Users className="w-4 h-4 sm:w-5 sm:h-5 text-primary" /></div>
+              <div>
+                <p className="text-lg sm:text-2xl font-bold">{unityRegResponses.length}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{t("Inscriptions Unity Circle", "Unity Circle registrations")}</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Submissions over time */}
@@ -337,6 +375,9 @@ const PublicSurveyStats = () => {
             </TabsTrigger>
             <TabsTrigger value="unity_feedback" className="flex-1 min-w-[90px] text-[10px] sm:text-xs md:text-sm px-2 py-1.5">
               <ClipboardList className="w-3 h-3 mr-1 hidden sm:inline" />Unity Circle
+            </TabsTrigger>
+            <TabsTrigger value="unity_reg" className="flex-1 min-w-[90px] text-[10px] sm:text-xs md:text-sm px-2 py-1.5">
+              <Users className="w-3 h-3 mr-1 hidden sm:inline" />{t("Inscriptions UC", "UC Registrations")}
             </TabsTrigger>
           </TabsList>
 
@@ -414,6 +455,28 @@ const PublicSurveyStats = () => {
                 <PieChartCard title={t("Se sent plus actif", "Feels more active")} data={countField(unityFeedbackResponses, "feelActive")} noDataText={noData} />
                 <PieChartCard title={t("Se sent bienvenu et inclus", "Feels welcome and included")} data={countField(unityFeedbackResponses, "feelWelcome")} noDataText={noData} />
                 <PieChartCard title={t("Reviendrait à une séance", "Would return to a session")} data={countField(unityFeedbackResponses, "wouldReturn")} noDataText={noData} />
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent value="unity_reg" className="space-y-4 mt-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
+              {[
+                [t("Inscriptions", "Registrations"), unityRegResponses.length],
+                [t("Adultes attendus", "Adults expected"), unityAdults],
+                [t("Enfants attendus", "Children expected"), unityChildren],
+              ].map(([label, val]) => (
+                <Card key={String(label)}><CardContent className="p-3 sm:p-4 text-center">
+                  <p className="text-xl sm:text-3xl font-bold text-primary">{val}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">{label}</p>
+                </CardContent></Card>
+              ))}
+            </div>
+            {unityRegResponses.length === 0 ? (
+              <Card><CardContent className="py-12 text-center text-muted-foreground">{t("Aucune inscription pour le moment", "No registrations yet")}</CardContent></Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <BarChartCard title={t("Date de disponibilité", "Availability date")} data={unityDates} noDataText={noData} />
+                <PieChartCard title={t("Permission photo/vidéo", "Photo / video permission")} data={countField(unityRegResponses, "photoConsent")} noDataText={noData} />
               </div>
             )}
           </TabsContent>
