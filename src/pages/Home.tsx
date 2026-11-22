@@ -1,3 +1,4 @@
+import { PhotoSection, GalleryPhoto } from "@/components/GalleryPhoto";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Users, Target, TrendingUp, Music, Palette, Activity, Calendar, ArrowRight } from "lucide-react";
@@ -7,10 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import HeroSlider from "@/components/HeroSlider";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import activity1 from "@/assets/activity-1.jpeg";
-import activity2 from "@/assets/activity-2.jpeg";
-import activity3 from "@/assets/activity-3.jpeg";
-import inclusionIllustration from "@/assets/inclusion-illustration.jpg";
 
 interface WordPressPost {
   id: number;
@@ -85,24 +82,24 @@ const Home = () => {
     icon: Activity,
     title: "Fitness & Movement",
     description: "Family fitness sessions with dance, cardio, and Pilates designed for all ages and abilities.",
-    image: activity1
+    image: "homeFitness" as const
   }, {
     icon: Music,
     title: "Cultural Celebration",
     description: "Music, dance, and celebration days honoring diverse cultures and traditions.",
-    image: activity2
+    image: "homeCulture" as const
   }, {
     icon: Palette,
     title: "Creative Activities",
     description: "Arts, crafts, and sensory play stations for children with additional needs.",
-    image: activity3
+    image: "homeCreative" as const
   }];
   return <div className="min-h-screen">
       <Navigation />
       <HeroSlider />
 
       {/* Mission Section */}
-      <section className="py-20 bg-warm-gradient">
+      <PhotoSection photo="homeMission" className="py-20 bg-warm-gradient">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
             <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
@@ -119,10 +116,10 @@ const Home = () => {
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Stats Section */}
-      <section className="py-16 bg-hero-gradient">
+      <PhotoSection photo="homeStats" backdrop className="py-16 ">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => <div key={index} className="text-center animate-scale-in" style={{
@@ -136,7 +133,7 @@ const Home = () => {
               </div>)}
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Programs Section */}
       <section className="py-20">
@@ -156,7 +153,7 @@ const Home = () => {
             animationDelay: `${index * 150}ms`
           }}>
                 <div className="h-48 overflow-hidden">
-                  <img src={program.image} alt={program.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
+                  <GalleryPhoto photo={program.image} alt={program.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
                 </div>
                 <CardContent className="p-6">
                   <program.icon className="w-10 h-10 text-primary mb-4" />
@@ -188,7 +185,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
-              <img src={inclusionIllustration} alt="Inclusive community" className="rounded-2xl shadow-card" />
+              <GalleryPhoto photo="homeInclusion" alt="Inclusive community" className="aspect-[4/3] rounded-lg shadow-card" />
             </div>
             <div className="animate-slide-up">
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
@@ -296,7 +293,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-card-gradient text-white">
+      <PhotoSection photo="homeJoin" backdrop className="py-20  text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto animate-fade-in">
             <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
@@ -319,7 +316,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       <Footer />
     </div>;

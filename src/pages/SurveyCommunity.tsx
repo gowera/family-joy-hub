@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -111,7 +112,7 @@ const SurveyCommunity = () => {
         <Navigation />
         <main className="flex-1 flex items-center justify-center py-20 px-4">
           <div className="max-w-lg text-center space-y-6">
-            <CheckCircle2 className="w-20 h-20 text-[#FF1493] mx-auto" />
+            <CheckCircle2 className="w-20 h-20 text-primary-foreground mx-auto" />
             <h1 className="text-3xl font-heading font-bold">Thank You!</h1>
             <p className="text-muted-foreground">Your responses will help us design inclusive programmes for women in the community.</p>
             <Button onClick={() => window.location.href = "/"} className="bg-[#FF1493] hover:bg-[#FF1493]/90">Return Home</Button>
@@ -127,22 +128,22 @@ const SurveyCommunity = () => {
       <Navigation />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-[#FF1493]/10 via-background to-[#FF69B4]/10 py-16 px-4">
+        <PhotoSection photo="communityHero" backdrop priority className="    py-16 px-4">
           <div className="container mx-auto max-w-3xl text-center space-y-4">
-            <Heart className="w-12 h-12 text-[#FF1493] mx-auto" />
+            <Heart className="w-12 h-12 text-primary-foreground mx-auto" />
             <h1 className="text-3xl md:text-4xl font-heading font-bold">Voices of Happiness</h1>
-            <p className="text-lg text-[#FF1493] font-semibold">Women's Wellbeing & Fitness Programme</p>
+            <p className="text-lg text-primary-foreground font-semibold">Women's Wellbeing & Fitness Programme</p>
             <p className="text-sm text-muted-foreground">Delivered by: Happiness Comes First (SCIO)</p>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               This short survey aims to understand the challenges women face in accessing fitness, wellbeing, and confidence-building activities. Your responses will help us design inclusive programmes supporting women's physical health, confidence, and mental wellbeing in the Gorbals community.
             </p>
             <p className="text-xs text-muted-foreground">The survey takes 3–5 minutes and responses are anonymous.</p>
             <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1"><Mail className="w-4 h-4 text-[#FF1493]" />Happynesscome01@gmail.com</span>
-              <span className="flex items-center gap-1"><Phone className="w-4 h-4 text-[#FF1493]" />07774 734000</span>
+              <span className="flex items-center gap-1"><Mail className="w-4 h-4 text-primary-foreground" />Happynesscome01@gmail.com</span>
+              <span className="flex items-center gap-1"><Phone className="w-4 h-4 text-primary-foreground" />07774 734000</span>
             </div>
           </div>
-        </section>
+        </PhotoSection>
 
         {/* Form */}
         <section className="py-12 px-4">

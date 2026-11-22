@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -136,9 +137,9 @@ const SurveyUnityFeedback = () => {
     <div className="min-h-screen flex flex-col">
       <Navigation />
       <main className="flex-1">
-        <section className="bg-gradient-to-br from-[#FF1493]/10 via-background to-[#FF69B4]/10 py-14 px-4">
+        <PhotoSection photo="feedbackHero" backdrop priority className="    py-14 px-4">
           <div className="container mx-auto max-w-3xl text-center space-y-3">
-            <Users className="w-12 h-12 text-[#FF1493] mx-auto" />
+            <Users className="w-12 h-12 text-primary-foreground mx-auto" />
             <h1 className="text-2xl md:text-4xl font-heading font-bold">The Unity Circle – Quick Feedback Survey</h1>
             <p className="text-sm text-muted-foreground">Happiness Comes First (HCF)</p>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -146,7 +147,7 @@ const SurveyUnityFeedback = () => {
               better for families and our community.
             </p>
           </div>
-        </section>
+        </PhotoSection>
 
         <section className="py-12 px-4">
           <div className="container mx-auto max-w-2xl">

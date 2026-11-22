@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -53,12 +54,12 @@ const Gallery = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-16 bg-gradient-to-r from-primary/90 to-secondary/90 text-white">
+      <PhotoSection photo="galleryHero" backdrop priority className="py-16    text-white">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">Gallery</h1>
           <p className="text-lg md:text-xl text-white/90">Moments captured from our community</p>
         </div>
-      </section>
+      </PhotoSection>
 
       <section className="py-12">
         <div className="container mx-auto px-4">

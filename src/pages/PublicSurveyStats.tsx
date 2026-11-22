@@ -1,3 +1,4 @@
+import { GalleryPhoto } from "@/components/GalleryPhoto";
 import { useEffect, useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -265,6 +266,7 @@ const PublicSurveyStats = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      <GalleryPhoto photo="statsHero" alt="" loading="eager" className="h-40 sm:h-56 object-center" />
       <div className="w-full px-4 md:px-8 lg:px-16 py-8 space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>

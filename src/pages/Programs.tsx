@@ -1,14 +1,9 @@
+import { PhotoSection, GalleryPhoto } from "@/components/GalleryPhoto";
 import { Activity, Music, Palette, Heart, Calendar, Users, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import activity6 from "@/assets/activity-6.jpeg";
-import activity7 from "@/assets/activity-7.jpeg";
-import activity8 from "@/assets/activity-8.jpeg";
-import activity9 from "@/assets/activity-9.jpeg";
-import activity10 from "@/assets/activity-10.jpeg";
-import heroPrograms from "@/assets/hero-programs.jpg";
 
 const Programs = () => {
   const mainPrograms = [{
@@ -16,7 +11,7 @@ const Programs = () => {
     title: "Family Fitness & Dance Sessions",
     description: "Inclusive co-participation sessions combining movement, laughter, and bonding for all ages.",
     details: ["Cardio, Pilates, and dance routines adapted for all abilities", "Parent-child participation encouraged", "Autism and sensory-friendly adaptations", "Motivational music including 'Fitness Barbie' by Sandra Pink Linda and 'Hakuna Matata'"],
-    image: activity6,
+    image: "programFitness" as const,
     frequency: "Weekly",
     ageGroup: "All Ages"
   }, {
@@ -24,7 +19,7 @@ const Programs = () => {
     title: "Sensory Play & Calm Zones",
     description: "Specially designed spaces and activities for children with additional needs.",
     details: ["Water play and tactile exploration stations", "Soft blocks and textured fabrics", "Calm corners with dim lighting and cushions", "Non-verbal interactive play opportunities"],
-    image: activity7,
+    image: "programSensory" as const,
     frequency: "Every Session",
     ageGroup: "0-12 years"
   }, {
@@ -32,7 +27,7 @@ const Programs = () => {
     title: "Music & Cultural Dance",
     description: "Celebrating culture and togetherness through rhythm, movement, and tradition.",
     details: ["Live drumming and Afrobeat sessions", "Traditional lullabies and global rhythms", "Gospel-house celebrations (e.g., 'Jerusalem')", "Multicultural playlists (Congolese, Caribbean, Afrobeat)"],
-    image: activity8,
+    image: "programMusic" as const,
     frequency: "Weekly",
     ageGroup: "All Ages"
   }];
@@ -57,11 +52,9 @@ const Programs = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section 
+      <PhotoSection photo="programsHero" backdrop priority 
         className="py-32 bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${heroPrograms})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
@@ -72,7 +65,7 @@ const Programs = () => {
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Main Programs */}
       <section className="py-20">
@@ -108,7 +101,7 @@ const Programs = () => {
                   </div>
                   <div className={`order-1 ${index % 2 === 1 ? "md:order-2" : ""}`}>
                     <div className="h-full min-h-[300px] md:min-h-[400px]">
-                      <img src={program.image} alt={program.title} className="w-full h-full object-cover" />
+                      <GalleryPhoto photo={program.image} alt={program.title} className="w-full h-full aspect-[4/3] object-cover" />
                     </div>
                   </div>
                 </div>
@@ -123,7 +116,7 @@ const Programs = () => {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="animate-fade-in">
-                <img src={activity9} alt="Parent support circle" className="rounded-2xl shadow-card" />
+                <GalleryPhoto photo="programParents" alt="Parent support circle" className="aspect-[4/3] rounded-lg shadow-card" />
               </div>
               <div className="animate-slide-up">
                 <Heart className="w-12 h-12 text-primary mb-4" />
@@ -161,7 +154,7 @@ const Programs = () => {
       </section>
 
       {/* Monthly Celebrations */}
-      <section className="py-20">
+      <PhotoSection photo="programCelebrations" className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-heading font-bold mb-4">
@@ -216,10 +209,10 @@ const Programs = () => {
             </CardContent>
           </Card>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Digital Community */}
-      <section className="py-20 bg-card-gradient text-white">
+      <PhotoSection photo="programOnline" backdrop className="py-20  text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-heading font-bold mb-6">
@@ -250,13 +243,13 @@ const Programs = () => {
             </div>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Contact Info */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            <img src={activity10} alt="Community activities" className="rounded-2xl shadow-card mb-8" />
+            <GalleryPhoto photo="programJoin" alt="Community activities" className="aspect-[4/3] rounded-lg shadow-card mb-8" />
             <div className="text-center bg-muted/30 rounded-2xl p-8">
               <h2 className="text-3xl font-heading font-bold mb-4">
                 Ready to Join?

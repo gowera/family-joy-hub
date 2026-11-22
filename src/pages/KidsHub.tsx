@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -9,7 +10,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import heroImage from "@/assets/hero-kidshub.jpg";
 import { Palette, Music, Dumbbell, Car, Blocks, Trophy, Heart, Camera, Shield, Clock, Users, Star, Sparkles, PartyPopper, CreditCard, Building2 } from "lucide-react";
 const KidsHub = () => {
   const {
@@ -196,14 +196,9 @@ const KidsHub = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{
-        backgroundImage: `url(${heroImage})`
-      }}>
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/80 via-purple-600/70 to-cyan-500/80" />
-        </div>
+      <PhotoSection photo="kidsHero" backdrop priority className="min-h-[440px] py-20 flex items-center justify-center">
         <div className="relative z-10 text-center text-white px-4">
-          <h1 className="font-heading text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">
+          <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4 drop-shadow-lg">
             Pink & Bleu Kids' Hub
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto drop-shadow-md">
@@ -213,10 +208,10 @@ const KidsHub = () => {
             Theme: "Happiness Comes First" – Supporting Children Through Play and Physical Activity
           </p>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Program Overview */}
-      <section className="py-16 bg-gradient-to-b from-pink-50 to-cyan-50">
+      <PhotoSection photo="kidsOverview" className="py-16 bg-gradient-to-b from-pink-50 to-cyan-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-4xl font-bold text-foreground mb-4">
@@ -281,10 +276,10 @@ const KidsHub = () => {
             </div>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Sessions Details */}
-      <section className="py-16 bg-background">
+      <PhotoSection photo="kidsSessions" className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-4xl font-bold text-center mb-12">
             Our 4 Exciting Sessions
@@ -351,10 +346,10 @@ const KidsHub = () => {
             <p className="mt-6 text-lg font-medium">Programme made by Coach: Sandra Pink Linda</p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Photo Consent Information */}
-      <section className="py-16 bg-gradient-to-b from-pink-50 to-white">
+      <PhotoSection photo="kidsConsent" className="py-16 bg-gradient-to-b from-pink-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -430,7 +425,7 @@ const KidsHub = () => {
             </div>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Parental Consent Form */}
       <section className="py-16 bg-gradient-to-b from-cyan-50 to-pink-50" id="consent-form">

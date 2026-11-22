@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon, CheckCircle, Heart, Send } from "lucide-react";
@@ -146,15 +147,15 @@ const UnityCircle = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Navigation />
       <main className="flex-1">
-        <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-14 px-4">
+        <PhotoSection photo="unityHero" backdrop priority className="    py-14 px-4">
           <div className="container mx-auto max-w-4xl text-center space-y-4">
-            <Heart className="w-12 h-12 text-primary mx-auto" />
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Happiness Comes First</p>
+            <Heart className="w-12 h-12 text-primary-foreground mx-auto" />
+            <p className="text-sm font-semibold uppercase text-primary-foreground">Happiness Comes First</p>
             <h1 className="font-heading text-3xl md:text-5xl font-bold">Unity Circle: Where Families Heal & Connect</h1>
             <p className="text-lg text-muted-foreground">Participant Registration Form</p>
             <p className="max-w-3xl mx-auto text-muted-foreground">Unity Circle provides culturally sensitive family wellbeing activities including family fitness, Afrobeat dance, music, storytelling, creative activities, community connection and inclusive activities for neurodivergent children and families.</p>
           </div>
-        </section>
+        </PhotoSection>
         <section className="container mx-auto max-w-3xl px-4 py-10">
           <form onSubmit={handleSubmit} className="space-y-8">
             <Card>

@@ -1,9 +1,9 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { Shield, AlertTriangle, Phone, Lock, CheckCircle, FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import heroSafeguarding from "@/assets/hero-safeguarding.jpg";
 
 const Safeguarding = () => {
   return (
@@ -11,11 +11,9 @@ const Safeguarding = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section 
+      <PhotoSection photo="safeguardingHero" backdrop priority 
         className="py-32 bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${heroSafeguarding})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <Shield className="w-20 h-20 mx-auto mb-6" />
@@ -27,10 +25,10 @@ const Safeguarding = () => {
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Policy Statement */}
-      <section className="py-20">
+      <PhotoSection photo="safeguardingPolicy" className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <Alert className="mb-8 border-primary">
@@ -86,7 +84,7 @@ const Safeguarding = () => {
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Responsibilities */}
       <section className="py-20 bg-muted/30">
@@ -126,7 +124,7 @@ const Safeguarding = () => {
       </section>
 
       {/* Staff & Volunteer Duties */}
-      <section className="py-20">
+      <PhotoSection photo="safeguardingDuties" className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-heading font-bold mb-8">
@@ -165,7 +163,7 @@ const Safeguarding = () => {
             </Card>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Reporting Procedures */}
       <section className="py-20 bg-primary/5">
@@ -223,7 +221,7 @@ const Safeguarding = () => {
       </section>
 
       {/* Confidentiality */}
-      <section className="py-20">
+      <PhotoSection photo="safeguardingPrivacy" className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <Card className="shadow-card">
@@ -250,7 +248,7 @@ const Safeguarding = () => {
             </Card>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Policy Details */}
       <section className="py-20 bg-muted/30">

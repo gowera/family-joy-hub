@@ -1,10 +1,8 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { Target, Heart, Users, Sparkles, Globe, Shield } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import activity4 from "@/assets/activity-4.jpeg";
-import activity5 from "@/assets/activity-5.jpeg";
-import communityBg from "@/assets/community-bg.jpg";
 
 const About = () => {
   const specificAims = [
@@ -45,11 +43,9 @@ const About = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section
+      <PhotoSection photo="aboutHero" backdrop priority
         className="py-32 bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${communityBg})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white animate-fade-in">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
@@ -60,10 +56,10 @@ const About = () => {
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Overall Aim */}
-      <section className="py-20">
+      <PhotoSection photo="aboutAim" className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-heading font-bold mb-8 text-center">Overall Aim</h2>
@@ -82,7 +78,7 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Why This Matters */}
       <section className="py-20 bg-muted/30">
@@ -120,10 +116,10 @@ const About = () => {
             </div>
 
             <div className="text-center">
-              <img
-                src={activity4}
+              <GalleryPhoto
+                photo="aboutActivities"
                 alt="Community activities"
-                className="rounded-2xl shadow-card mb-8 w-full max-w-3xl mx-auto"
+                className="aspect-[4/3] sm:aspect-[16/9] rounded-lg shadow-card mb-8 w-full max-w-3xl mx-auto"
               />
               <blockquote className="text-2xl font-heading italic text-primary mb-4">
                 "Children can laugh without being judged, parents can rest without feeling alone,
@@ -157,7 +153,7 @@ const About = () => {
       </section>
 
       {/* Organizational Values */}
-      <section className="py-20 bg-hero-gradient text-white">
+      <PhotoSection photo="aboutValues" backdrop className="py-20  text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-heading font-bold mb-8">Our Core Values</h2>
@@ -186,15 +182,15 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Community Impact Image */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <img
-            src={activity5}
+          <GalleryPhoto
+            photo="aboutCommunity"
             alt="Community together"
-            className="rounded-2xl shadow-card w-full max-w-5xl mx-auto"
+            className="aspect-[4/3] sm:aspect-[16/9] rounded-lg shadow-card w-full max-w-5xl mx-auto"
           />
         </div>
       </section>

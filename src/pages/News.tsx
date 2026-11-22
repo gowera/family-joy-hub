@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, ArrowRight } from "lucide-react";
@@ -6,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import heroNews from "@/assets/hero-news.jpg";
 
 interface WordPressPost {
   id: number;
@@ -78,11 +78,9 @@ const News = ({ categorySlug, title = "News & Updates", subtitle = "Stay informe
       <Navigation />
 
       {/* Hero Section */}
-      <section 
+      <PhotoSection photo={categorySlug === "testimony" ? "testimonyHero" : categorySlug === "united-circle" ? "storiesHero" : "newsHero"} backdrop priority 
         className="py-32 bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${heroNews})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
@@ -93,7 +91,7 @@ const News = ({ categorySlug, title = "News & Updates", subtitle = "Stay informe
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Search */}
       <section className="py-12 bg-muted/30">

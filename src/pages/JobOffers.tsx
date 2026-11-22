@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Briefcase, Calendar } from "lucide-react";
@@ -115,7 +116,7 @@ const JobOffers = () => {
     <div className="min-h-screen">
       <Navigation />
 
-      <section className="py-24 bg-gradient-to-r from-primary/90 to-secondary/90 text-white">
+      <PhotoSection photo="offersHero" backdrop priority className="py-24    text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 mb-6">
@@ -128,7 +129,7 @@ const JobOffers = () => {
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       <section className="py-20">
         <div className="container mx-auto px-4">

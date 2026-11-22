@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState } from "react";
 import { Users, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -109,9 +110,9 @@ const SurveyParent = () => {
       <Navigation />
 
       {/* Hero */}
-      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 py-16">
+      <PhotoSection photo="parentHero" backdrop priority className="    py-16">
         <div className="container mx-auto px-4 text-center">
-          <Users className="w-16 h-16 text-primary mx-auto mb-4" />
+          <Users className="w-16 h-16 text-primary-foreground mx-auto mb-4" />
           <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">Parent Questionnaire</h1>
           <p className="text-lg text-muted-foreground mb-1">Digital Wise Futures – Community Digital Safety Project</p>
           <p className="max-w-2xl mx-auto text-muted-foreground text-sm">
@@ -119,7 +120,7 @@ const SurveyParent = () => {
             All responses are anonymous and will only be used to improve community programmes.
           </p>
         </div>
-      </section>
+      </PhotoSection>
 
       <section className="container mx-auto px-4 py-12 max-w-2xl">
         <form onSubmit={handleSubmit} className="space-y-8">

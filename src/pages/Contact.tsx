@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import heroContact from "@/assets/hero-contact.jpg";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -69,11 +69,9 @@ const Contact = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section 
+      <PhotoSection photo="contactHero" backdrop priority 
         className="py-32 bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${heroContact})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in text-white">
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
@@ -84,10 +82,10 @@ const Contact = () => {
             </p>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Contact Info & Form */}
-      <section className="py-20">
+      <PhotoSection photo="contactInfo" className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Information */}
@@ -260,10 +258,10 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* Opening Hours */}
-      <section className="py-20 bg-muted/30">
+      <PhotoSection photo="contactHours" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-heading font-bold mb-8">Session Times</h2>
@@ -290,7 +288,7 @@ const Contact = () => {
             </Card>
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       <Footer />
     </div>

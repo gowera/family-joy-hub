@@ -1,3 +1,4 @@
+import { PhotoSection } from "@/components/GalleryPhoto";
 import { useState } from "react";
 import { Shield, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -89,9 +90,9 @@ const SurveyChildren = () => {
       <Navigation />
 
       {/* Hero */}
-      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 py-16">
+      <PhotoSection photo="childrenHero" backdrop priority className="    py-16">
         <div className="container mx-auto px-4 text-center">
-          <Shield className="w-16 h-16 text-primary mx-auto mb-4" />
+          <Shield className="w-16 h-16 text-primary-foreground mx-auto mb-4" />
           <h1 className="font-heading text-3xl md:text-4xl font-bold mb-3">Digital Safety Survey</h1>
           <p className="text-lg text-muted-foreground mb-2">For Children &amp; Young People Aged 8–17</p>
           <p className="max-w-2xl mx-auto text-muted-foreground">
@@ -99,13 +100,13 @@ const SurveyChildren = () => {
             Your answers will help us create workshops, activities, and support programmes to help children and teenagers stay safe, confident, and positive online.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mt-6 text-sm font-medium">
-            <span className="bg-primary/10 text-primary px-4 py-2 rounded-full">✔ Share your experiences</span>
-            <span className="bg-primary/10 text-primary px-4 py-2 rounded-full">✔ Improve digital safety education</span>
-            <span className="bg-primary/10 text-primary px-4 py-2 rounded-full">✔ Support safer communities</span>
+            <span className="bg-background/10 text-primary-foreground px-4 py-2 rounded-full">✔ Share your experiences</span>
+            <span className="bg-background/10 text-primary-foreground px-4 py-2 rounded-full">✔ Improve digital safety education</span>
+            <span className="bg-background/10 text-primary-foreground px-4 py-2 rounded-full">✔ Support safer communities</span>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">The survey only takes 2–3 minutes to complete.</p>
         </div>
-      </section>
+      </PhotoSection>
 
       <section className="container mx-auto px-4 py-12 max-w-2xl">
         <form onSubmit={handleSubmit} className="space-y-8">
