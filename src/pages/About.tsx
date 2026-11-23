@@ -1,4 +1,4 @@
-import { PhotoSection } from "@/components/GalleryPhoto";
+import { PhotoSection, GalleryPhoto } from "@/components/GalleryPhoto";
 import { Target, Heart, Users, Sparkles, Globe, Shield } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
