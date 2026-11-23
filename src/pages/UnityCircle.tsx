@@ -171,6 +171,9 @@ const UnityCircle = () => {
               <CardContent className="space-y-2">
                 <Label htmlFor="availabilityDate">Which date are you available to attend?</Label>
                 <p className="text-sm text-muted-foreground">{unityCircleDateHint()}</p>
+                <p role="status" className="text-sm font-semibold text-destructive">
+                  Saturday 28 November 2026: FULL — all places are taken. Please choose another Saturday.
+                </p>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
