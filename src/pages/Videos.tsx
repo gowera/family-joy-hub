@@ -37,7 +37,7 @@ interface WPMedia {
 interface DBComment {
   id: string;
   video_id: number;
-  fingerprint: string;
+  fingerprint?: string;
   author: string;
   content: string;
   created_at: string;
@@ -158,10 +158,7 @@ const Videos = () => {
   }, []);
 
   const refreshMyReactions = useCallback(async () => {
-    const { data, error } = await supabase
-      .from("video_reactions")
-      .select("video_id, kind")
-      .eq("fingerprint", fp);
+    const { data, error } = await supabase.rpc("get_my_video_reactions", { _fingerprint: fp });
     if (error) return;
     const m: Record<number, Record<string, boolean>> = {};
     (data || []).forEach((r: any) => {
@@ -179,11 +176,7 @@ const Videos = () => {
 
   // Load comments lazily when sheet opens
   const loadComments = useCallback(async (videoId: number) => {
-    const { data, error } = await supabase
-      .from("video_comments")
-      .select("*")
-      .eq("video_id", videoId)
-      .order("created_at", { ascending: false });
+    const { data, error } = await supabase.rpc("get_video_comments", { _video_id: videoId });
     if (error) return;
     setComments((prev) => ({ ...prev, [videoId]: (data as DBComment[]) || [] }));
   }, []);
@@ -274,12 +267,7 @@ const Videos = () => {
       return { ...prev, [videoId]: { ...s, [key]: Math.max(0, s[key] + (has ? -1 : 1)) } };
     });
     if (has) {
-      await supabase
-        .from("video_reactions")
-        .delete()
-        .eq("video_id", videoId)
-        .eq("fingerprint", fp)
-        .eq("kind", kind);
+      await supabase.rpc("remove_video_reaction", { _video_id: videoId, _fingerprint: fp, _kind: kind });
     } else {
       await supabase
         .from("video_reactions")
@@ -324,11 +312,10 @@ const Videos = () => {
       return { ...prev, [videoId]: { ...s, comments: s.comments + 1 } };
     });
     setCommentDraft("");
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("video_comments")
-      .insert({ video_id: videoId, fingerprint: fp, author, content: text })
-      .select()
-      .single();
+      .insert({ video_id: videoId, fingerprint: fp, author, content: text });
+    const data = null as DBComment | null;
     if (error) {
       toast({ title: "Échec de l'envoi du commentaire", variant: "destructive" });
       // rollback

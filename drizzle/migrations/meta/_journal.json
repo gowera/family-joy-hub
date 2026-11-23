@@ -8,6 +8,13 @@
       "when": 1795277816920,
       "tag": "0000_allow_unity_survey_types",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795441845069,
+      "tag": "0001_tighten_video_testimonial_survey_policies",
+      "breakpoints": true
     }
   ]
 }

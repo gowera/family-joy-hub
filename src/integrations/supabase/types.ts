@@ -421,6 +421,13 @@ export type Database = {
         }
         Returns: undefined
       }
+      get_my_video_reactions: {
+        Args: { _fingerprint: string }
+        Returns: {
+          kind: string
+          video_id: number
+        }[]
+      }
       get_public_survey_responses: {
         Args: never
         Returns: {
@@ -440,6 +447,16 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_video_comments: {
+        Args: { _video_id: number }
+        Returns: {
+          author: string
+          content: string
+          created_at: string
+          id: string
+          video_id: number
+        }[]
+      }
       get_video_stats: {
         Args: never
         Returns: {
@@ -456,6 +473,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      remove_video_reaction: {
+        Args: { _fingerprint: string; _kind: string; _video_id: number }
+        Returns: undefined
       }
     }
     Enums: {
